@@ -1,0 +1,238 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+
+:root{
+  --color-1: #bee9e8;
+  --color-2: #62b6cb;
+  --color-3: #1b4965;
+  --color-4: #cae9ff;
+  --color-5: #5fa8d3;
+  --gray: #f1f0f6;
+  --color-primary: #7380ec;
+  --color-danger: #ff7782;
+  --color-success: #41f1b6;
+  --color-warning: #ffbb55;
+}
+
+*{
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body{
+  height: 100%;
+  background-color: white;
+
+}
+
+.bg-body-tertiary {
+    --bs-bg-opacity: 1;
+    background-color: var(--color-4) !important;
+  }
+
+  /*---------------------for sidebar----------------------*/
+
+  ::after, ::before{
+    box-sizing: border-box;
+    margin: 0px;
+    padding: 0px;
+  }
+
+  a{
+    text-decoration: none;
+  }
+
+  li{
+    list-style: none;
+  }
+
+  .wrapper{
+    display: flex;
+  }
+
+  .main{
+    min-height: 100vh;
+    width: 100%;
+    overflow: auto;
+    transition: all 0.35s ease-in;
+    position:relative;
+  }
+
+  #sidebar{
+    width: 70px;
+    min-width: 70px;
+    height: 98vh;
+    margin-top: 8px;
+    z-index: 1000;
+    transition: all 0.25s ease-in-out;
+    display: flex;
+    flex-direction: column;
+    background-color: #fff;
+  }
+
+  #sidebar.expand{
+    width: 260px;
+    min-width: 260px;
+  }
+
+  #sidebar-toggle{
+    background-color: transparent;
+    cursor: pointer;
+    border: 0;
+    padding: 0;
+  }
+
+  #sidebar-toggle i{
+    font-size: 1.5rem;
+    color: #000;
+  }
+
+  .sidebar-logo{
+    margin: 25px;
+  }
+
+  .logo-icon a, .logo-name{
+    color:#000;
+  }
+
+  #sidebar:not(.expand) .logo-name,
+  #sidebar:not(.expand) a.sidebar-link span {
+    display: none;
+  }
+
+  #sidebar:not(.expand) a{
+    padding: 10px 15px;
+  }
+
+  #sidebar:not(.expand) .sidebar-link i{
+    margin: 0px;
+  }
+
+  .sidebar-nav{
+    padding: 0;
+    flex: 0;
+  }
+
+  a.sidebar-link{
+    padding: .625rem 1.35rem;
+    color: #000;
+    display: block;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    border-left: 3px solid transparent;
+  }
+
+  .sidebar-link i{
+    font-size: 1.1rem;
+    margin-right: 0.75rem;
+  }
+
+  a.sidebar-link:hover{
+    background-color: #0c5fcd;
+    color: #fff;
+    border-left: 3px solid var(--color-3);
+  }
+
+  .sidebar-item{
+    position: relative;
+  }
+
+  #sidebar:not(.expand) .sidebar-item span{
+    position: absolute;
+    top: 0;
+    left: 70px;
+    background-color: var(--color-4);
+    padding: 13px;
+    min-width: 15rem;
+    display: none;
+  }
+
+  #sidebar:not(.expand) a:hover span{
+    display: block;
+    width: 100%;
+    opacity: 1;
+    border-radius: 8px;
+    color: #000;
+  }
+
+  
+
+  #sidebar.expand .sidebar-link[data-bs-toggle="collapse"]::after{
+    border: solid;
+    border-width: 0 0.075rem 0.075rem 0;
+    content: "";
+    display: inline-block;
+    padding: 2px;
+    position: absolute;
+    right: 1.5rem;
+    top: 1.4rem;
+    transform: rotate(-135deg);
+    transition: all 0.2s ease-out;
+  }
+
+  #sidebar.expand .sidebar-link[data-bs-toggle="collapse"].collapsed::after{
+    transform: rotate(45deg);
+    transition: all 0.2s ease-out;
+  }
+
+  #sidebar.expand .logo-icon, 
+  #sidebar.expand .logo-name{
+    font-size: 25px;
+  }
+  
+  .scrollcontent{
+    position: absolute;
+    width: 100%;
+  }
+
+    /*-------------------for sidebar media queries-------------*/
+
+    @media (max-width: 767.98px) {
+
+      #sidebar{
+        width: 0px;
+        min-width: 0px;
+        height: calc(100% - 75px);
+        z-index: 1000;
+        margin-top: 65px;
+        overflow: auto;
+        position: fixed;
+        transition: all 0.25s ease-in-out;
+        display: flex;
+        flex-direction: column;
+        background-color: #fff;
+      }
+
+      #sidebar.expand{
+        width: 260px;
+        min-width: 260px;
+      }
+
+      #sidebar:not(.expand){
+        visibility: hidden;
+      }
+    }
+    
+
+  /*-------------------for navigation bar----------------------*/
+  nav{
+    height: 50px;
+  }
+
+  .navdiv{
+    width: 100%;
+    height: 70px;
+  }
+
+  .navbar{
+    width: calc(100% - 16px);
+    position:absolute;
+  }
+
+  .profilepicture1{
+    width: 30px;
+    height: 30px;
+    margin: auto;
+  }
+  

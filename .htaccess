@@ -1,0 +1,6 @@
+RewriteEngine On
+
+RewriteRule ^(dashboard|registration|inspection|marketlist|ratingandfeedback|inspectionreport|permittracker|notifications|categorylocator|usermanagement)$ template.php?route=$1
+RewriteRule ^logout$ logout.php
+RewriteRule ^login$ login.php
+RewriteRule ^registration$ login.php

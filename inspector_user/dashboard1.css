@@ -1,0 +1,91 @@
+        /* Statistics Cards */
+        .stats-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            flex: 1;
+            margin: 0 10px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .stat-card h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .stat-card span {
+            font-size: 40px;
+            font-weight: bold;
+            display: block;
+        }
+
+        .stat-card i {
+            font-size: 20px;
+            margin-top: 10px;
+        }
+
+        /* Charts */
+        .charts-container {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+
+        .chart-card {
+            flex: 1;
+            margin: 0 10px;
+            padding: 20px;
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        canvas {
+            max-width: 100%;
+            height: auto;
+        }
+
+        /* Recent Task Table */
+        .task-table-container {
+            margin: 20px 10px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        table, th, td {
+            border: 1px solid #ddd;
+            text-align: center;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f8f9fa;
+            font-weight: bold;
+        }
+
+        .filter {
+            float: right;
+            margin-bottom: 10px;
+        }
+
+        /* Media Queries */
+        @media (max-width: 768px) {
+            .stats-container, .charts-container {
+                flex-direction: column;
+            }
+
+            .stat-card, .chart-card {
+                margin: 10px 0;
+            }
+        }
+
