@@ -1,4 +1,4 @@
-<aside id="sidebar" class="rounded-3 shadow-lg ms-2 bg-body-tertiary">
+<aside id="sidebar" class="shadow-lg bg-body-tertiary">
 
     <div class="d-flex flex-column align-items-center sidebar-logo">
         <div class="logo-icon"><a href="dashboard"><i class="bi bi-android2"></i></a></div>
