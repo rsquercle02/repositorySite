@@ -1,5 +1,5 @@
 <header class="navdiv sticky-top">
-    <nav class="navbar navbar-expand rounded-3 shadow-lg m-2 scroll bg-body-tertiary">
+    <nav class="navbar navbar-expand rounded-3 shadow-lg m-3 scroll bg-body-tertiary">
         <div class="container ms-0">
             <a class="navbar-brand" id="sidebar-toggle" href="#">
                 <i class="bi bi-list"></i>
