@@ -3,7 +3,7 @@
 class Database1
 {
     private $host = "localhost";
-    private $db_name = "test_db";
+    private $db_name = "bfmsi_database";
     private $username = "root";
     private $password = "12345";
     public $conn;
