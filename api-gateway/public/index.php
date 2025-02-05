@@ -12,7 +12,7 @@ use Slim\Routing\RouteCollectorProxy;
 $app = AppFactory::create();
 $app->addBodyParsingMiddleware();
 $app->addRoutingMiddleware();
-$app->setBasePath('http://bfmsi.smartbarangayconnect.com/api-gateway/public');
+$app->setBasePath('/api-gateway/public');
 
 // Initialize session for rate limiting (for demonstration purposes)
 if (!isset($_SESSION)) {
