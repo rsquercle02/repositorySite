@@ -1,0 +1,20 @@
+.inline{
+    display: inline;
+}
+
+.align{
+    text-align: center;
+}
+
+.embedcon{
+    position: relative;
+    background-color: rgba(255, 255, 255, 0.5);
+}
+
+.embedurl{
+    position: absolute;
+}
+
+.calendarcon{
+    display: none;
+}
