@@ -8,7 +8,7 @@
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
 
-    <title>Market Locator</title>
+    <title>Category Locator</title>
 </head>
 <body>
     <div style="margin-bottom: 10px;">
