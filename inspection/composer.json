@@ -1,0 +1,8 @@
+{
+    "name": "capstone/inspection",
+    "description": "Inspection service for web.",
+    "require": {
+        "slim/slim": "^4.0",
+        "slim/psr7": "^1.7"
+    }
+}
