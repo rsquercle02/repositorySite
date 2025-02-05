@@ -18,11 +18,17 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
     if (password_verify($password, $hashedPassword)) {
         session_start();
+        session_regenerate_id(true);
+
         $_SESSION["loggedIn"] = "ok";
         $_SESSION["id"] = $credentials["id"];
         $_SESSION["username"] = $credentials["username"];
         $_SESSION["profile"] = $credentials["profile"];
         $_SESSION["picture"] = $credentials["picture"];
+        
+        // Store IP and user agent in session for session hijacking protection
+        $_SESSION['ip_address'] = $_SERVER['REMOTE_ADDR'];
+        $_SESSION['user_agent'] = $_SERVER['HTTP_USER_AGENT'];
         echo "Login successful!";
     } else {
         echo "Invalid username or password.";

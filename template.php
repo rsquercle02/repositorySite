@@ -1,5 +1,26 @@
 <?php
-  session_start();
+session_set_cookie_params([
+    'lifetime' => 0, // Session cookie will expire when the browser is closed
+    'secure' => true, // Only send cookie over HTTPS (make sure SSL is enabled)
+    'httponly' => true, // Prevent JavaScript access to cookies
+    'samesite' => 'Strict', // Prevent CSRF attacks
+]);
+session_start();
+
+// Check if the session is valid
+if (!isset($_SESSION['profile'])) {
+    header("Location: login.php");
+    exit;
+}
+
+// Prevent session hijacking by comparing IP address and user agent
+if ($_SESSION['ip_address'] !== $_SERVER['REMOTE_ADDR'] || $_SESSION['user_agent'] !== $_SERVER['HTTP_USER_AGENT']) {
+    // Destroy session if the IP or user agent has changed
+    session_unset();
+    session_destroy();
+    header("Location: login.php");
+    exit;
+}
 ?>
 
 <!DOCTYPE html>
@@ -174,7 +195,9 @@
           </div>
 
           <!--Sidebar ito-->
-
+          <?php
+          if((isset($_SESSION["profile"]) && $_SESSION["profile"] == "Administrator") || (isset($_SESSION["profile"]) && $_SESSION["profile"] == "Inspector")){
+            echo'
           <ul class="navbar-nav active flex-fill w-100 mb-2">
             <li class="nav-item dropdown">
               <a class="nav-link" href="dashboard">
@@ -183,9 +206,14 @@
               </a>
             </li>
           </ul>
+
           <p class="text-muted-nav nav-heading mt-4 mb-1">
-          <span style="font-size: 10.5px; font-weight: bold; font-family: 'Inter', sans-serif;">MAIN COMPONENTS</span>
-          </p>
+          <span style="font-size: 10.5px; font-weight: bold; font-family: "Inter", sans-serif;">MAIN COMPONENTS</span>
+          </p>';
+          }
+
+          if(isset($_SESSION["profile"]) && $_SESSION["profile"] == "Administrator"){
+            echo'
           <ul class="navbar-nav flex-fill w-100 mb-2">
 
           <ul class="navbar-nav flex-fill w-100 mb-2">
@@ -213,8 +241,22 @@
                 <span class="ml-3 item-text">Market Approval</span>
               </a>
             </li>
-          </ul>
+          </ul>';
+        }
+          if(isset($_SESSION["profile"]) && $_SESSION["profile"] == "Inspector"){
+            echo'
+            <ul class="navbar-nav flex-fill w-100 mb-2">
+            <li class="nav-item w-100">
+            <a class="nav-link" href="inspection">
+            <i class="fa-solid fa-building-circle-check"></i>
+                <span class="ml-3 item-text">Inspection</span>
+              </a>
+            </li>
+          </ul>';
+        }
 
+          if((isset($_SESSION["profile"]) && $_SESSION["profile"] == "Administrator") || (isset($_SESSION["profile"]) && $_SESSION["profile"] == "Inspector")){
+            echo'
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
             <a class="nav-link" href="categorylocator">
@@ -222,8 +264,11 @@
                 <span class="ml-3 item-text">Category Locator</span>
               </a>
             </li>
-          </ul>
+          </ul>';
+        }
 
+          if(isset($_SESSION["profile"]) && $_SESSION["profile"] == "Administrator"){
+            echo'
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item dropdown">
               <a class="nav-link" href="usermanagement">
@@ -231,7 +276,9 @@
                 <span class="ml-3 item-text">User Management</span>
               </a>
             </li>
-          </ul>
+          </ul>';
+        }
+        ?>
         </nav>
       </aside>
 
