@@ -7,6 +7,7 @@ session_set_cookie_params([
 ]);
 session_start();
 
+$picture = $_SESSION["picture"];
 // Check if the session is valid
 if (!isset($_SESSION['profile'])) {
     header("Location: login.php");
@@ -156,8 +157,7 @@ if ($_SESSION['ip_address'] !== $_SERVER['REMOTE_ADDR'] || $_SESSION['user_agent
             <span class="nav-link text-muted pr-0 avatar-icon" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
   <div class="avatar-img rounded-circle avatar-initials-min text-center position-relative">
-  
-
+    <img class="rounded-circle" src="users/admin1/122.jpg">
   </div>
 </span>
 </span>
