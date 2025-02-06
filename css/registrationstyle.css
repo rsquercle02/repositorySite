@@ -1,0 +1,72 @@
+/* Form step */
+
+        .step {
+            display: none;
+        }
+        .step.active {
+            display: block;
+        }
+
+    /* Operating days and hours */
+
+        .btn-container button.active {
+            background-color: #0056b3;
+            border-color: #0056b3;
+        }
+
+        .switchable {
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        .switchable.active {
+            display: block;
+            opacity: 1;
+        }
+
+    /* Form address */
+
+    .select2-container .select2-selection--single {
+            height: 35.8px;
+            padding-top: 2px;
+        }
+
+    /* Business type */
+
+        .radio-card {
+            border: 2px solid transparent;
+            border-radius: 10px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .radio-card:hover {
+            border-color: #007bff;
+            background-color: #f8f9fa;
+        }
+
+        .radio-card.active {
+            border-color: #007bff;
+            background-color: #e9f5ff;
+            color: #007bff;
+        }
+
+        .radio-title {
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+
+        .radio-description {
+            font-size: 0.95rem;
+            color: #6c757d;
+        }
+
+        input[type="radio"] {
+            display: none;
+        }
+
+    /* Form Validation */
+    .error{
+        color: #f00;
+    } 
