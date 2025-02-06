@@ -59,6 +59,6 @@ function displayNotification() {
 
     // Set a timer to log out the user after 1 minute
     setTimeout(function() {
-        window.location.href = "login.php"; // Log out after 1 minute
+        window.location.href = ""; // Log out after 1 minute
     }, 300000); // 1 minute in milliseconds
 }
