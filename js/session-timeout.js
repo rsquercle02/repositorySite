@@ -1,29 +1,26 @@
+// Set the session timeout to 30 minutes
+var timeout = 1 * 60 * 1000; // 30 minutes in milliseconds
 
-  // Set the session timeout to 30 minutes
-  var timeout = 1 * 60 * 1000; // 30 minutes in milliseconds
+// Initialize the last activity time
+var lastActivity = new Date().getTime();
 
-  // Set a timer to check for inactivity
-  setInterval(function() {
-      // Check if the user is still active
-      if (new Date().getTime() - lastActivity > timeout) {
-            displayNotification();
-            // User is inactive, log out
-            //window.location.href = "index.php";
-      }
-  }, 1000); // Check every second
+// Set a timer to check for inactivity
+setInterval(function() {
+    // Check if the user is still active
+    if (new Date().getTime() - lastActivity > timeout) {
+        // User is inactive, show notification
+        displayNotification();
+    }
+}, 1000); // Check every second
 
-  // Update the last activity time
-  var lastActivity = new Date().getTime();
+// Update the last activity time on user activity
+document.addEventListener("mousemove", function() {
+    lastActivity = new Date().getTime();
+});
 
-  // Update the last activity time on user activity
-  document.addEventListener("mousemove", function() {
-      lastActivity = new Date().getTime();
-  });
-
-  document.addEventListener("keydown", function() {
-      lastActivity = new Date().getTime();
-  });
-
+document.addEventListener("keydown", function() {
+    lastActivity = new Date().getTime();
+});
 
 // Function to display notification
 function displayNotification() {
@@ -53,7 +50,7 @@ function displayNotification() {
 
     // Add event listener to logout button
     logoutButton.addEventListener("click", function() {
-        window.location.href = "login.php";
+        window.location.href = "login.php"; // Log out
     });
 
     // Add notification box and logout button to the page
@@ -62,6 +59,6 @@ function displayNotification() {
 
     // Set a timer to log out the user after 1 minute
     setTimeout(function() {
-        window.location.href = "login.php";
+        window.location.href = "login.php"; // Log out after 1 minute
     }, 60000); // 1 minute in milliseconds
 }
