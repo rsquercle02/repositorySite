@@ -3,8 +3,10 @@ function fetchBusiness(){
     const tableBody = document.querySelector("#marketsTable tbody");
     // Clear the table before adding new rows
     tableBody.innerHTML = ''; // This will remove all the previous rows
+    // Example URL for fetching detailed information (you may adjust it)
+    const detailsUrl = 'https://bfmsi.smartbarangayconnect.com/api-gateway/public/inspection/fetch';
     // Fetch data from the API endpoint to populate the table
-    fetch('https://bfmsi.smartbarangayconnect.com/api-gateway/public/inspection/fetch')
+    fetch(detailsUrl)
         .then(response => response.json())
         .then(data => {
             const tableBody = document.querySelector("#marketsTable tbody");
