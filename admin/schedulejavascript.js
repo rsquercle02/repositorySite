@@ -65,7 +65,7 @@ function fetchBusiness(){
     // Function to fetch the item details and show in a modal
     function fetchItemDetails(itemId) {
         // Example URL for fetching detailed information (you may adjust it)
-        const detailsUrl = `http://localhost:8001/api-gateway/public/inspection/fetchDocument/${itemId}`;
+        const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api-gateway/public/inspection/fetchDocument/${itemId}`;
 
         fetch(detailsUrl)
             .then(response => response.json())
@@ -128,7 +128,7 @@ function fetchBusiness(){
         document.getElementById('storeName').textContent = "";
         document.getElementById('storeLocation').textContent = "";
         // Example URL for fetching detailed information (you may adjust it)
-        const detailsUrl = `http://localhost:8001/api-gateway/public/inspection/fetch/${businessId}`;
+        const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api-gateway/public/inspection/fetch/${businessId}`;
         fetch(detailsUrl)
             .then(response => response.json())
             .then(data => {
@@ -145,7 +145,7 @@ function fetchBusiness(){
         // Clear the table before adding new rows
         tableBody.innerHTML = ''; // This will remove all the previous rows
         // Fetch data from the API endpoint to populate the table
-    fetch(`http://localhost:8001/api-gateway/public/inspection/schedule/${searchTerm}`)
+    fetch(`https://bfmsi.smartbarangayconnect.com/api-gateway/public/inspection/schedule/${searchTerm}`)
         .then(response => response.json())
         .then(data => {
             const tableBody = document.querySelector("#marketsTable tbody");
@@ -232,7 +232,7 @@ aprvbtn.addEventListener('click', function() {
             };
 
             // URL of the API (this can be any API endpoint)
-            const apiUrl = `http://localhost:8001/api-gateway/public/inspection/status/${businessId}`; // Example API
+            const apiUrl = `https://bfmsi.smartbarangayconnect.com/api-gateway/public/inspection/status/${businessId}`; // Example API
 
             // Use fetch() to make the API call
             fetch(apiUrl, {
@@ -294,7 +294,7 @@ dnybtn.addEventListener('click', function() {
             };
 
             // URL of the API (this can be any API endpoint)
-            const apiUrl = `http://localhost:8001/api-gateway/public/inspection/status/${businessId}`; // Example API
+            const apiUrl = `https://bfmsi.smartbarangayconnect.com/api-gateway/public/inspection/status/${businessId}`; // Example API
 
             // Use fetch() to make the API call
             fetch(apiUrl, {
