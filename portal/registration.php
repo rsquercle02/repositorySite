@@ -129,7 +129,7 @@
                                     <option value="">Select Region</option>
                                     <?php
                                     // Read cluster.json and populate the region dropdown
-                                    $data = file_get_contents('cluster.json');
+                                    $data = file_get_contents('../data/cluster.json');
                                     $regions = json_decode($data, true);
                                     foreach ($regions as $regionCode => $region) {
                                         echo "<option value='" . $regionCode . "'>" . $region['region_name'] . "</option>";
