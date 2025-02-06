@@ -171,7 +171,6 @@ function fetchBusiness(){
     });
 
     fetchBusiness();
-    //setInterval(fetchBusiness, 5000);
 
 //Verify button
 //Approve button
