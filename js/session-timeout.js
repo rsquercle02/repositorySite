@@ -1,6 +1,6 @@
 
   // Set the session timeout to 30 minutes
-  var timeout = 1 * 60 * 1000; // 30 minutes in milliseconds
+  var timeout = 30 * 60 * 1000; // 30 minutes in milliseconds
 
   // Set a timer to check for inactivity
   setInterval(function() {
