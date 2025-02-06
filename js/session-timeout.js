@@ -1,14 +1,13 @@
 
   // Set the session timeout to 30 minutes
-  var timeout = 5 * 60 * 1000; // 30 minutes in milliseconds
+  var timeout = 1 * 60 * 1000; // 30 minutes in milliseconds
 
   // Set a timer to check for inactivity
   setInterval(function() {
       // Check if the user is still active
       if (new Date().getTime() - lastActivity > timeout) {
-            displayNotification();
           // User is inactive, log out
-          //window.location.href = "index.php";
+          displayNotification();
       }
   }, 1000); // Check every second
 
@@ -29,7 +28,7 @@
 function displayNotification() {
     // Create a notification box
     var notificationBox = document.createElement("div");
-    notificationBox.innerHTML = "You have been inactive for 5 minutes. You will be logged out in 1 minute.";
+    notificationBox.innerHTML = "You have been inactive for 30 minutes. You will be logged out in 1 minute.";
     notificationBox.style.position = "fixed";
     notificationBox.style.top = "50%";
     notificationBox.style.left = "50%";
