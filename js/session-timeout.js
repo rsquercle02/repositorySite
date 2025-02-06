@@ -1,5 +1,5 @@
 // Set the session timeout to 30 minutes
-var timeout = 1 * 60 * 1000; // 30 minutes in milliseconds
+var timeout = 5 * 60 * 1000; // 30 minutes in milliseconds
 
 // Initialize the last activity time
 var lastActivity = new Date().getTime();
