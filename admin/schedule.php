@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Inspection Schedule</title>
-    <link rel="stylesheet" href="schedule.css">
+    <link rel="stylesheet" href="admin/schedulestyle.css">
 </head>
 <style>
     body {
@@ -212,7 +212,7 @@
     </div>
 </body>
 
-<script src="schedulejavascript.js"></script>
+<script src="admin/schedulejavascript.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
 <!-- Calendar script -->
 <script>
