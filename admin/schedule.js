@@ -4,7 +4,7 @@ function fetchBusiness(){
     // Clear the table before adding new rows
     tableBody.innerHTML = ''; // This will remove all the previous rows
     // Fetch data from the API endpoint to populate the table
-    fetch('http://localhost:8001/api-gateway/public/inspection/schedule')
+    fetch('http://http://bfmsi.smartbarangayconnect.com/api-gateway/public/inspection/schedule')
         .then(response => response.json())
         .then(data => {
             const tableBody = document.querySelector("#marketsTable tbody");
