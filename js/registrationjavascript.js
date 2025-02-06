@@ -410,7 +410,7 @@
                 formData.append('file4', taxCertificate);
                 
                 // Make the API request with FormData
-                fetch('http://localhost:8001/api-gateway/public/inspection/register', {
+                fetch('https://bfmsi.smartbarangayconnect.com/api-gateway/public/inspection/register', {
                     method: 'POST',
                     body: formData, // No need to manually set 'Content-Type', it's handled by FormData
                 })
