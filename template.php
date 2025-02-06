@@ -1,9 +1,24 @@
 <?php
+session_set_cookie_params([
+    'lifetime' => 0, // Session cookie will expire when the browser is closed
+    'secure' => true, // Only send cookie over HTTPS (make sure SSL is enabled)
+    'httponly' => true, // Prevent JavaScript access to cookies
+    'samesite' => 'Strict', // Prevent CSRF attacks
+]);
 session_start();
 
 $picture = $_SESSION["picture"];
 // Check if the session is valid
 if (!isset($_SESSION['profile'])) {
+    header("Location: login.php");
+    exit;
+}
+
+// Prevent session hijacking by comparing IP address and user agent
+if ($_SESSION['ip_address'] !== $_SERVER['REMOTE_ADDR'] || $_SESSION['user_agent'] !== $_SERVER['HTTP_USER_AGENT']) {
+    // Destroy session if the IP or user agent has changed
+    session_unset();
+    session_destroy();
     header("Location: login.php");
     exit;
 }
@@ -374,6 +389,7 @@ if (!isset($_SESSION['profile'])) {
   <script src="js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
   <script src='js/jquery.dataTables.min.js'></script>
   <script src='js/dataTables.bootstrap4.min.js'></script>
+  <script src='js/session-timeout.js'></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   </body>
