@@ -6,8 +6,9 @@
   setInterval(function() {
       // Check if the user is still active
       if (new Date().getTime() - lastActivity > timeout) {
-          // User is inactive, log out
-          window.location.href = "index.php";
+            displayNotification();
+            // User is inactive, log out
+            //window.location.href = "index.php";
       }
   }, 1000); // Check every second
 
