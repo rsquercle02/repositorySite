@@ -172,7 +172,7 @@ function fetchBusiness(){
         }
     });
 
-    //fetchBusiness();
+    fetchBusiness();
 
 //Verify button
 //Approve button
