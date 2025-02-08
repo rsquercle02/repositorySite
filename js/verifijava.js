@@ -10,6 +10,7 @@ function fetchBusiness(){
         .then(response => response.json())
         .then(data => {
             const tableBody = document.querySelector("#marketsTable tbody");
+            tableBody.innerHTML = ''; //This will remove all the previous rows
             data.forEach(item => {
                 const row = document.createElement("tr");
 
@@ -114,12 +115,13 @@ function fetchBusiness(){
     function search(searchTerm){
         const tableBody = document.querySelector("#marketsTable tbody");
         // Clear the table before adding new rows
-        tableBody.innerHTML = ''; // This will remove all the previous rows
+        tableBody.innerHTML = ''; //This will remove all the previous rows
         // Fetch data from the API endpoint to populate the table
     fetch(`https://bfmsi.smartbarangayconnect.com/api-gateway/public/inspection/search/${searchTerm}`)
         .then(response => response.json())
         .then(data => {
             const tableBody = document.querySelector("#marketsTable tbody");
+            tableBody.innerHTML = ''; //This will remove all the previous rows
             data.forEach(item => {
                 const row = document.createElement("tr");
 
