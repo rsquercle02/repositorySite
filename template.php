@@ -1,27 +1,5 @@
 <?php
-session_set_cookie_params([
-    'lifetime' => 0, // Session cookie will expire when the browser is closed
-    'secure' => true, // Only send cookie over HTTPS (make sure SSL is enabled)
-    'httponly' => true, // Prevent JavaScript access to cookies
-    'samesite' => 'Strict', // Prevent CSRF attacks
-]);
 session_start();
-
-$picture = $_SESSION["picture"];
-// Check if the session is valid
-if (!isset($_SESSION['profile'])) {
-    header("Location: login.php");
-    exit;
-}
-
-// Prevent session hijacking by comparing IP address and user agent
-if ($_SESSION['ip_address'] !== $_SERVER['REMOTE_ADDR'] || $_SESSION['user_agent'] !== $_SERVER['HTTP_USER_AGENT']) {
-    // Destroy session if the IP or user agent has changed
-    session_unset();
-    session_destroy();
-    header("Location: login.php");
-    exit;
-}
 ?>
 
 <!DOCTYPE html>
@@ -157,7 +135,14 @@ if ($_SESSION['ip_address'] !== $_SERVER['REMOTE_ADDR'] || $_SESSION['user_agent
             <span class="nav-link text-muted pr-0 avatar-icon" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
             <span class="avatar avatar-sm mt-2">
   <div class="avatar-img rounded-circle avatar-initials-min text-center position-relative">
-    <img class="rounded-circle" src="users/admin1/122.jpg">
+    <!-- <img class="rounded-circle" src="users/admin1/122.jpg"> -->
+    <?php 
+    if ($_SESSION["picture"] != "") {
+      echo '<img class="rounded-circle" src="'.$_SESSION["picture"].'">';
+    }else{
+      echo '<img class="rounded-circle" src="assets/images/anonymous.svg">';
+    }
+    ?>
   </div>
 </span>
 </span>
@@ -247,7 +232,7 @@ if ($_SESSION['ip_address'] !== $_SERVER['REMOTE_ADDR'] || $_SESSION['user_agent
             echo'
             <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
-            <a class="nav-link" href="inspection">
+            <a class="nav-link" href="inspectionbusiness">
             <i class="fa-solid fa-building-circle-check"></i>
                 <span class="ml-3 item-text">Inspection</span>
               </a>
@@ -330,15 +315,15 @@ if ($_SESSION['ip_address'] !== $_SERVER['REMOTE_ADDR'] || $_SESSION['user_agent
         if(isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] == "ok"){
             echo '<div class="scrollcontent">';
             $adminRoutes = ['dashboard', 'verification', 'schedule', 'marketapproval', 'categorylocator', 'usermanagement'];
-            $inspectorRoutes = ['dashboard', 'inspection', 'ratingandfeedback', 'inspectionreport', 'categorylocator', 'usermanagement'];
+            $inspectorRoutes = ['dashboard', 'inspectionbusiness', 'ratingandfeedback', 'inspectionreport', 'categorylocator', 'usermanagement'];
             $vendorRoutes = ['dashboard', 'approval', 'registration', 'marketlist', 'ratingandfeedback', 'permittracker', 'notifications', 'categorylocator', 'usermanagement'];
             if (isset($_GET["route"])) {
                 $route = basename($_GET["route"]);
                 if ($userProfile == 'Administrator' && in_array($route, $adminRoutes)) {
                 include "admin/" . $route . ".php";
-                } elseif ($userProfile == 'Inspector' && in_array($route, $inspectorRoutes)) {
+                } else if ($userProfile == 'Inspector' && in_array($route, $inspectorRoutes)) {
                 include "inspector_user/" . $route . ".php";
-                } elseif ($userProfile == 'Vendor' && in_array($route, $vendorRoutes)) {
+                } else if ($userProfile == 'Vendor' && in_array($route, $vendorRoutes)) {
                 include "vendor_user/" . $route . ".php";
                 } elseif ($_GET["route"] == 'logout') {
                 include "".$_GET["route"].".php";
