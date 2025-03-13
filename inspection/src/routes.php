@@ -10,6 +10,10 @@ use Slim\Psr7\Stream;
 require_once __DIR__ . '/Database.php';
 $db = (new Database1())->getConnection();
 
+// Load environment variables from .env file
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../data');
+$dotenv->load();
+
 /** @var App $app */
 
 $group->get('/fetch', function (Request $request, Response $response) use ($db) {
@@ -1018,7 +1022,7 @@ $group->post('/generatecontent', function (Request $request, Response $response,
     $prompt = $data['prompt'];  // Default prompt if none provided
 
     // API key (replace with your actual API key)
-    $apiKey = ''; 
+    $apiKey = getenv('API_KEY'); // or $_ENV['API_KEY']; 
 
     // Initialize Guzzle client
     $client = new Client();
