@@ -171,7 +171,7 @@ function fetchBusiness(){
 
                 groupedData[category].forEach(function(item, index) {
                     var statusIcon = item.response.toLowerCase() === "yes" ? "✅" :
-                                    item.response.toLowerCase() === "no" ? "❌" : "⚠️";
+                                    item.response.toLowerCase() === "no" ? "❌" : "";
 
                     categoryHTML += `
                         <p><strong>${index + 1}. ${item.question}</strong> <br> 
@@ -200,11 +200,41 @@ function fetchBusiness(){
                 })
                 .then(response => response.json())  // Parse the response as JSON
                 .then(data => {
-                    console.log(data.candidates[0].content.parts[0].text)
-                    document.getElementById('summaryandsuggestions').innerHTML = data.candidates[0].content.parts[0].text;
+                    const sasdata = data.candidates[0].content.parts[0].text;
+                    //console.log(sasdata);
+                    cleanAndFormatInspectionSummary(sasdata);
+                    //document.getElementById('summaryandsuggestions').innerHTML = data.candidates[0].content.parts[0].text;
                 })// Handle the response
                 .catch(error => console.error('Error:', error));  // Handle errors
 
+        }
+
+        function cleanAndFormatInspectionSummary(data) {
+          // Remove any asterisks used for bold formatting
+          let cleanedData = data.replace(/\*\*(.*?)\*\*/g, '$1');  // Remove ** for bold text
+          
+          // Now clean up the text and format the sections
+          let formattedText = cleanedData.replace(/\*/g, '-');  // Change * to bullet points
+        
+          // Format the Inspection Summary
+          let inspectionSummaryStart = formattedText.indexOf('Inspection Summary');
+          let areasRequiringImprovementStart = formattedText.indexOf('Areas Requiring Immediate Improvement');
+          let suggestionsStart = formattedText.indexOf('Suggestions for Improvement');
+        
+          // Extract each section based on its position
+          let inspectionSummary = formattedText.substring(inspectionSummaryStart, areasRequiringImprovementStart).trim();
+          let areasRequiringImprovement = formattedText.substring(areasRequiringImprovementStart, suggestionsStart).trim();
+          let suggestionsForImprovement = formattedText.substring(suggestionsStart).trim();
+        
+          // Combine the sections into a well-formatted output
+          formattedText = `\n${inspectionSummary}\n\n\n\n\n\n\n\n\n\n` +
+                          `**:\n\n\n\n\n\n\n` +
+                          `${areasRequiringImprovement}\n\n\n\n\n\n\n\n\n\n` +
+                          `**:\n\n\n\n\n\n\n` +
+                          `${suggestionsForImprovement}`;
+        
+          //console.log(formattedText);
+          document.getElementById('summaryandsuggestions').innerHTML = formattedText;
         }
 
         //Approve button
