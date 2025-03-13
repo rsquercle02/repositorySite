@@ -1,4 +1,5 @@
 <?php
+session_start();
 
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface as Response;
@@ -72,8 +73,10 @@ $group->get('/fetchschedule', function (Request $request, Response $response) us
     JOIN businessinformation bi ON se.businessId = bi.businessId
     JOIN businessstatus bs ON bi.businessId = bs.businessId
     WHERE
-        bs.businessstatus = 'Scheduled.' AND se.assignedInspectors LIKE '%Raul%' ORDER BY se.inspectionDate ASC";
+        bs.businessstatus = 'Scheduled.' AND se.assignedInspectors LIKE :username ORDER BY se.inspectionDate ASC";
     $stmt = $db->prepare($query);
+    $username = $_SESSION["username"];
+    $stmt->bindValue(':username', '%' . $username . '%', PDO::PARAM_STR);
     $stmt->execute();
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $response->getBody()->write(json_encode($data));
@@ -206,10 +209,12 @@ $group->get('/forminspectiondetails/{id}', function (Request $request, Response 
     JOIN businessinformation bi ON se.businessId = bi.businessId
     JOIN businessstatus bs ON bi.businessId = bs.businessId
     WHERE
-        bi.businessId = :id AND bs.businessstatus = 'Scheduled.' AND se.assignedInspectors LIKE '%Raul%'";
+        bi.businessId = :id AND bs.businessstatus = 'Scheduled.' AND se.assignedInspectors LIKE :username";
 
     $stmt = $db->prepare($query);
     $stmt->bindParam(':id', $args['id'], PDO::PARAM_INT);
+    $username = $_SESSION["username"];
+    $stmt->bindValue(':username', '%' . $username . '%', PDO::PARAM_STR);
     $stmt->execute();
     $data = $stmt->fetch(PDO::FETCH_ASSOC);
     $response->getBody()->write(json_encode($data));
@@ -273,9 +278,11 @@ $group->get('/searchinspection/{searchTerm}', function (Request $request, Respon
     JOIN businessinformation bi ON se.businessId = bi.businessId
     JOIN businessstatus bs ON bi.businessId = bs.businessId
     WHERE
-        bs.businessstatus = 'Scheduled.' AND se.assignedInspectors LIKE '%Raul%' AND bi.businessName LIKE :searchTerm ORDER BY se.inspectionDate ASC";
+        bs.businessstatus = 'Scheduled.' AND se.assignedInspectors LIKE :username AND bi.businessName LIKE :searchTerm ORDER BY se.inspectionDate ASC";
 
     $stmt = $db->prepare($query);
+    $username = $_SESSION["username"];
+    $stmt->bindValue(':username', '%' . $username . '%', PDO::PARAM_STR);
     $searchTerm = $args['searchTerm'];
     $stmt->bindValue(':searchTerm', '%' . $searchTerm . '%', PDO::PARAM_STR);
     $stmt->execute();
@@ -316,10 +323,12 @@ $group->get('/fetchinspectiondetails/{id}', function (Request $request, Response
     JOIN businessinformation bi ON se.businessId = bi.businessId
     JOIN businessstatus bs ON bi.businessId = bs.businessId
     WHERE
-        bi.businessId = :id AND bs.businessstatus = 'Scheduled.' AND se.assignedInspectors LIKE '%Raul%'";
+        bi.businessId = :id AND bs.businessstatus = 'Scheduled.' AND se.assignedInspectors LIKE :username";
 
     $stmt = $db->prepare($query);
     $stmt->bindParam(':id', $args['id'], PDO::PARAM_INT);
+    $username = $_SESSION["username"];
+    $stmt->bindValue(':username', '%' . $username . '%', PDO::PARAM_STR);
     $stmt->execute();
     $data = $stmt->fetch(PDO::FETCH_ASSOC);
     $response->getBody()->write(json_encode($data));
