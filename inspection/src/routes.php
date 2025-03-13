@@ -1018,7 +1018,7 @@ $group->post('/generatecontent', function (Request $request, Response $response,
     $prompt = $data['prompt'];  // Default prompt if none provided
 
     // API key (replace with your actual API key)
-    $apiKey = 'AIzaSyBcVp30Bx0BBpIUZw3xrSdFacdrhmV0lQM'; 
+    $apiKey = ''; 
 
     // Initialize Guzzle client
     $client = new Client();
