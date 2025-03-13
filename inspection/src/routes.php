@@ -12,7 +12,7 @@ require_once __DIR__ . '/Database.php';
 $db = (new Database1())->getConnection();
 
 // Load environment variables from .env file
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../data');
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../data');
 $dotenv->load();
 
 /** @var App $app */
@@ -512,7 +512,7 @@ $group->post('/inspectioninfo', function (Request $request, Response $response) 
     $db->commit();
 
     } catch (PDOException $e) {
-        //If there’s an error, roll back the transaction
+        //If theres an error, roll back the transaction
     $db->rollBack();
     
     error_log( "Error: " . $e->getMessage());
@@ -629,10 +629,10 @@ $group->post('/register', function (Request $request, Response $response) use ($
         $businfostmt->bindParam(':fromTime', $input['fromTime']);
         $businfostmt->bindParam(':toTime', $input['toTime']);
         $businfostmt->bindParam(':operationTimes', $input['oprtTime']);
-        $businfostmt->bindParam(':region', $input['region']);
-        $businfostmt->bindParam(':province', $input['province']);
-        $businfostmt->bindParam(':municipality', $input['municipality']);
-        $businfostmt->bindParam(':barangay', $input['barangay']);
+        $businfostmt->bindParam(':region', $input['regionSelect']);
+        $businfostmt->bindParam(':province', $input['provinceSelect']);
+        $businfostmt->bindParam(':municipality', $input['municipalitySelect']);
+        $businfostmt->bindParam(':barangay', $input['barangaySelect']);
         $businfostmt->bindParam(':streetBuildingHouse', $input['sbhNo']);
         $businfostmt->bindParam(':businessType', $input['businessType']);
 
@@ -1031,7 +1031,7 @@ $group->post('/generatecontent', function (Request $request, Response $response,
     $prompt = $data['prompt'];  // Default prompt if none provided
 
     // API key (replace with your actual API key)
-    $apiKey = getenv('API_KEY'); // or $_ENV['API_KEY']; 
+    $apiKey = $_ENV['API_KEY']; // or $_ENV['API_KEY']; 
 
     // Initialize Guzzle client
     $client = new Client();
