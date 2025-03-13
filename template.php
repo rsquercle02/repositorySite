@@ -320,11 +320,11 @@ session_start();
             if (isset($_GET["route"])) {
                 $route = basename($_GET["route"]);
                 if ($userProfile == 'Administrator' && in_array($route, $adminRoutes)) {
-                include "admin/" . $route . ".php";
+                include "admin/" . $route . ".html";
                 } else if ($userProfile == 'Inspector' && in_array($route, $inspectorRoutes)) {
-                include "inspector_user/" . $route . ".php";
+                include "inspector_user/" . $route . ".html";
                 } else if ($userProfile == 'Vendor' && in_array($route, $vendorRoutes)) {
-                include "vendor_user/" . $route . ".php";
+                include "vendor_user/" . $route . ".html";
                 } elseif ($_GET["route"] == 'logout') {
                 include "".$_GET["route"].".php";
                 } else {
