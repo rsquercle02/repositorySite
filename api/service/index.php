@@ -12,7 +12,7 @@ use Slim\Routing\RouteCollectorProxy;
 $app = AppFactory::create();
 $app->addBodyParsingMiddleware();
 $app->addRoutingMiddleware();
-$app->setBasePath('/api-gateway/public');
+$app->setBasePath('/api/service');
 
 // Initialize session for rate limiting (for demonstration purposes)
 if (!isset($_SESSION)) {
@@ -52,15 +52,34 @@ function rateLimitMiddleware($serviceKey, $limit, $timeFrame) {
     };
 }
 
-// User Service Group with Rate Limiting
-$app->group('/inspection', function (RouteCollectorProxy $group) {
+// Verification Service Group with Rate Limiting
+$app->group('/verification', function (RouteCollectorProxy $group) {
     
-    require __DIR__ . '/../../inspection/src/routes.php';
-})->add(rateLimitMiddleware('user-service', 55, 60)); // 5 requests per 60 seconds
+    require __DIR__ . '/../../inspection/src/verification.php';
+})->add(rateLimitMiddleware('verification-service', 55, 60)); // 55 requests per 60 seconds
 
-// Product Service Group with Rate Limiting
-$app->group('/product-service', function (RouteCollectorProxy $group) {
+// Schedule Service Group with Rate Limiting
+$app->group('/schedule', function (RouteCollectorProxy $group) {
 
-})->add(rateLimitMiddleware('product-service', 10, 120)); // 10 requests per 120 seconds
+    require __DIR__ . '/../../inspection/src/schedule.php';
+})->add(rateLimitMiddleware('inspection-service', 55, 60)); // 55 requests per 60 seconds
+
+// Approval Service Group with Rate Limiting
+$app->group('/approval', function (RouteCollectorProxy $group) {
+
+    require __DIR__ . '/../../inspection/src/approval.php';
+})->add(rateLimitMiddleware('approval-service', 55, 60)); // 55 requests per 60 seconds
+
+// Inspection Service Group with Rate Limiting
+$app->group('/inspection', function (RouteCollectorProxy $group) {
+
+    require __DIR__ . '/../../inspection/src/inspection.php';
+})->add(rateLimitMiddleware('inspection-service', 55, 60)); // 55 requests per 60 seconds
+
+// Registration Service Group with Rate Limiting
+$app->group('/registration', function (RouteCollectorProxy $group) {
+
+    require __DIR__ . '/../../inspection/src/registration.php';
+})->add(rateLimitMiddleware('registration-service', 55, 60)); // 55 requests per 60 seconds
 
 $app->run();
