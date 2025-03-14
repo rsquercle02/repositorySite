@@ -614,8 +614,8 @@ $group->post('/register', function (Request $request, Response $response) use ($
         $db->beginTransaction();
 
         // Define the SQL query for inserting into the `businessinformation` table
-        $businfoquery = "INSERT INTO businessinformation (businessName, businessDescription, businessEmail, businessPhone, fromDay, toDay, operationDays, fromTime, toTime, operationTimes, region, province, municipality, barangay, streetBuildingHouse, businessType) 
-                                          VALUES (:businessName, :businessDescription, :businessEmail, :businessPhone, :fromDay, :toDay, :operationDays, :fromTime, :toTime, :operationTimes, :region, :province, :municipality, :barangay, :streetBuildingHouse, :businessType)";
+        $businfoquery = "INSERT INTO businessinformation (businessName, businessDescription, businessEmail, businessPhone, fromDay, toDay, operationDays, fromTime, toTime, operationTimes, region, province, municipality, barangay, streetBuildingHouse, latitude, longitude, businessType) 
+                                          VALUES (:businessName, :businessDescription, :businessEmail, :businessPhone, :fromDay, :toDay, :operationDays, :fromTime, :toTime, :operationTimes, :region, :province, :municipality, :barangay, :streetBuildingHouse, :latitude, :longitude, :businessType)";
                                           
         $businfostmt = $db->prepare($businfoquery);
         // Bind parameters securely
@@ -634,6 +634,8 @@ $group->post('/register', function (Request $request, Response $response) use ($
         $businfostmt->bindParam(':municipality', $input['municipalitySelect']);
         $businfostmt->bindParam(':barangay', $input['barangaySelect']);
         $businfostmt->bindParam(':streetBuildingHouse', $input['sbhNo']);
+        $businfostmt->bindParam(':latitude', $input['latitude']);
+        $businfostmt->bindParam(':longitude', $input['longitude']);
         $businfostmt->bindParam(':businessType', $input['businessType']);
 
         // Execute the query to insert the business info into the `businessinformation` table
