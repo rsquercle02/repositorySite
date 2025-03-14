@@ -4,7 +4,7 @@ function fetchBusiness(){
     // Clear the table before adding new rows
     tableBody.innerHTML = ''; // This will remove all the previous rows
     // Fetch data from the API endpoint to populate the table
-    fetch('https://bfmsi.smartbarangayconnect.com/api-gateway/public/inspection/schedule')
+    fetch('https://bfmsi.smartbarangayconnect.com/api/service/schedule/schedule')
         .then(response => response.json())
         .then(data => {
             const tableBody = document.querySelector("#marketsTable tbody");
@@ -59,7 +59,7 @@ function fetchBusiness(){
         document.getElementById('storeName').textContent = "";
         document.getElementById('storeLocation').textContent = "";
         // Example URL for fetching detailed information (you may adjust it)
-        const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api-gateway/public/inspection/fetch/${businessId}`;
+        const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/schedule/fetch/${businessId}`;
         fetch(detailsUrl)
             .then(response => response.json())
             .then(data => {
@@ -76,7 +76,7 @@ function fetchBusiness(){
         // Clear the table before adding new rows
         tableBody.innerHTML = ''; // This will remove all the previous rows
         // Fetch data from the API endpoint to populate the table
-    fetch(`https://bfmsi.smartbarangayconnect.com/api-gateway/public/inspection/schedule/${searchTerm}`)
+    fetch(`https://bfmsi.smartbarangayconnect.com/api/service/schedule/schedule/${searchTerm}`)
         .then(response => response.json())
         .then(data => {
             const tableBody = document.querySelector("#marketsTable tbody");
@@ -140,7 +140,7 @@ function fetchBusiness(){
     let bookings = [];
     function schedulesfetch(){
     //let bookings = [];
-    const detailsUrl = 'https://bfmsi.smartbarangayconnect.com/api-gateway/public/inspection/inspectionSchedule';
+    const detailsUrl = 'https://bfmsi.smartbarangayconnect.com/api/service/schedule/inspectionSchedule';
     fetch(detailsUrl)
         .then(response => response.json())
         .then(data => {
@@ -354,7 +354,7 @@ function fetchBusiness(){
             if (isValid){
                 const formData = {businessId: businessId, inspectionDate: inspectionDate, assignedDay: assignedDay, timeFrom: timeFrom, timeTo: timeTo, assignedInspectors: assignedInspectors};
 
-                const detailsUrl = 'https://bfmsi.smartbarangayconnect.com/api-gateway/public/inspection/schedule';
+                const detailsUrl = 'https://bfmsi.smartbarangayconnect.com/api/service/schedule/schedule';
                 fetch(detailsUrl, {
                     method: 'POST',
                     headers: {
@@ -444,7 +444,7 @@ function scheduleValidation(){
 
     // fetch the inspectorsAssigned
     let assignedMonths = [];
-    const fetchUrl = `https://bfmsi.smartbarangayconnect.com/api-gateway/public/inspection/inspectors/${inspectionDate}`;
+    const fetchUrl = `https://bfmsi.smartbarangayconnect.com/api/service/schedule/inspectors/${inspectionDate}`;
     fetch(fetchUrl, {
         method: 'GET'
     })
@@ -460,7 +460,7 @@ function scheduleValidation(){
 
     // fetch the list of inspectors
     let months = [];
-    const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api-gateway/public/inspection/inspector/${assignedDay}`;
+    const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/schedule/inspector/${assignedDay}`;
     fetch(detailsUrl)
         .then(response => response.json())
         .then(data => {
@@ -580,7 +580,7 @@ timeTo += ":00";
 insTimeErr.textContent = ''; // Clear error message
 
 //fetch inspection date and time
-const fetchUrl = `https://bfmsi.smartbarangayconnect.com/api-gateway/public/inspection/scheduleValidation/${timeFrom}/${timeTo}/${inspectionDate}`;
+const fetchUrl = `https://bfmsi.smartbarangayconnect.com/api/service/schedule/scheduleValidation/${timeFrom}/${timeTo}/${inspectionDate}`;
 fetch(fetchUrl, {
     method: 'GET',
 })
