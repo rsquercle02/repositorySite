@@ -3,7 +3,7 @@ function fetchBusiness(){
     // Clear the table before adding new rows
     tableBody.innerHTML = ''; // This will remove all the previous rows
     // Fetch data from the API endpoint to populate the table
-    fetch('https://bfmsi.smartbarangayconnect.com/api-gateway/public/inspection/approval')
+    fetch('https://bfmsi.smartbarangayconnect.com/api/service/approval/approval')
         .then(response => response.json())
         .then(data => {
             const tableBody = document.querySelector("#marketsTable tbody");
@@ -56,7 +56,7 @@ function fetchBusiness(){
         // Clear the table before adding new rows
         tableBody.innerHTML = ''; // This will remove all the previous rows
         // Fetch data from the API endpoint to populate the table
-    fetch(`https://bfmsi.smartbarangayconnect.com/api-gateway/public/inspection/searchapproval/${searchTerm}`)
+    fetch(`https://bfmsi.smartbarangayconnect.com/api/service/approval/searchapproval/${searchTerm}`)
         .then(response => response.json())
         .then(data => {
             const tableBody = document.querySelector("#marketsTable tbody");
@@ -128,7 +128,7 @@ function fetchBusiness(){
 
         // Function to fetch data from the PHP API and populate the inspection data
         function fetchInspectionData(itemId, inspectiondate) {
-            fetch(`https://bfmsi.smartbarangayconnect.com/api-gateway/public/inspection/fetchinspectionresults/${itemId}/${inspectiondate}`) // Fetch data from backend
+            fetch(`https://bfmsi.smartbarangayconnect.com/api/service/approval/fetchinspectionresults/${itemId}/${inspectiondate}`) // Fetch data from backend
                 .then(function(response) {
                     return response.json(); // Convert response to JSON
                 })
@@ -191,7 +191,7 @@ function fetchBusiness(){
                 prompt: "Can you create a summary of the inspection data and create suggestions for improvements" + JSON.stringify(data) + "?"
                 };
 
-            fetch('https://bfmsi.smartbarangayconnect.com/api-gateway/public/inspection/generatecontent', {
+            fetch('https://bfmsi.smartbarangayconnect.com/api/service/approval/generatecontent', {
                 method: 'POST',  // HTTP method
                 headers: {
                     'Content-Type': 'application/json'  // Set content type to JSON
@@ -261,7 +261,7 @@ function fetchBusiness(){
                     };
 
                     // URL of the API (this can be any API endpoint)
-                    const apiUrl = `https://bfmsi.smartbarangayconnect.com/api-gateway/public/inspection/status/${businessId}`; // Example API
+                    const apiUrl = `https://bfmsi.smartbarangayconnect.com/api/service/approval/status/${businessId}`; // Example API
 
                     // Use fetch() to make the API call
                     fetch(apiUrl, {
@@ -323,7 +323,7 @@ function fetchBusiness(){
                     };
 
                     // URL of the API (this can be any API endpoint)
-                    const apiUrl = `https://bfmsi.smartbarangayconnect.com/api-gateway/public/inspection/status/${businessId}`; // Example API
+                    const apiUrl = `https://bfmsi.smartbarangayconnect.com/api/service/approval/status/${businessId}`; // Example API
 
                     // Use fetch() to make the API call
                     fetch(apiUrl, {
