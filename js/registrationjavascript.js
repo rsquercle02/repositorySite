@@ -117,6 +117,13 @@
             isValid = false;
             }
 
+            const latitude = document.getElementById('latitude').value.trim();
+            const longitude = document.getElementById('longitude').value.trim();
+            if ((latitude == "") && (longitude == "")) {
+            document.getElementById('longLatErr').textContent = 'Pin address.';
+            isValid = false;
+            }
+
             if (!isValid){
                 return;
             }
@@ -266,8 +273,6 @@
                 return;
             }
 
-            alert('Form submitted successfully!');
-
             submit();
         });
 
@@ -356,11 +361,17 @@
                 }
                 
                 // Get other fields
-                const regionSelect = document.getElementById('regionSelect').value;
+                const region = document.getElementById('regionSelect').value;
+                //const region = regionSelect.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
                 const provinceSelect = document.getElementById('provinceSelect').value;
+                const province = provinceSelect.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
                 const municipalitySelect = document.getElementById('municipalitySelect').value;
+                const municipality = municipalitySelect.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
                 const barangaySelect = document.getElementById('barangaySelect').value;
+                const barangay = barangaySelect.split(' ').map(w => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase()).join(' ');
                 const sbhNo = document.getElementById('sbhNo').value;
+                const latitude = document.getElementById('latitude').value;
+                const longitude = document.getElementById('longitude').value;
                 const businessType = document.querySelector('input[name="businessType"]:checked').value;
                 const firstName = document.getElementById('firstName').value;
                 const middleName = document.getElementById('middleName').value;
@@ -388,11 +399,13 @@
                 formData.append('fromTime', fromTime);
                 formData.append('toTime', toTime);
                 formData.append('oprtTime', oprtTime);
-                formData.append('regionSelect', regionSelect);
-                formData.append('provinceSelect', provinceSelect);
-                formData.append('municipalitySelect', municipalitySelect);
-                formData.append('barangaySelect', barangaySelect);
+                formData.append('region', region);
+                formData.append('province', province);
+                formData.append('municipality', municipality);
+                formData.append('barangay', barangay);
                 formData.append('sbhNo', sbhNo);
+                formData.append('latitude', latitude);
+                formData.append('longitude', longitude);
                 formData.append('businessType', businessType);
                 formData.append('firstName', firstName);
                 formData.append('middleName', middleName);
@@ -410,19 +423,40 @@
                 formData.append('file4', taxCertificate);
                 
                 // Make the API request with FormData
-                fetch('https://bfmsi.smartbarangayconnect.com/api-gateway/public/inspection/register', {
+                fetch('http://localhost:8001/api-gateway/public/inspection/register', {
                     method: 'POST',
                     body: formData, // No need to manually set 'Content-Type', it's handled by FormData
                 })
-                .then(response => response.json())
-                .then(data => {
-                    console.log('Item created:', data);
-                    alert('Item created with ID: ' + data.id);
+                .then(response => {
+                    if (response.ok){
+                        Swal.fire({
+                            title: "Store registered!",
+                            text: "Store is for verification.",
+                            icon: "success",
+                            confirmButtonColor: "#3085d6"
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    var form = document.getElementById("multi-step-form");
+                                    form.reset();
+                                    var region = document.getElementById("regionSelect");
+                                    region.value = ""; // Reset to region option
+                                    var province = document.getElementById("provinceSelect");
+                                    province.value = ""; // Reset to province option
+                                    var municipality = document.getElementById("municipalitySelect");
+                                    municipality.value = ""; // Reset to municipality option
+                                    var barangay = document.getElementById("barangaySelect");
+                                    barangay.value = ""; // Reset to barangay option
+                                    const previous = document.getElementById('prev-2');
+                                    previous.click();
+
+                                }
+                            });
+                    }
                 })
                 .catch(error => {
                     console.error('Error creating item:', error);
                     alert('Error creating item. Please try again.');
-                });                
+                });               
         };
         
     
