@@ -1,6 +1,6 @@
 <?php
 
-class Database1
+class Database
 {
     private $host = "localhost";
     private $db_name = "bfmsi_database";
