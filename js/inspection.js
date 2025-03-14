@@ -3,7 +3,7 @@ function fetchBusiness(){
     // Clear the table before adding new rows
     tableBody.innerHTML = ''; // This will remove all the previous rows
     // Fetch data from the API endpoint to populate the table
-    fetch('https://bfmsi.smartbarangayconnect.com/api-gateway/public/inspection/fetchschedule')
+    fetch('https://bfmsi.smartbarangayconnect.com/api/service/inspection/fetchschedule')
         .then(response => response.json())
         .then(data => {
             const tableBody = document.querySelector("#marketsTable tbody");
@@ -55,7 +55,7 @@ function fetchBusiness(){
         // Clear the table before adding new rows
         tableBody.innerHTML = ''; // This will remove all the previous rows
         // Fetch data from the API endpoint to populate the table
-    fetch(`https://bfmsi.smartbarangayconnect.com/api-gateway/public/inspection/searchinspection/${searchTerm}`)
+    fetch(`https://bfmsi.smartbarangayconnect.com/api/service/inspection/searchinspection/${searchTerm}`)
         .then(response => response.json())
         .then(data => {
             const tableBody = document.querySelector("#marketsTable tbody");
@@ -127,7 +127,7 @@ function fetchBusiness(){
 
     function fetchItemDetails(itemId) {
         // Example URL for fetching detailed information (you may adjust it)
-        const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api-gateway/public/inspection/fetchinspectiondetails/${itemId}`;
+        const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/inspection/fetchinspectiondetails/${itemId}`;
 
         fetch(detailsUrl)
             .then(response => response.json())
@@ -180,7 +180,7 @@ function fetchBusiness(){
 
     function formItemDetails(itemId){
         // Example URL for fetching detailed information (you may adjust it)
-        const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api-gateway/public/inspection/forminspectiondetails/${itemId}`;
+        const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/inspection/forminspectiondetails/${itemId}`;
 
         fetch(detailsUrl)
             .then(response => response.json())
@@ -212,7 +212,7 @@ function fetchBusiness(){
         });
     });
 
-    const detailsUrl = "https://bfmsi.smartbarangayconnect.com/api-gateway/public/inspection/fetchcriteria";
+    const detailsUrl = "https://bfmsi.smartbarangayconnect.com/api/service/inspection/fetchcriteria";
     const criteriaContainer = document.getElementById("criteriaContainer");
 
     fetch(detailsUrl)
@@ -345,7 +345,7 @@ function fetchBusiness(){
                 if (result.isConfirmed) {
                     console.log("Form Data:", formData);
                     //alert("Form submitted successfully!");
-                    fetch('https://bfmsi.smartbarangayconnect.com/api-gateway/public/inspection/inspectioninfo', {
+                    fetch('https://bfmsi.smartbarangayconnect.com/api/service/inspection/inspectioninfo', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify(formData)
