@@ -1,7 +1,5 @@
 <?php
-session_start();
 
-use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface as Response;
 use Psr\Http\Message\ServerRequestInterface as Request;
 use Slim\App;
@@ -10,10 +8,6 @@ use Slim\Psr7\Stream;
 // Database connection
 require_once __DIR__ . '/Database.php';
 $db = (new Database1())->getConnection();
-
-// Load environment variables from .env file
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../data');
-$dotenv->load();
 
 /** @var App $app */
 
@@ -48,45 +42,10 @@ $group->get('/fetch/{businessId}', function (Request $request, Response $respons
     return $response->withHeader('Content-Type', 'application/json');
 });
 
-$group->get('/fetchcriteria', function (Request $request, Response $response, $args) use ($db) {
-    $query = "SELECT c.category, q.criteria_id, q.question, q.inputType 
-              FROM inspection_criteria q 
-              JOIN inspection_categories c ON q.category_id = c.id 
-              ORDER BY c.category";
-    $stmt = $db->prepare($query);
-    $stmt->execute();
-    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $response->getBody()->write(json_encode($data));
-    return $response->withHeader('Content-Type', 'application/json');
-});
-
-$group->get('/fetchschedule', function (Request $request, Response $response) use ($db) {
-    $query = "SELECT
-    bi.businessId,
-    bi.businessName,
-    CONCAT(bi.streetBuildingHouse, ' ', bi.barangay, ', ', bi.municipality) AS Location,
-    se.inspectionDate,
-    se.assignedDay,
-    se.assignedInspectors
-    FROM
-        inspectionschedule se
-    JOIN businessinformation bi ON se.businessId = bi.businessId
-    JOIN businessstatus bs ON bi.businessId = bs.businessId
-    WHERE
-        bs.businessstatus = 'Scheduled.' AND se.assignedInspectors LIKE :username ORDER BY se.inspectionDate ASC";
-    $stmt = $db->prepare($query);
-    $username = $_SESSION["username"];
-    $stmt->bindValue(':username', '%' . $username . '%', PDO::PARAM_STR);
-    $stmt->execute();
-    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $response->getBody()->write(json_encode($data));
-    return $response->withHeader('Content-Type', 'application/json');
-});
-
 $group->get('/inspector/{assignedDay}', function (Request $request, Response $response, $args) use ($db) {
-    $query = "SELECT inspectorName FROM `inspectorsinformation` WHERE assignedDay LIKE :assignedDay";
+    $query = "SELECT inspectorName FROM `inspectorsinformation` WHERE assignedDay = :assignedDay";
     $stmt = $db->prepare($query);
-    $stmt->bindValue(':assignedDay', '%' . $args['assignedDay'] . '%', PDO::PARAM_STR);
+    $stmt->bindParam(':assignedDay', $args['assignedDay'], PDO::PARAM_STR);
     $stmt->execute();
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $response->getBody()->write(json_encode($data));
@@ -108,37 +67,6 @@ $group->get('/schedule', function (Request $request, Response $response) use ($d
         bs.businessstatus = 'Verified, for schedule.'
     ";
     $stmt = $db->prepare($query);
-    $stmt->execute();
-    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $response->getBody()->write(json_encode($data));
-    return $response->withHeader('Content-Type', 'application/json');
-});
-
-$group->get('/inspectionSchedule', function (Request $request, Response $response) use ($db) {
-    $query = "SELECT inspectionDate FROM inspectionschedule";
-    $stmt = $db->prepare($query);
-    $stmt->execute();
-    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $response->getBody()->write(json_encode($data));
-    return $response->withHeader('Content-Type', 'application/json');
-});
-
-$group->get('/scheduleValidation/{timeFrom}/{timeTo}/{inspectionDate}', function (Request $request, Response $response, $args) use ($db) {
-    $query = "SELECT COUNT(businessId) AS businessCount FROM inspectionschedule WHERE timeFrom < :timeTo AND timeTo > :timeFrom AND inspectionDate = :inspectionDate";
-    $stmt = $db->prepare($query);
-    $stmt->bindValue(':timeFrom', $args['timeFrom'], PDO::PARAM_STR);
-    $stmt->bindValue(':timeTo', $args['timeTo'], PDO::PARAM_STR);
-    $stmt->bindValue(':inspectionDate', $args['inspectionDate'], PDO::PARAM_STR);
-    $stmt->execute();
-    $data = $stmt->fetch(PDO::FETCH_ASSOC);
-    $response->getBody()->write(json_encode($data));
-    return $response->withHeader('Content-Type', 'application/json');
-});
-
-$group->get('/inspectors/{inspectionDate}', function (Request $request, Response $response, $args) use ($db) {
-    $query = "SELECT assignedInspectors FROM inspectionschedule WHERE inspectionDate = :inspectionDate";
-    $stmt = $db->prepare($query);
-    $stmt->bindParam(':inspectionDate', $args['inspectionDate'], PDO::PARAM_STR);
     $stmt->execute();
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $response->getBody()->write(json_encode($data));
@@ -197,49 +125,6 @@ $group->get('/search/{searchTerm}', function (Request $request, Response $respon
     return $response->withHeader('Content-Type', 'application/json');
 });
 
-
-$group->get('/forminspectiondetails/{id}', function (Request $request, Response $response, $args) use ($db) {
-    $query = "SELECT
-    bi.businessId,
-    bi.businessName, bi.businessType,
-    CONCAT(bi.streetBuildingHouse, ' ', bi.barangay, ', ', bi.municipality) AS Location, CONCAT(se.inspectionDate, ', ', se.assignedDay) AS inspectionDate,
-    se.assignedInspectors
-    FROM
-        inspectionschedule se
-    JOIN businessinformation bi ON se.businessId = bi.businessId
-    JOIN businessstatus bs ON bi.businessId = bs.businessId
-    WHERE
-        bi.businessId = :id AND bs.businessstatus = 'Scheduled.' AND se.assignedInspectors LIKE :username";
-
-    $stmt = $db->prepare($query);
-    $stmt->bindParam(':id', $args['id'], PDO::PARAM_INT);
-    $username = $_SESSION["username"];
-    $stmt->bindValue(':username', '%' . $username . '%', PDO::PARAM_STR);
-    $stmt->execute();
-    $data = $stmt->fetch(PDO::FETCH_ASSOC);
-    $response->getBody()->write(json_encode($data));
-    return $response->withHeader('Content-Type', 'application/json');
-});
-
-$group->get('/fetchstatus/{id}', function (Request $request, Response $response, $args) use ($db) {
-    //fetch business status
-    $businessstatussquery = "SELECT businessStatus FROM businessstatus WHERE businessId = :business_id";
-    $businessstatusstmt = $db->prepare($businessstatussquery);
-    $businessstatusstmt->bindParam(':business_id', $args['id'], PDO::PARAM_INT);
-    $businessstatusstmt->execute();
-    $status = $businessstatusstmt->fetch(PDO::FETCH_ASSOC);
-
-    if($status === "Inspected."){
-        $db->rollback();
-        // Error response for business already inspected.
-        $response->getBody()->write(json_encode(['error' => 'Already inspected.']));
-        return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
-    }
-
-    $response->getBody()->write(json_encode(['data' => 'Not inspected.']));
-    return $response->withHeader('Content-Type', 'application/json');
-});
-
 $group->get('/schedule/{searchTerm}', function (Request $request, Response $response, $args) use ($db) {
     $query = "SELECT
     bi.businessId,
@@ -265,342 +150,6 @@ $group->get('/schedule/{searchTerm}', function (Request $request, Response $resp
     return $response->withHeader('Content-Type', 'application/json');
 });
 
-$group->get('/searchinspection/{searchTerm}', function (Request $request, Response $response, $args) use ($db) {
-    $query = "SELECT
-    bi.businessId,
-    bi.businessName,
-    CONCAT(bi.streetBuildingHouse, ' ', bi.barangay, ', ', bi.municipality) AS Location,
-    se.inspectionDate,
-    se.assignedDay,
-    se.assignedInspectors
-    FROM
-        inspectionschedule se
-    JOIN businessinformation bi ON se.businessId = bi.businessId
-    JOIN businessstatus bs ON bi.businessId = bs.businessId
-    WHERE
-        bs.businessstatus = 'Scheduled.' AND se.assignedInspectors LIKE :username AND bi.businessName LIKE :searchTerm ORDER BY se.inspectionDate ASC";
-
-    $stmt = $db->prepare($query);
-    $username = $_SESSION["username"];
-    $stmt->bindValue(':username', '%' . $username . '%', PDO::PARAM_STR);
-    $searchTerm = $args['searchTerm'];
-    $stmt->bindValue(':searchTerm', '%' . $searchTerm . '%', PDO::PARAM_STR);
-    $stmt->execute();
-    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $response->getBody()->write(json_encode($data));
-    return $response->withHeader('Content-Type', 'application/json');
-});
-
-$group->get('/searchapproval/{searchTerm}', function (Request $request, Response $response, $args) use ($db) {
-    $query = "SELECT
-    bi.businessId,
-    bi.businessName,
-    i.inspection_date
-    FROM
-        businessinformation bi
-    JOIN inspections i ON bi.businessId = i.business_id
-    JOIN businessstatus bs ON i.business_id = bs.businessId
-    WHERE
-        bs.businessstatus = 'Inspected.' AND bi.businessName LIKE :searchTerm";
-
-    $stmt = $db->prepare($query);
-    $searchTerm = $args['searchTerm'];
-    $stmt->bindValue(':searchTerm', '%' . $searchTerm . '%', PDO::PARAM_STR);
-    $stmt->execute();
-    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $response->getBody()->write(json_encode($data));
-    return $response->withHeader('Content-Type', 'application/json');
-});
-
-$group->get('/fetchinspectiondetails/{id}', function (Request $request, Response $response, $args) use ($db) {
-    $query = "SELECT
-    bi.businessId,
-    bi.businessName, bi.businessType,
-    CONCAT(bi.streetBuildingHouse, ' ', bi.barangay, ', ', bi.municipality) AS Location, CONCAT(se.inspectionDate, ', ', se.assignedDay) AS inspectionDate,
-    se.assignedInspectors
-    FROM
-        inspectionschedule se
-    JOIN businessinformation bi ON se.businessId = bi.businessId
-    JOIN businessstatus bs ON bi.businessId = bs.businessId
-    WHERE
-        bi.businessId = :id AND bs.businessstatus = 'Scheduled.' AND se.assignedInspectors LIKE :username";
-
-    $stmt = $db->prepare($query);
-    $stmt->bindParam(':id', $args['id'], PDO::PARAM_INT);
-    $username = $_SESSION["username"];
-    $stmt->bindValue(':username', '%' . $username . '%', PDO::PARAM_STR);
-    $stmt->execute();
-    $data = $stmt->fetch(PDO::FETCH_ASSOC);
-    $response->getBody()->write(json_encode($data));
-    return $response->withHeader('Content-Type', 'application/json');
-});
-
-$group->get('/fetchinspectionresults/{id}/{inspectiondate}', function (Request $request, Response $response, $args) use ($db) {
-    $query = "SELECT
-    i.inspection_date, i.inspector_name, c.category AS category, q.question, r.response
-    FROM inspections i
-    JOIN inspection_responses r ON i.id = r.inspection_id
-    JOIN inspection_criteria q ON r.criteria_id = q.criteria_id
-    JOIN inspection_categories c ON q.category_id = c.id
-    WHERE i.business_id = :id AND i.inspection_date = :inspectiondate";
-
-    $stmt = $db->prepare($query);
-    $stmt->bindParam(':id', $args['id'], PDO::PARAM_INT);
-    $stmt->bindParam(':inspectiondate', $args['inspectiondate'], PDO::PARAM_STR);
-    $stmt->execute();
-    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $response->getBody()->write(json_encode($data));
-    return $response->withHeader('Content-Type', 'application/json');
-});
-
-$group->get('/approval', function (Request $request, Response $response) use ($db) {
-    $query = "SELECT
-    bi.businessId,
-    bi.businessName,
-    i.inspection_date
-    FROM
-        businessinformation bi
-    JOIN inspections i ON bi.businessId = i.business_id
-    JOIN businessstatus bs ON i.business_id = bs.businessId
-    WHERE
-        bs.businessstatus = 'Inspected.'";
-
-    $stmt = $db->prepare($query);
-    $stmt->execute();
-    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
-    $response->getBody()->write(json_encode($data));
-    return $response->withHeader('Content-Type', 'application/json');
-});
-
-$group->post('/schedule', function (Request $request, Response $response) use ($db) {
-    try {
-    $input = $request->getParsedBody();
-
-    // Start the transaction
-    $db->beginTransaction();
-
-    //fetch inspection
-    $schedulenumberquery = "SELECT COUNT(inspectionDate) AS inspectionSchedule FROM inspectionschedule WHERE inspectionDate = :inspectionDate";
-    $schedulenumberstmt = $db->prepare($schedulenumberquery);
-    $schedulenumberstmt->bindParam(':inspectionDate', $input['inspectionDate']);
-    $schedulenumberstmt->execute();
-    $schedules = $schedulenumberstmt->fetch(PDO::FETCH_ASSOC);
-
-    //fetch record
-    $schedulerecordquery = "SELECT COUNT(businessId) AS record FROM inspectionschedule WHERE businessId = :businessId";
-    $schedulerecordstmt = $db->prepare($schedulerecordquery);
-    $schedulerecordstmt->bindParam(':businessId', $input['businessId']);
-    $schedulerecordstmt->execute();
-    $schedulerecord = $schedulerecordstmt->fetch(PDO::FETCH_ASSOC);
-
-    if(($schedulerecord['record'] == 1) && ($schedules['inspectionSchedule'] == 5)){
-        $db->rollback();
-        // Error response for too many slots
-        $response->getBody()->write(json_encode(['error' => 'The slot is full and already scheduled.']));
-        return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
-    }else if($schedules['inspectionSchedule'] == 5){
-        $db->rollback();
-        // Error response for too many slots
-        $response->getBody()->write(json_encode(['error' => 'The slot is full.']));
-        return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
-    }else if ($schedulerecord['record'] == 1){
-        $db->rollback();
-        // Error response for too many slots
-        $response->getBody()->write(json_encode(['error' => 'Already scheduled.']));
-        return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
-    }
-
-    //inspection schedule
-    $schedulequery = "INSERT INTO inspectionschedule (businessId, inspectionDate, assignedDay, timeFrom, timeTo, assignedInspectors)
-                                      VALUES (:businessId, :inspectionDate, :assignedDay, :timeFrom, :timeTo, :assignedInspectors)";
-    $schedulestmt = $db->prepare($schedulequery);
-    $schedulestmt->bindParam(':businessId', $input['businessId']);
-    $schedulestmt->bindParam(':inspectionDate', $input['inspectionDate']);
-    $schedulestmt->bindParam(':assignedDay', $input['assignedDay']);
-    $schedulestmt->bindParam(':timeFrom', $input['timeFrom']);
-    $schedulestmt->bindParam(':timeTo', $input['timeTo']);
-    $schedulestmt->bindParam(':assignedInspectors', $input['assignedInspectors']);
-    $schedulestmt->execute();
-
-    //business status
-    $statusquery = "UPDATE businessstatus SET businessStatus = :businessStatus, statusReason = :statusReason WHERE businessId = :businessId";
-    $statusstmt = $db->prepare($statusquery);
-    $businessId = $input['businessId'];
-    $businessStatus = "Scheduled.";
-    $statusReason = "The business are scheduled for inspection.";
-    $statusstmt->bindParam(':businessId', $businessId);
-    $statusstmt->bindParam(':businessStatus', $businessStatus);
-    $statusstmt->bindParam(':statusReason', $statusReason);
-    $statusstmt->execute();
-
-    // Commit the transaction to make the changes permanent
-    $db->commit();
-
-    } catch (PDOException $e) {
-        //If there’s an error, roll back the transaction
-    $db->rollBack();
-    
-    error_log( "Error: " . $e->getMessage());
-    
-    }
-
-    $response->getBody()->write(json_encode('Schedule successfully.'));
-    return $response->withHeader('Content-Type', 'application/json');
-});
-
-$group->post('/inspectioninfo', function (Request $request, Response $response) use ($db) {
-    try {
-    $input = $request->getParsedBody();
-
-    // Start the transaction
-    $db->beginTransaction();
-
-    //fetch business status
-    $businessstatussquery = "SELECT businessStatus FROM businessstatus WHERE businessId = :business_id";
-    $businessstatusstmt = $db->prepare($businessstatussquery);
-    $businessstatusstmt->bindParam(':business_id', $input['business_id']);
-    $businessstatusstmt->execute();
-    $status = $businessstatusstmt->fetch(PDO::FETCH_ASSOC);
-
-    if($status === "Inspected."){
-        $db->rollback();
-        // Error response for business already inspected.
-        $response->getBody()->write(json_encode(['error' => 'Already inspected.']));
-        return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
-    }
-
-    //post inspection details
-    $inspectiondetailsquery = "INSERT INTO inspections (business_id, inspector_name, inspection_date) VALUES (:business_id, :inspector_name, :inspection_date)";
-    $inspectiondetailsstmt = $db->prepare($inspectiondetailsquery);
-    $business_id = $input['business_id'];
-    $inspector_name = $input['inspector_name'];
-    $inspection_date = $input['inspection_date'];
-    $inspectiondetailsstmt->bindParam(':business_id', $business_id);
-    $inspectiondetailsstmt->bindParam(':inspector_name', $inspector_name);
-    $inspectiondetailsstmt->bindParam(':inspection_date', $inspection_date);
-    $inspectiondetailsstmt->execute();
-
-    // Get the last inserted inspection ID (for linking to the order)
-    $inspection_id = $db->lastInsertId();
-
-    foreach ($input as $key => $value) {
-        if(is_numeric($key)){
-            $criteria_id = $key;
-            $response = $value;
-            //post inspection responses
-            $inspectionresponsesquery = "INSERT INTO inspection_responses (inspection_id, criteria_id, response) VALUES (:inspection_id, :criteria_id, :response)";
-            $inspectionresponsesstmt = $db->prepare($inspectionresponsesquery);
-            $inspectionresponsesstmt->bindParam(':inspection_id', $inspection_id);
-            $inspectionresponsesstmt->bindParam(':criteria_id', $criteria_id);
-            $inspectionresponsesstmt->bindParam(':response', $response);
-            $inspectionresponsesstmt->execute();
-        }
-    }
-
-    //business status
-    $statusquery = "UPDATE businessstatus SET businessStatus = :businessStatus, statusReason = :statusReason WHERE businessId = :businessId";
-    $statusstmt = $db->prepare($statusquery);
-    $businessId = $input['business_id'];
-    $businessStatus = "Inspected.";
-    $statusReason = "Inspection data is submitted for approval.";
-    $statusstmt->bindParam(':businessId', $businessId);
-    $statusstmt->bindParam(':businessStatus', $businessStatus);
-    $statusstmt->bindParam(':statusReason', $statusReason);
-    $statusstmt->execute();
-    
-    // Commit the transaction to make the changes permanent
-    $db->commit();
-
-    } catch (PDOException $e) {
-        //If theres an error, roll back the transaction
-    $db->rollBack();
-    
-    error_log( "Error: " . $e->getMessage());
-    
-    }
-
-    //$response->getBody()->write("");
-    $response = new \Slim\Psr7\Response();
-    $response->getBody()->write(json_encode('Schedule successfully.'));
-    return $response->withHeader('Content-Type', 'application/json');
-});
-
-$group->post('/inspectionform', function (Request $request, Response $response) use ($db) {
-    try {
-    $input = $request->getParsedBody();
-
-    // Start the transaction
-    $db->beginTransaction();
-
-    //post inspection details
-    $schedulenumberquery = "SELECT COUNT(inspectionDate) AS inspectionSchedule FROM inspectionschedule WHERE inspectionDate = :inspectionDate";
-    $schedulenumberstmt = $db->prepare($schedulenumberquery);
-    $schedulenumberstmt->bindParam(':inspectionDate', $input['inspectionDate']);
-    $schedulenumberstmt->execute();
-    $schedules = $schedulenumberstmt->fetch(PDO::FETCH_ASSOC);
-
-    //fetch record
-    $schedulerecordquery = "SELECT COUNT(businessId) AS record FROM inspectionschedule WHERE businessId = :businessId";
-    $schedulerecordstmt = $db->prepare($schedulerecordquery);
-    $schedulerecordstmt->bindParam(':businessId', $input['businessId']);
-    $schedulerecordstmt->execute();
-    $schedulerecord = $schedulerecordstmt->fetch(PDO::FETCH_ASSOC);
-
-    if(($schedulerecord['record'] == 1) && ($schedules['inspectionSchedule'] == 5)){
-        $db->rollback();
-        // Error response for too many slots
-        $response->getBody()->write(json_encode(['error' => 'The slot is full and already scheduled.']));
-        return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
-    }else if($schedules['inspectionSchedule'] == 5){
-        $db->rollback();
-        // Error response for too many slots
-        $response->getBody()->write(json_encode(['error' => 'The slot is full.']));
-        return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
-    }else if ($schedulerecord['record'] == 1){
-        $db->rollback();
-        // Error response for too many slots
-        $response->getBody()->write(json_encode(['error' => 'Already scheduled.']));
-        return $response->withStatus(400)->withHeader('Content-Type', 'application/json');
-    }
-
-    //inspection schedule
-    $schedulequery = "INSERT INTO inspectionschedule (businessId, inspectionDate, assignedDay, timeFrom, timeTo, assignedInspectors)
-                                      VALUES (:businessId, :inspectionDate, :assignedDay, :timeFrom, :timeTo, :assignedInspectors)";
-    $schedulestmt = $db->prepare($schedulequery);
-    $schedulestmt->bindParam(':businessId', $input['businessId']);
-    $schedulestmt->bindParam(':inspectionDate', $input['inspectionDate']);
-    $schedulestmt->bindParam(':assignedDay', $input['assignedDay']);
-    $schedulestmt->bindParam(':timeFrom', $input['timeFrom']);
-    $schedulestmt->bindParam(':timeTo', $input['timeTo']);
-    $schedulestmt->bindParam(':assignedInspectors', $input['assignedInspectors']);
-    $schedulestmt->execute();
-
-    //business status
-    $statusquery = "UPDATE businessstatus SET businessStatus = :businessStatus, statusReason = :statusReason WHERE businessId = :businessId";
-    $statusstmt = $db->prepare($statusquery);
-    $businessId = $input['businessId'];
-    $businessStatus = "Scheduled.";
-    $statusReason = "The business are scheduled for inspection.";
-    $statusstmt->bindParam(':businessId', $businessId);
-    $statusstmt->bindParam(':businessStatus', $businessStatus);
-    $statusstmt->bindParam(':statusReason', $statusReason);
-    $statusstmt->execute();
-
-    // Commit the transaction to make the changes permanent
-    $db->commit();
-
-    } catch (PDOException $e) {
-        //If there’s an error, roll back the transaction
-    $db->rollBack();
-    
-    error_log( "Error: " . $e->getMessage());
-    
-    }
-
-    $response->getBody()->write(json_encode('Schedule successfully.'));
-    return $response->withHeader('Content-Type', 'application/json');
-});
-
 $group->post('/register', function (Request $request, Response $response) use ($db) {
     try {
         $input = $request->getParsedBody();
@@ -614,8 +163,8 @@ $group->post('/register', function (Request $request, Response $response) use ($
         $db->beginTransaction();
 
         // Define the SQL query for inserting into the `businessinformation` table
-        $businfoquery = "INSERT INTO businessinformation (businessName, businessDescription, businessEmail, businessPhone, fromDay, toDay, operationDays, fromTime, toTime, operationTimes, region, province, municipality, barangay, streetBuildingHouse, latitude, longitude, businessType) 
-                                          VALUES (:businessName, :businessDescription, :businessEmail, :businessPhone, :fromDay, :toDay, :operationDays, :fromTime, :toTime, :operationTimes, :region, :province, :municipality, :barangay, :streetBuildingHouse, :latitude, :longitude, :businessType)";
+        $businfoquery = "INSERT INTO businessinformation (businessName, businessDescription, businessEmail, businessPhone, fromDay, toDay, operationDays, fromTime, toTime, operationTimes, region, province, municipality, barangay, streetBuildingHouse, businessType) 
+                                          VALUES (:businessName, :businessDescription, :businessEmail, :businessPhone, :fromDay, :toDay, :operationDays, :fromTime, :toTime, :operationTimes, :region, :province, :municipality, :barangay, :streetBuildingHouse, :businessType)";
                                           
         $businfostmt = $db->prepare($businfoquery);
         // Bind parameters securely
@@ -634,8 +183,6 @@ $group->post('/register', function (Request $request, Response $response) use ($
         $businfostmt->bindParam(':municipality', $input['municipalitySelect']);
         $businfostmt->bindParam(':barangay', $input['barangaySelect']);
         $businfostmt->bindParam(':streetBuildingHouse', $input['sbhNo']);
-        $businfostmt->bindParam(':latitude', $input['latitude']);
-        $businfostmt->bindParam(':longitude', $input['longitude']);
         $businfostmt->bindParam(':businessType', $input['businessType']);
 
         // Execute the query to insert the business info into the `businessinformation` table
@@ -1023,57 +570,4 @@ $group->delete('/object/{id}', function (Request $request, Response $response, $
     $stmt->execute();
     $response->getBody()->write(json_encode(['status' => 'success']));
     return $response->withHeader('Content-Type', 'application/json');
-});
-
-//AI summary and suggestions
-// Define the route to generate content using Gemini API
-$group->post('/generatecontent', function (Request $request, Response $response, $args) {
-    // Get the data (e.g., prompt) from the incoming JSON request body
-    $data = $request->getParsedBody();
-    $prompt = $data['prompt'];  // Default prompt if none provided
-
-    // API key (replace with your actual API key)
-    $apiKey = $_ENV['API_KEY']; // or $_ENV['API_KEY']; 
-
-    // Initialize Guzzle client
-    $client = new Client();
-
-    // Gemini API endpoint URL
-    $url = 'https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent';
-
-    // Request data to be sent to the Gemini API
-    $requestData = [
-        'contents' => [
-            [
-                'parts' => [
-                    ['text' => $prompt]
-                ]
-            ]
-        ]
-    ];
-
-    try {
-        // Send a POST request to the Gemini API
-        $apiResponse = $client->post($url, [
-            'query' => ['key' => $apiKey],  // API key as a query parameter
-            'json' => $requestData,         // Send JSON data in the body of the request
-            'headers' => [
-                'Content-Type' => 'application/json'
-            ]
-        ]);
-
-        // Get the API response body
-        $responseBody = $apiResponse->getBody()->getContents();
-
-        // Decode the response body into an array
-        $responseData = json_decode($responseBody, true);
-
-        // Return the response as JSON
-        $response->getBody()->write(json_encode($responseData));
-        return $response->withHeader('Content-Type', 'application/json');
-    } catch (\GuzzleHttp\Exception\RequestException $e) {
-        // Catch any request exceptions and return the error message
-        $response->getBody()->write(json_encode(['error' => $e->getMessage()]));
-        return $response->withStatus(500)->withHeader('Content-Type', 'application/json');
-    }
 });
