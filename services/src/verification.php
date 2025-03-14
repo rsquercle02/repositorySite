@@ -9,7 +9,7 @@ use Slim\Psr7\UploadedFile;
 use Slim\Psr7\Stream;
 // Database connection
 require_once __DIR__ . '/Database.php';
-$db = (new Database1())->getConnection();
+$db = (new Database())->getConnection();
 
 // Load environment variables from .env file
 $dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/../../data');
