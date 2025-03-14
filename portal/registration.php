@@ -3,15 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bootstrap Multi-Step Form</title>
+    <title>Inspection Registration</title>
+    <link rel="icon" href="assets/images/unified-lgu-logo.png">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/css/bootstrap.min.css">
     <!-- Form addres -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
     <!-- Css file -->
-    <link rel="stylesheet" href="../css/registrationstyle.css"/>
+    <link rel="stylesheet" href="css/registrationstyle.css">
+    <!-- Include Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
 </head>
+
 <body>
     <div class="mx-3">
         <div class="bg-white sticky-top">
@@ -129,7 +133,7 @@
                                     <option value="">Select Region</option>
                                     <?php
                                     // Read cluster.json and populate the region dropdown
-                                    $data = file_get_contents('../data/cluster.json');
+                                    $data = file_get_contents('cluster.json');
                                     $regions = json_decode($data, true);
                                     foreach ($regions as $regionCode => $region) {
                                         echo "<option value='" . $regionCode . "'>" . $region['region_name'] . "</option>";
@@ -166,6 +170,24 @@
                             <input type="text" class="form-control" id="sbhNo">
                             <div id="sbhErr" class="form-text error mb-3"></div>
                         </div>
+                </div>
+
+                <!-- Business address -->
+                <div class="mb-3 mx-0">
+                    <label class="fs-5">Pin address:</label>
+                <div class="container">
+                    <div class="mb-3 mx-0">
+                    <label class="text-center">Map with Latitude and Longitude</label>
+                    <button type="button" id="locateMeBtn" class="btn btn-locate">Locate Me</button>
+                    </div>
+                    <!-- Input fields for latitude and longitude -->
+                        <input type="text" id="latitude" class="form-control" placeholder="Latitude" readonly>
+                        <input type="text" id="longitude" class="form-control" placeholder="Longitude" readonly>
+                        <div id="longLatErr" class="form-text error mb-3"></div>
+
+                    <!-- Map container -->
+                    <div id="map"></div>
+                </div>
                 </div>
 
                 <button type="button" class="btn btn-primary mb-3" id="next-1">Next</button>
@@ -355,8 +377,17 @@
         </form>
     </div>
 
+    <!-- Include Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <!-- Pin Map -->
+    <script src="js/location.js"></script>
+
     <!-- Javascript file -->
-    <script src="../js/registrationjavascript.js"></script>
+    <script src="js/registrationjavascript.js"></script>
+
+    <!-- Sweet alert -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
     <!-- Form address -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
