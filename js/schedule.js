@@ -427,13 +427,10 @@ function fetchBusiness(){
         });
 
     fetchBusiness();
-    //setInterval(fetchBusiness, 5000);
     updateCalendar();
 
 function scheduleValidation(){
     const inspectionDate = document.getElementById('inspectionDate').textContent;
-    //let inspectionTime = document.getElementById('inspectionTime').value;
-    //inspectionTime += ":00";
     const assignedDay = document.getElementById('assignedDay').textContent;
     const insTimeErr = document.getElementById('insTimeErr');
     insTimeErr.textContent = '';
