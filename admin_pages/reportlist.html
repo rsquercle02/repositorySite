@@ -1,0 +1,277 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report List</title>
+    <link rel="stylesheet" href="css/areportlist.css"
+</head>
+<body>
+    <h2 class="m-3">Report List</h2>
+
+    <div class="m-3 row">
+    <div class="md-w-25 mr-3 mb-2">
+    <input type="text" class="form-control" id="searchTerm" placeholder="Search users">
+    </div>
+    <!-- Buttons to control which set of cards are shown -->
+    <div class="mb-4">
+      <select class="form-control" id="staffSelect">
+        <option value="showCt" selected>For Cityhall</option>
+        <option value="showK1">For Kagawad 1</option>
+        <option value="showK2">For Kagawad 2</option>
+        <option value="showK3">For Kagawad 3</option>
+        <option value="showC">For Captain</option>
+        <option value="showUpdates">Forwarded to Cityhall</option>
+    </select>
+    </div>
+    </div>
+
+    <div class="m-3 border rounded-2" style="height: 70vh; overflow: auto;">
+    <table id="table" class="table table-hover">
+    <thead>
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Store name</th>
+      <th scope="col">Store address</th>
+      <th scope="col">Status</th>
+      <th scope="col">Created At</th>
+      <th scope="col">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+    </table>
+    </div>
+
+    <!--Kagawad -->
+    <div class="modal fade" id="kpreviewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">View Report</h1>
+                  <button type="button" id="kclosePreviewBtn" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+
+                <div class="container">
+                  <h1>Report Details</h1>
+                  
+                  <!-- Concern Information Section -->
+                  <p><strong>Report Id:</strong><span id="kreportId"></span></p>
+                  <p><strong>Concern Id:</strong><span id="kconcernId"></span></p>
+                  <p hidden><strong>Store Id:</strong><span id="kstoreId"></span></p>
+                  <p><strong>Store Name:</strong> <span id="kstoreName"></span></p>
+                  <p><strong>Store Address:</strong> <span id="kstoreAddress"></span></p>
+                  <p><strong>Date Created:</strong> <span id="kcreateAt"></span></p>
+                  <p><strong>Status:</strong> <span id="kreportStatus"></span></p>
+                  <p hidden><strong>Status reason:</strong> <span id="krstatusReason"></span></p>
+                  <p><strong>Report Details:</strong> <span id="kreportDetails"></span></p>
+                  <p><strong>Store Violations:</strong> <span id="kstoreViolations"></span></p>
+                  <p><strong>Pictures:</strong></p>
+                  <div class="mb-2" id="kfile1"></div>
+                  <div class="mb-2" id="kfile2"></div>
+                  <div class="mb-2" id="kfile3"></div>
+
+                  <!-- Create Report Button -->
+                  <div class="action-btn mt-4">
+                    <button class="btn btn-success" id="kcreateReportBtn">Create Report</button>
+                  </div>
+
+                  <form id="kactionReport" enctype="multipart/form-data">
+                  <!-- Create Report Section -->
+                  <div class="report-section">
+                    <h4>Action Report</h4>
+                    <textarea class="form-control report-textarea" id="kreportTextarea" placeholder="Enter your report here..."></textarea>
+                    <div id="kreportTxtErr" class="form-text error mb-3"></div>
+
+                    <!-- File 1 input Area -->
+                    <div class="form-group mt-3">
+                        <label for="kimage1">Image 1</label>
+                        <input type="file" class="form-control" id="kimage1" name="kimage1">
+                        <div id="kimage1Err" class="form-text error mb-3"></div>
+                    </div>
+
+                    <!-- File 2 input Area -->
+                    <div class="form-group mt-3">
+                        <label for="kimage2">Image 2</label>
+                        <input type="file" class="form-control" id="kimage2" name="kimage2">
+                        <div id="kimage2Err" class="form-text error mb-3"></div>
+                    </div>
+
+                    <!-- file 3 input Area -->
+                    <div class="form-group mt-3">
+                        <label for="kimage3">Image 3</label>
+                        <input type="file" class="form-control" id="kimage3" name="kimage3">
+                        <div id="kimage3Err" class="form-text error mb-3"></div>
+                    </div>
+
+                    <!-- Forward To Dropdown -->
+                    <div class="form-group mt-3">
+                      <label for="kstatusSelect">Status:</label>
+                      <select class="form-control" id="kstatusSelect">
+                          <option value="" selected>Select Status</option>
+                          <option value="Resolved.">Resolved.</option>
+                          <option value="Forward to captain.">Forward to captain.</option>
+                          <!-- Add more staff options as needed -->
+                      </select>
+                      <div id="kstatusSelectErr" class="form-text error mb-3"></div>
+                  </div>
+                    <button type="button" class="btn btn-secondary mt-3" id="kcancelReport">Cancel</button>
+                    <button type="button" class="btn btn-success mt-3" id="ksubmitReport">Submit Report</button>
+                  </div>
+                  </form>
+                  </div>
+
+                  </div>
+                  <div class="modal-footer">
+                  </div>
+          </div>
+      </div>
+  </div>
+
+    <!--Captain -->
+    <div class="modal fade" id="cpreviewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">View Report</h1>
+                  <button type="button" id="cclosePreviewBtn" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+
+                <div class="container">
+                  <h1>Report Details</h1>
+                  
+                  <!-- Concern Information Section -->
+                  <p><strong>Report Id:</strong><span id="creportId"></span></p>
+                  <p><strong>Concern Id:</strong><span id="cconcernId"></span></p>
+                  <p hidden><strong>Store Id:</strong><span id="cstoreId"></span></p>
+                  <p><strong>Store Name:</strong> <span id="cstoreName"></span></p>
+                  <p><strong>Store Address:</strong> <span id="cstoreAddress"></span></p>
+                  <p><strong>Date Created:</strong> <span id="ccreateAt"></span></p>
+                  <p><strong>Status:</strong> <span id="creportStatus"></span></p>
+                  <p hidden><strong>Status reason:</strong> <span id="crstatusReason"></span></p>
+                  <p><strong>Report Details:</strong> <span id="creportDetails"></span></p>
+                  <p><strong>Store Violations:</strong> <span id="cstoreViolations"></span></p>
+                  <p><strong>Pictures:</strong></p>
+                  <div class="mb-2" id="cfile1"></div>
+                  <div class="mb-2" id="cfile2"></div>
+                  <div class="mb-2" id="cfile3"></div>
+                  <h2>Previous Actions</h2>
+                  <p><strong>Previous Actions:</strong> <span id="cpreviousActions"></span></p>
+                  <div class="mb-2" id="cafile1"></div>
+                  <div class="mb-2" id="cafile2"></div>
+                  <div class="mb-2" id="cafile3"></div>
+                  
+                  <!-- Create Report Button -->
+                  <div class="action-btn mt-4">
+                    <button class="btn btn-success" id="ccreateReportBtn">Create Report</button>
+                  </div>
+
+                  <form id="cactionReport" enctype="multipart/form-data">
+                    <!-- Create Report Section -->
+                    <div class="creport-section">
+                      <h4>Action Report</h4>
+                      <textarea class="form-control report-textarea" id="creportTextarea" placeholder="Enter your report here..."></textarea>
+                      <div id="creportTxtErr" class="form-text error mb-3"></div>
+  
+                      <!-- File 1 input Area -->
+                      <div class="form-group mt-3">
+                          <label for="cimage1">Image 1</label>
+                          <input type="file" class="form-control" id="cimage1" name="cimage1">
+                          <div id="cimage1Err" class="form-text error mb-3"></div>
+                      </div>
+  
+                      <!-- File 2 input Area -->
+                      <div class="form-group mt-3">
+                          <label for="cimage2">Image 2</label>
+                          <input type="file" class="form-control" id="cimage2" name="cimage2">
+                          <div id="cimage2Err" class="form-text error mb-3"></div>
+                      </div>
+  
+                      <!-- file 3 input Area -->
+                      <div class="form-group mt-3">
+                          <label for="cimage3">Image 3</label>
+                          <input type="file" class="form-control" id="cimage3" name="cimage3">
+                          <div id="cimage3Err" class="form-text error mb-3"></div>
+                      </div>
+  
+                      <!-- Forward To Dropdown -->
+                      <div class="form-group mt-3">
+                        <label for="cstatusSelect">Status:</label>
+                        <select class="form-control" id="cstatusSelect">
+                            <option value="" selected>Select Status</option>
+                            <option value="Resolved.">Resolved.</option>
+                            <option value="Forward to cityhall.">Forward to cityhall.</option>
+                            <!-- Add more staff options as needed -->
+                        </select>
+                        <div id="cstatusSelectErr" class="form-text error mb-3"></div>
+                    </div>
+                      <button type="button" class="btn btn-secondary mt-3" id="ccancelReport">Cancel</button>
+                      <button type="button" class="btn btn-success mt-3" id="csubmitReport">Submit Report</button>
+                    </div>
+                    </form>
+                  </div>
+
+                  </div>
+                  <div class="modal-footer">
+                  </div>
+          </div>
+      </div>
+  </div>
+
+      <!--Cityhall -->
+      <div class="modal fade" id="ctpreviewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">View Report</h1>
+                    <button type="button" id="ctclosePreviewBtn" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+
+                  <div class="container">
+                    <h1>Report Details</h1>
+                    
+                    <!-- Concern Information Section -->
+                    <p><strong>Report Id:</strong><span id="ctreportId"></span></p>
+                    <p><strong>Concern Id:</strong><span id="ctconcernId"></span></p>
+                    <p hidden><strong>Store Id:</strong><span id="ctstoreId"></span></p>
+                    <p><strong>Store Name:</strong> <span id="ctstoreName"></span></p>
+                    <p><strong>Store Address:</strong> <span id="ctstoreAddress"></span></p>
+                    <p><strong>Date Created:</strong> <span id="ctcreateAt"></span></p>
+                    <p><strong>Status:</strong> <span id="ctreportStatus"></span></p>
+                    <p hidden><strong>Status reason:</strong> <span id="ctrstatusReason"></span></p>
+                    <p><strong>Report Details:</strong> <span id="ctreportDetails"></span></p>
+                    <p><strong>Store Violations:</strong> <span id="ctstoreViolations"></span></p>
+                    <p><strong>Pictures:</strong></p>
+                    <div class="mb-2" id="ctfile1"></div>
+                    <div class="mb-2" id="ctfile2"></div>
+                    <div class="mb-2" id="ctfile3"></div>
+                    <h2>Previous Actions</h2>
+                    <p><strong>Previous Actions:</strong> <span id="ctpreviousActions"></span></p>
+                    <div class="mb-2" id="ctafile1"></div>
+                    <div class="mb-2" id="ctafile2"></div>
+                    <div class="mb-2" id="ctafile3"></div>
+                    <h2>Previous Actions</h2>
+                    <p><strong>Previous Actions:</strong> <span id="ctcpreviousActions"></span></p>
+                    <div class="mb-2" id="ctcafile1"></div>
+                    <div class="mb-2" id="ctcafile2"></div>
+                    <div class="mb-2" id="ctcafile3"></div>
+                    
+                    <!-- Create Report Button -->
+                    <div class="action-btn mt-4">
+                      <button class="btn btn-success" id="ctcreateReportBtn">Forward to cityhall</button>
+                    </div>
+                    </div>
+
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+<script src="js/areportlist.js"></script>
+</html>
