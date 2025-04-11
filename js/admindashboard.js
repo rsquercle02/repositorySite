@@ -42,12 +42,12 @@ fetch(detailsUrl)
 
     // Report categories
     const reportcategories = [
-        'No action', 'Forward to captain', 'Froward to cityhall',
+        'For kagawad', 'For captain', 'Forwarded to cityhall',
         'Resolved'
     ];
 
     const statusCounts = [
-        'noaction_count', 'fwrdcaptain_count', 'fwrdcityhall_count', 'resolved_count'
+        'forkagawad_count', 'forcaptain_count', 'fwrdcityhall_count', 'resolved_count'
     ];
 
     // Doughnut Chart Initialization

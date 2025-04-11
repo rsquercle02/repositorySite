@@ -194,7 +194,7 @@ $group->get('/k1fetchReports', function (Request $request, Response $response) u
     ON
     r.report_id = rs.report_id
     WHERE
-    rs.concerned_staff = 'Kagawad 1'";
+    rs.concerned_staff = 'Kagawad 1.'";
     $stmt = $db->prepare($query);
     $stmt->execute();
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -214,7 +214,7 @@ $group->get('/k1search/{searchTerm}', function (Request $request, Response $resp
     ON
     r.report_id = rs.report_id
     WHERE
-    rs.concerned_staff = 'Kagawad 1' AND s.store_name LIKE :searchTerm
+    rs.concerned_staff = 'Kagawad 1.' AND s.store_name LIKE :searchTerm
     ORDER BY rs.create_at ASC";
 
     $stmt = $db->prepare($query);
@@ -252,7 +252,7 @@ $group->get('/k1fetch/{id}', function (Request $request, Response $response, $ar
     LEFT JOIN 
         storeviolations v ON s.store_id = v.store_id  -- Join violations table
     WHERE 
-        rs.concerned_staff = 'Kagawad 1' 
+        rs.concerned_staff = 'Kagawad 1.' 
         AND r.report_id = :id
     ORDER BY 
         rs.create_at ASC;
@@ -284,7 +284,7 @@ $group->post('/k1post', function (Request $request, Response $response) use ($db
         $stmt = $db->prepare($query);
         $stmt->bindValue(':report_id', $input['reportId']);
         $stmt->bindValue(':actions', $input['reportText']);
-        $staff = 'Kagawad 1';
+        $staff = 'Kagawad 1.';
         $stmt->bindValue(':staff', $staff);
         $stmt->execute();
 
@@ -292,7 +292,7 @@ $group->post('/k1post', function (Request $request, Response $response) use ($db
         $reportId = $db->lastInsertId();
 
         // Get the name value
-        $name = 'Kagawad 1';
+        $name = 'Kagawad 1.';
 
         // Sanitize the name to ensure it's a valid folder name (no spaces or special characters)
         $name = preg_replace("/[^a-zA-Z0-9-_]/", "_", $name);
@@ -417,7 +417,7 @@ $group->post('/k1post', function (Request $request, Response $response) use ($db
             $stmt = $db->prepare($query);
             $stmt->bindValue(':report_id', $input['reportId']);
             $stmt->bindValue(':actions', $input['reportText']);
-            $staff = 'Kagawad 1';
+            $staff = 'Kagawad 1.';
             $stmt->bindValue(':staff', $staff);
             $stmt->execute();
 
@@ -425,7 +425,7 @@ $group->post('/k1post', function (Request $request, Response $response) use ($db
             $reportId = $db->lastInsertId();
 
             // Get the name value
-            $name = 'Kagawad 1';
+            $name = 'Kagawad 1.';
 
             // Sanitize the name to ensure it's a valid folder name (no spaces or special characters)
             $name = preg_replace("/[^a-zA-Z0-9-_]/", "_", $name);
@@ -555,7 +555,7 @@ $group->get('/k2fetchReports', function (Request $request, Response $response) u
     ON
     r.report_id = rs.report_id
     WHERE
-    rs.concerned_staff = 'Kagawad 2'";
+    rs.concerned_staff = 'Kagawad 2.'";
     $stmt = $db->prepare($query);
     $stmt->execute();
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -575,7 +575,7 @@ $group->get('/k2search/{searchTerm}', function (Request $request, Response $resp
     ON
     r.report_id = rs.report_id
     WHERE
-    rs.concerned_staff = 'Kagawad 2' AND s.store_name LIKE :searchTerm
+    rs.concerned_staff = 'Kagawad 2.' AND s.store_name LIKE :searchTerm
     ORDER BY rs.create_at ASC";
 
     $stmt = $db->prepare($query);
@@ -613,7 +613,7 @@ $group->get('/k2fetch/{id}', function (Request $request, Response $response, $ar
     LEFT JOIN 
         storeviolations v ON s.store_id = v.store_id  -- Join violations table
     WHERE 
-        rs.concerned_staff = 'Kagawad 2' 
+        rs.concerned_staff = 'Kagawad 2.' 
         AND r.report_id = :id
     ORDER BY 
         rs.create_at ASC;
@@ -645,7 +645,7 @@ $group->post('/k2post', function (Request $request, Response $response) use ($db
         $stmt = $db->prepare($query);
         $stmt->bindValue(':report_id', $input['reportId']);
         $stmt->bindValue(':actions', $input['reportText']);
-        $staff = 'Kagawad 2';
+        $staff = 'Kagawad 2.';
         $stmt->bindValue(':staff', $staff);
         $stmt->execute();
 
@@ -653,7 +653,7 @@ $group->post('/k2post', function (Request $request, Response $response) use ($db
         $reportId = $db->lastInsertId();
 
         // Get the name value
-        $name = 'Kagawad 2';
+        $name = 'Kagawad 2.';
 
         // Sanitize the name to ensure it's a valid folder name (no spaces or special characters)
         $name = preg_replace("/[^a-zA-Z0-9-_]/", "_", $name);
@@ -778,7 +778,7 @@ $group->post('/k2post', function (Request $request, Response $response) use ($db
             $stmt = $db->prepare($query);
             $stmt->bindValue(':report_id', $input['reportId']);
             $stmt->bindValue(':actions', $input['reportText']);
-            $staff = 'Kagawad 2';
+            $staff = 'Kagawad 2.';
             $stmt->bindValue(':staff', $staff);
             $stmt->execute();
 
@@ -786,7 +786,7 @@ $group->post('/k2post', function (Request $request, Response $response) use ($db
             $reportId = $db->lastInsertId();
 
             // Get the name value
-            $name = 'Kagawad 2';
+            $name = 'Kagawad 2.';
 
             // Sanitize the name to ensure it's a valid folder name (no spaces or special characters)
             $name = preg_replace("/[^a-zA-Z0-9-_]/", "_", $name);
@@ -916,7 +916,7 @@ $group->get('/k3fetchReports', function (Request $request, Response $response) u
     ON
     r.report_id = rs.report_id
     WHERE
-    rs.concerned_staff = 'Kagawad 3'";
+    rs.concerned_staff = 'Kagawad 3.'";
     $stmt = $db->prepare($query);
     $stmt->execute();
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -936,7 +936,7 @@ $group->get('/k3search/{searchTerm}', function (Request $request, Response $resp
     ON
     r.report_id = rs.report_id
     WHERE
-    rs.concerned_staff = 'Kagawad 3' AND s.store_name LIKE :searchTerm
+    rs.concerned_staff = 'Kagawad 3.' AND s.store_name LIKE :searchTerm
     ORDER BY rs.create_at ASC";
 
     $stmt = $db->prepare($query);
@@ -974,7 +974,7 @@ $group->get('/k3fetch/{id}', function (Request $request, Response $response, $ar
     LEFT JOIN 
         storeviolations v ON s.store_id = v.store_id  -- Join violations table
     WHERE 
-        rs.concerned_staff = 'Kagawad 3' 
+        rs.concerned_staff = 'Kagawad 3.' 
         AND r.report_id = :id
     ORDER BY 
         rs.create_at ASC;
@@ -1006,7 +1006,7 @@ $group->post('/k3post', function (Request $request, Response $response) use ($db
         $stmt = $db->prepare($query);
         $stmt->bindValue(':report_id', $input['reportId']);
         $stmt->bindValue(':actions', $input['reportText']);
-        $staff = 'Kagawad 3';
+        $staff = 'Kagawad 3.';
         $stmt->bindValue(':staff', $staff);
         $stmt->execute();
 
@@ -1014,7 +1014,7 @@ $group->post('/k3post', function (Request $request, Response $response) use ($db
         $reportId = $db->lastInsertId();
 
         // Get the name value
-        $name = 'Kagawad 3';
+        $name = 'Kagawad 3.';
 
         // Sanitize the name to ensure it's a valid folder name (no spaces or special characters)
         $name = preg_replace("/[^a-zA-Z0-9-_]/", "_", $name);
@@ -1147,7 +1147,7 @@ $group->post('/k3post', function (Request $request, Response $response) use ($db
             $reportId = $db->lastInsertId();
 
             // Get the name value
-            $name = 'Kagawad 3';
+            $name = 'Kagawad 3.';
 
             // Sanitize the name to ensure it's a valid folder name (no spaces or special characters)
             $name = preg_replace("/[^a-zA-Z0-9-_]/", "_", $name);
@@ -2326,7 +2326,7 @@ $group->get('/Reports', function (Request $request, Response $response) use ($db
     return $response->withHeader('Content-Type', 'application/json');
 });
 
-$group->get('/NoactionReports', function (Request $request, Response $response) use ($db) {
+$group->get('/KagawadReports', function (Request $request, Response $response) use ($db) {
     // Retrieve all query parameters as an array
     $queryParams = $request->getQueryParams();
 
@@ -2339,7 +2339,7 @@ $group->get('/NoactionReports', function (Request $request, Response $response) 
         JOIN concerns c ON r.concern_id = c.concern_id
         JOIN stores s ON c.store_id = s.store_id 
         JOIN rstatus rs ON r.report_id = rs.report_id
-        WHERE rs.report_status ='No action.' AND s.store_name LIKE :searchTerm";
+        WHERE rs.report_status ='For kagawad.' AND s.store_name LIKE :searchTerm";
     $stmt = $db->prepare($query);
     $stmt->bindValue(':searchTerm', '%' . $search . '%', PDO::PARAM_STR);
     $stmt->execute();
@@ -2348,7 +2348,7 @@ $group->get('/NoactionReports', function (Request $request, Response $response) 
             FROM reports r 
             JOIN rstatus rs ON r.report_id = rs.report_id
             JOIN stores s ON r.store_id = s.store_id
-            WHERE rs.report_status ='No action.'";
+            WHERE rs.report_status ='For kagawad.'";
         $stmt = $db->prepare($query);
         $stmt->execute();
     }
@@ -2371,7 +2371,7 @@ $group->get('/CaptainReports', function (Request $request, Response $response) u
         JOIN concerns c ON r.concern_id = c.concern_id
         JOIN stores s ON c.store_id = s.store_id 
         JOIN rstatus rs ON r.report_id = rs.report_id
-        WHERE rs.report_status ='Forward to captain.' AND s.store_name LIKE :searchTerm";
+        WHERE rs.report_status ='For captain.' AND s.store_name LIKE :searchTerm";
     $stmt = $db->prepare($query);
     $stmt->bindValue(':searchTerm', '%' . $search . '%', PDO::PARAM_STR);
     $stmt->execute();
@@ -2381,7 +2381,7 @@ $group->get('/CaptainReports', function (Request $request, Response $response) u
             JOIN concerns c ON r.concern_id = c.concern_id
             JOIN stores s ON c.store_id = s.store_id 
             JOIN rstatus rs ON r.report_id = rs.report_id
-            WHERE rs.report_status ='Forward to captain.'";
+            WHERE rs.report_status ='For captain.'";
         $stmt = $db->prepare($query);
         $stmt->execute();
     }
@@ -2404,7 +2404,7 @@ $group->get('/CityReports', function (Request $request, Response $response) use 
         JOIN concerns c ON r.concern_id = c.concern_id
         JOIN stores s ON c.store_id = s.store_id 
         JOIN rstatus rs ON r.report_id = rs.report_id
-        WHERE rs.report_status ='Forward to cityhall.' AND s.store_name LIKE :searchTerm";
+        WHERE rs.report_status ='For cityhall.' AND s.store_name LIKE :searchTerm";
     $stmt = $db->prepare($query);
     $stmt->bindValue(':searchTerm', '%' . $search . '%', PDO::PARAM_STR);
     $stmt->execute();
@@ -2414,7 +2414,40 @@ $group->get('/CityReports', function (Request $request, Response $response) use 
             JOIN concerns c ON r.concern_id = c.concern_id
             JOIN stores s ON c.store_id = s.store_id 
             JOIN rstatus rs ON r.report_id = rs.report_id
-            WHERE rs.report_status ='Forward to cityhall.'";
+            WHERE rs.report_status ='For cityhall.'";
+        $stmt = $db->prepare($query);
+        $stmt->execute();
+    }
+
+    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $response->getBody()->write(json_encode($data));
+    return $response->withHeader('Content-Type', 'application/json');
+});
+
+$group->get('/FrwrdCityReports', function (Request $request, Response $response) use ($db) {
+    // Retrieve all query parameters as an array
+    $queryParams = $request->getQueryParams();
+
+    // Get the specific 'search' query parameter
+    $search = isset($queryParams['search']) ? $queryParams['search'] : null;
+
+    if($search != null){
+    $query = "SELECT r.report_id, c.concern_id, s.store_name, s.store_address, rs.report_status, rs.concerned_staff, r.report_details
+        FROM reports r
+        JOIN concerns c ON r.concern_id = c.concern_id
+        JOIN stores s ON c.store_id = s.store_id 
+        JOIN rstatus rs ON r.report_id = rs.report_id
+        WHERE rs.report_status ='Forwarded to cityhall.' AND s.store_name LIKE :searchTerm";
+    $stmt = $db->prepare($query);
+    $stmt->bindValue(':searchTerm', '%' . $search . '%', PDO::PARAM_STR);
+    $stmt->execute();
+    } else {
+        $query = "SELECT r.report_id, c.concern_id, s.store_name, s.store_address, rs.report_status, rs.concerned_staff, r.report_details
+            FROM reports r
+            JOIN concerns c ON r.concern_id = c.concern_id
+            JOIN stores s ON c.store_id = s.store_id 
+            JOIN rstatus rs ON r.report_id = rs.report_id
+            WHERE rs.report_status ='Forwarded to cityhall.'";
         $stmt = $db->prepare($query);
         $stmt->execute();
     }
@@ -2488,15 +2521,15 @@ $group->get('/ViolationTally', function (Request $request, Response $response) u
     $stmt->execute();
     $resolvedreport = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    $query = "SELECT COUNT(report_status) AS fwrdcity_report FROM rstatus WHERE report_status = 'Forward to cityhall.'";
+    $query = "SELECT COUNT(report_status) AS fwrdcity_report FROM rstatus WHERE report_status = 'Forwarded to cityhall.'";
     $stmt = $db->prepare($query);
     $stmt->execute();
     $frwdcityreport = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
     $query = "SELECT 
-        SUM(CASE WHEN report_status = 'No action.' THEN 1 ELSE 0 END) AS noaction_count,
-        SUM(CASE WHEN report_status = 'Forward to captain.' THEN 1 ELSE 0 END) AS fwrdcaptain_count,
-        SUM(CASE WHEN report_status = 'Forward to cityhall.' THEN 1 ELSE 0 END) AS fwrdcityhall_count,
+        SUM(CASE WHEN report_status = 'For kagawad.' THEN 1 ELSE 0 END) AS forkagawad_count,
+        SUM(CASE WHEN report_status = 'For captain.' THEN 1 ELSE 0 END) AS forcaptain_count,
+        SUM(CASE WHEN report_status = 'Forwarded to cityhall.' THEN 1 ELSE 0 END) AS fwrdcityhall_count,
         SUM(CASE WHEN report_status = 'Resolved.' THEN 1 ELSE 0 END) AS resolved_count
     FROM rstatus;
     ";

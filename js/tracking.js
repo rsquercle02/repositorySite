@@ -176,14 +176,17 @@ function fetchReports(filter, searchinput) {
         if (filter == 'none.'){
         // Example URL for fetching detailed information
         detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/Reports`;
-        } else if (filter == 'No action.'){
+        } else if (filter == 'For kagawad.'){
             detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/NoactionReports`;
-        } else if (filter == 'Forward to captain.'){
+        } else if (filter == 'For captain.'){
             console.log(filter);
             detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/CaptainReports`;
-        } else if (filter == 'Forward to cityhall.'){
+        } else if (filter == 'For cityhall.'){
             console.log(filter);
             detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/CityReports`;
+        } else if (filter == 'Forwarded to cityhall.'){
+            console.log(filter);
+            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/FrwrdCityReports`;
         } else if (filter == 'Resolved.'){
             detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/ResolvedReports`;
         }
@@ -191,14 +194,17 @@ function fetchReports(filter, searchinput) {
         if (filter == 'none.'){
         // Example URL for fetching detailed information
         detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/Reports?search=${searchinput}`;
-        } else if (filter == 'No action.'){
+        } else if (filter == 'For kagawad.'){
             detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/NoactionReports?search=${searchinput}`;
-        } else if (filter == 'Forward to captain.'){
+        } else if (filter == 'For captain.'){
             console.log(filter);
             detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/CaptainReports?search=${searchinput}`;
-        } else if (filter == 'Forward to cityhall.'){
+        } else if (filter == 'For cityhall.'){
             console.log(filter);
             detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/CityReports?search=${searchinput}`;
+        } else if (filter == 'Forwarded to cityhall.'){
+            console.log(filter);
+            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/FrwrdCityReports?search=${searchinput}`;
         } else if (filter == 'Resolved.'){
             detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/ResolvedReports?search=${searchinput}`;
         }
