@@ -9,13 +9,14 @@ $(document).ready(function() {
             type: 'POST',
             data: formData,
             success: function(response) {
-                $('#responseMessage').html(response);
+                 $('#responseMessage').html(response);
                 if (response.includes("Login successful")) {
                     window.location.href = "template.php";
-                }
+                } 
             },
             error: function(xhr, status, error) {
                 $('#responseMessage').html("An error occurred: " + error);
+                console.log(error);
             }
         });
     });
