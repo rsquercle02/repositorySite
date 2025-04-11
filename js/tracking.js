@@ -244,4 +244,3 @@ function fetchReports(filter, searchinput) {
 }
 
 fetchViolations(searchinput);
-//test for server
