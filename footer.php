@@ -3,7 +3,7 @@
         <a href="/" class="mb-3 me-2 mb-md-0 text-body-secondary text-decoration-none lh-1">
             <i class="bi bi-android2"></i>
         </a>
-        <span class="mb-3 mb-md-0 text-body-secondary">&copy; 2024 Company, Inc</span>
+        <span class="mb-3 mb-md-0 text-body-secondary">&copy; 2025 Barangay Food Market Safety</span>
     </div>
                 
     <ul class="nav col-md-4 justify-content-end list-unstyled d-flex">
