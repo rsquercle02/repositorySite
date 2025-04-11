@@ -1,6 +1,6 @@
 RewriteEngine On
 
-RewriteRule ^(dashboard|safetymonitoring|concernslist|reportlist|tracking|usermanagement)$ template.php?route=$1 [L]
+RewriteRule ^(admindashboard|dashboard|safetymonitoring|concernslist|reportlist|tracking|usermanagement)$ template.php?route=$1 [L]
 RewriteRule ^(portaldashboard|concerns|marketinfo|certificate)$ portal/portaltemplate.php?route=$1 [L]
 RewriteRule ^logout$ logout.php [L]
 RewriteRule ^login1$ index.php [L]

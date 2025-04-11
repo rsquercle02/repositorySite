@@ -158,9 +158,19 @@ if (!isset($_SESSION['profile']) || !in_array($_SESSION['profile'], ['Super Admi
         <nav class="vertnav navbar-side navbar-light">
           <!-- nav bar -->
           <div class="w-100 mb-4 d-flex">
-            <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="dashboard">
-              
-                
+            <?php
+            if((isset($_SESSION["profile"]) && $_SESSION["profile"] == "Super Administrator") || (isset($_SESSION["profile"]) && $_SESSION["profile"] == "Administrator")){
+              echo'
+            <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="admindashboard">
+            ';
+            }
+            
+            if(isset($_SESSION["profile"]) && $_SESSION["profile"] == "User"){
+              echo'
+              <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="dashboard">
+              ';
+            }
+            ?>
                 <img src="assets/images/unified-lgu-logo.png" width="45">
               
 
@@ -175,7 +185,23 @@ if (!isset($_SESSION['profile']) || !in_array($_SESSION['profile'], ['Super Admi
 
           <!--Sidebar ito-->
           <?php
-          if((isset($_SESSION["profile"]) && $_SESSION["profile"] == "Super Administrator") || (isset($_SESSION["profile"]) && $_SESSION["profile"] == "Administrator")|| (isset($_SESSION["profile"]) && $_SESSION["profile"] == "User")){
+          if((isset($_SESSION["profile"]) && $_SESSION["profile"] == "Super Administrator") || (isset($_SESSION["profile"]) && $_SESSION["profile"] == "Administrator")){
+            echo'
+          <ul class="navbar-nav active flex-fill w-100 mb-2">
+            <li class="nav-item dropdown">
+              <a class="nav-link" href="admindashboard">
+              <i class="fas fa-chart-line"></i>
+                <span class="ml-3 item-text">BFMS Dashboard</span>
+              </a>
+            </li>
+          </ul>
+
+          <p class="text-muted-nav nav-heading mt-4 mb-1">
+          <span style="font-size: 10.5px; font-weight: bold; font-family: "Inter", sans-serif;">MAIN COMPONENTS</span>
+          </p>';
+          }
+          
+          if(isset($_SESSION["profile"]) && $_SESSION["profile"] == "User"){
             echo'
           <ul class="navbar-nav active flex-fill w-100 mb-2">
             <li class="nav-item dropdown">
@@ -309,8 +335,8 @@ if (!isset($_SESSION['profile']) || !in_array($_SESSION['profile'], ['Super Admi
         
         if(isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] == "ok"){
             echo '<div class="scrollcontent">';
-            $superadminRoutes = ['dashboard', 'safetymonitoring', 'reportlist', 'tracking', 'usermanagement'];
-            $adminRoutes = ['dashboard', 'safetymonitoring', 'concernslist', 'reportlist', 'tracking', 'usermanagement'];
+            $superadminRoutes = ['admindashboard', 'safetymonitoring', 'reportlist', 'tracking', 'usermanagement'];
+            $adminRoutes = ['admindashboard', 'safetymonitoring', 'concernslist', 'reportlist', 'tracking', 'usermanagement'];
             $userRoutes = ['dashboard', 'reportlist', 'ratingandfeedback', 'inspectionreport', 'categorylocator', 'usermanagement'];
             if (isset($_GET["route"])) {
                 $route = basename($_GET["route"]);
@@ -332,9 +358,9 @@ if (!isset($_SESSION['profile']) || !in_array($_SESSION['profile'], ['Super Admi
             } else {
               // Include the appropriate page based on the user profile
                 if ($userProfile == 'Administrator') {
-                  include "admin_pages/dashboard.html";
+                  include "admin_pages/admindashboard.html";
               } elseif ($userProfile == 'Super Administrator') {
-                  include "superadmin_pages/dashboard.html";  // You can change the path as needed
+                  include "superadmin_pages/admindashboard.html";  // You can change the path as needed
               } else if ($_SESSION['profile'] == 'User' && $_SESSION['barangayRole'] == 'Kagawad 1') {       
                 include "user_pages/k1/dashboard.html";
               } else if ($_SESSION['profile'] == 'User' && $_SESSION['barangayRole'] == 'Kagawad 2') {  
