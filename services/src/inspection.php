@@ -1,5 +1,5 @@
 <?php
-session_start();
+//session_start();
 
 use GuzzleHttp\Client;
 use Psr\Http\Message\ResponseInterface as Response;

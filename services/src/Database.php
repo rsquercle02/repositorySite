@@ -1,12 +1,30 @@
 <?php
 
+use Dotenv\Dotenv;
+
+$dotenv = Dotenv::createImmutable(__DIR__ . '/../../data');
+$dotenv->load();
+
+
 class Database
 {
-    private $host = "localhost";
-    private $db_name = "bfmsi_database";
-    private $username = "root";
-    private $password = "12345";
+    private $host;
+    private $db_name;
+    private $username;
+    private $password;
     public $conn;
+
+    // Constructor to initialize the database connection
+    public function __construct() {
+        // Assign values from $_ENV to class properties
+        $this->host = $_ENV['HOST_NAME'];
+        $this->db_name = $_ENV['DATABASE'];
+        $this->username = $_ENV['USER_NAME'];
+        $this->password = $_ENV['PASSWORD'];
+        
+        // Establish the database connection
+        //$this->connect();
+    }
 
     public function getConnection()
     {

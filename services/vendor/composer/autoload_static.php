@@ -33,6 +33,7 @@ class ComposerStaticInit4ec6a04edc8dae3d2781b5aec283557b
             'Psr\\Http\\Client\\' => 16,
             'Psr\\Container\\' => 14,
             'PhpOption\\' => 10,
+            'PHPMailer\\PHPMailer\\' => 20,
         ),
         'G' => 
         array (
@@ -98,6 +99,10 @@ class ComposerStaticInit4ec6a04edc8dae3d2781b5aec283557b
         'PhpOption\\' => 
         array (
             0 => __DIR__ . '/..' . '/phpoption/phpoption/src/PhpOption',
+        ),
+        'PHPMailer\\PHPMailer\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/phpmailer/phpmailer/src',
         ),
         'GuzzleHttp\\Psr7\\' => 
         array (
