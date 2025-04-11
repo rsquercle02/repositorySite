@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Report List</title>
+    <link rel="stylesheet" href="css/reportlist.css"
+</head>
+<body>
+    <h2 class="m-3">Report List</h2>
+
+    <div class="m-3 row">
+    <div class="w-25">
+    <input type="text" class="form-control" id="searchTerm" placeholder="Search users">
+    </div>
+    </div>
+
+    <div class="m-3 border rounded-2" style="height: 70vh; overflow: auto;">
+    <table id="table" class="table table-hover">
+    <thead>
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Store name</th>
+      <th scope="col">Store address</th>
+      <th scope="col">Status</th>
+      <th scope="col">Created At</th>
+      <th scope="col">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+    </table>
+    </div>
+
+    <div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">View Report</h1>
+                  <button type="button" id="closePreviewBtn" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+
+                <div class="container">
+                  <h1>Report Details</h1>
+                  
+                  <!-- Concern Information Section -->
+                  <p><strong>Report Id:</strong><span id="reportId"></span></p>
+                  <p><strong>Concern Id:</strong><span id="concernId"></span></p>
+                  <p hidden><strong>Store Id:</strong><span id="storeId"></span></p>
+                  <p><strong>Store Name:</strong> <span id="storeName"></span></p>
+                  <p><strong>Store Address:</strong> <span id="storeAddress"></span></p>
+                  <p><strong>Date Created:</strong> <span id="createAt"></span></p>
+                  <p><strong>Status:</strong> <span id="reportStatus"></span></p>
+                  <p hidden><strong>Status reason:</strong> <span id="rstatusReason"></span></p>
+                  <p><strong>Report Details:</strong> <span id="reportDetails"></span></p>
+                  <p><strong>Store Violations:</strong> <span id="storeViolations"></span></p>
+                  <p><strong>Pictures:</strong></p>
+                  <div class="mb-2" id="file1"></div>
+                  <div class="mb-2" id="file2"></div>
+                  <div class="mb-2" id="file3"></div>
+
+                  <!-- Create Report Button -->
+                  <div class="action-btn mt-4">
+                    <button class="btn btn-success" id="createReportBtn">Create Report</button>
+                  </div>
+
+                  <form id="actionReport" enctype="multipart/form-data">
+                  <!-- Create Report Section -->
+                  <div class="report-section">
+                    <h4>Action Report</h4>
+                    <textarea class="form-control report-textarea" id="reportTextarea" placeholder="Enter your report here..."></textarea>
+                    <div id="reportTxtErr" class="form-text error mb-3"></div>
+
+                    <!-- File 1 input Area -->
+                    <div class="form-group mt-3">
+                        <label for="image1">Image 1</label>
+                        <input type="file" class="form-control" id="image1" name="image1">
+                        <div id="image1Err" class="form-text error mb-3"></div>
+                    </div>
+
+                    <!-- File 2 input Area -->
+                    <div class="form-group mt-3">
+                        <label for="image2">Image 2</label>
+                        <input type="file" class="form-control" id="image2" name="image2">
+                        <div id="image2Err" class="form-text error mb-3"></div>
+                    </div>
+
+                    <!-- file 3 input Area -->
+                    <div class="form-group mt-3">
+                        <label for="image3">Image 3</label>
+                        <input type="file" class="form-control" id="image3" name="image3">
+                        <div id="image3Err" class="form-text error mb-3"></div>
+                    </div>
+
+                    <!-- Forward To Dropdown -->
+                    <div class="form-group mt-3">
+                      <label for="statusSelect">Status:</label>
+                      <select class="form-control" id="statusSelect">
+                          <option value="" selected>Select Status</option>
+                          <option value="Resolved.">Resolved.</option>
+                          <option value="Forward to captain.">Forward to captain.</option>
+                          <!-- Add more staff options as needed -->
+                      </select>
+                      <div id="statusSelectErr" class="form-text error mb-3"></div>
+                  </div>
+                    <button type="button" class="btn btn-secondary mt-3" id="cancelReport">Cancel</button>
+                    <button type="button" class="btn btn-success mt-3" id="submitReport">Submit Report</button>
+                  </div>
+                  </form>
+                  </div>
+
+                  </div>
+                  <div class="modal-footer">
+                  </div>
+          </div>
+      </div>
+  </div>
+
+</body>
+<script src="js/reportlist3.js"></script>
+</html>
