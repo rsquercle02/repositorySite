@@ -4,7 +4,7 @@ function fetchTable(){
     // Clear the table before adding new rows
     tableBody.innerHTML = ''; // This will remove all the previous rows
     // Example URL for fetching detailed information (you may adjust it)
-    const detailsUrl = 'http://localhost:8001/api/service/concernslist/sfetchReports';
+    const detailsUrl = 'https://bfmsi.smartbarangayconnect.com/api/service/concernslist/sfetchReports';
     // Fetch data from the API endpoint to populate the table
     fetch(detailsUrl)
         .then(response => response.json())
@@ -61,7 +61,7 @@ function fetchTable(){
     function fetchItemDetails(id) {
 
         // Example URL for fetching detailed information (you may adjust it)
-        const detailsUrl = `http://localhost:8001/api/service/concernslist/sfetch/${id}`;
+        const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/sfetch/${id}`;
 
         fetch(detailsUrl)
             .then(response => response.json())
@@ -130,7 +130,7 @@ function fetchTable(){
         // Clear the table before adding new rows
         tableBody.innerHTML = ''; // This will remove all the previous rows
         // Example URL for fetching detailed information (you may adjust it)
-        const detailsUrl = `http://localhost:8001/api/service/concernslist/ssearch/${searchTerm}`;
+        const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/ssearch/${searchTerm}`;
         // Fetch data from the API endpoint to populate the table
         fetch(detailsUrl)
             .then(response => response.json())
@@ -272,7 +272,7 @@ function fetchTable(){
         formData.append('image2', image2);
         formData.append('image3', image3);
 
-        const detailsUrl = `http://localhost:8001/api/service/concernslist/spost`;
+        const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/spost`;
             fetch(detailsUrl, {
                 method: 'POST',
                 body: formData
