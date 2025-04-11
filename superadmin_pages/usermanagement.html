@@ -1,0 +1,364 @@
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Bootstrap demo</title>
+    <!-- Set the base URL for all relative paths -->
+    <base href="/WebBFMSI/">
+    <link rel="stylesheet" href="css/usermanagement.css"
+  </head>
+  <body>
+    <h2 class="m-3">User Management</h2>
+
+    <div class="m-3 row">
+    <div class="w-25">
+    <input type="text" class="form-control" id="searchTerm" placeholder="Search users">
+    </div>
+    <div class="col-auto">
+    <button type="button" class="btn btn-success rounded-3" data-bs-toggle="modal" data-bs-target="#formModal" data-bs-whatever="">Create User</button>        
+    </div>
+    </div>
+
+    <div class="m-3 border rounded-2" style="height: 70vh; overflow: auto;">
+    <table id="table" class="table table-hover">
+    <thead>
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Fullname</th>
+      <th scope="col">Username</th>
+      <th scope="col">User type</th>
+      <th scope="col">Barangay role</th>
+      <th scope="col">Status</th>
+      <th scope="col">Picture</th>
+      <th scope="col">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+    </table>
+    </div>
+
+    <div class="modal fade" id="formModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Create User</h1>
+                    <button type="button" id="closeFormBtn" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="createUsrForm" enctype="multipart/form-data">
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">First name:</label>
+                            <input type="text" id="firstname" class="form-control" name="fullname" required>
+                        </div>
+                        <div id="firstnameErr" class="form-text error mb-3"></div>
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Middle name:</label>
+                            <input type="text" id="middlename" class="form-control" name="fullname" required>
+                        </div>
+                        <div id="middlenameErr" class="form-text error mb-3"></div>
+                        <div class="mb-3">
+                            <label for="recipient-name" class="col-form-label">Last name:</label>
+                            <input type="text" id="lastname" class="form-control" name="fullname" required>
+                        </div>
+                        <div id="lastnameErr" class="form-text error mb-3"></div>
+                        <div class="mb-3">
+                            <label for="gender" class="form-label">Gender</label><br>
+                        </div>
+                        <div class="mb-3">
+                            <input type="radio" id="male" name="gender" value="Male">
+                            <label for="male">Male</label>
+                        </div>
+                        <div class="mb-3">
+                            <input type="radio" id="female" name="gender" value="Female">
+                            <label for="female">Female</label>
+                        </div>
+                        <div id="genderErr" class="form-text error mb-3"></div>
+    
+                        <div class="mb-3">
+                            <label for="message-text" class="col-form-label">Email:</label>
+                            <input type="text" id="email" class="form-control" name="username" required>
+                        </div>
+                        <div id="emailErr" class="form-text error mb-3"></div>
+                        <div class="mb-3">
+                            <label for="message-text" class="col-form-label">Password:</label>
+                            <input type="password" id="password" class="form-control" name="password" required>
+                        </div>
+                        <div id="passwordErr" class="form-text error mb-3"></div>
+                        <div class="mb-3">
+                            <label for="message-text" class="col-form-label">User type:</label>
+                            <select id="usertype" class="form-select" aria-label="Default select example" name="profile" required>
+                                <option value="" selected>Choose Profile</option>
+                                <option value="Super Administrator">Super Administrator</option>
+                                <option value="Administrator">Administrator</option>
+                                <option value="User">User</option>
+                            </select>
+                            <div id="usertypeErr" class="form-text error mb-3"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message-text" class="col-form-label">Barangay role:</label>
+                            <select id="brole" class="form-select" aria-label="Default select example" name="profile" required>
+                                <option value="" selected>Choose Profile</option>
+                                <option value="Captain">Captain</option>
+                                <option value="Secretary">Secretary</option>
+                                <option value="Kagawad 1">Kagawad 1</option>
+                                <option value="Kagawad 2">Kagawad 2</option>
+                                <option value="Kagawad 3">Kagawad 3</option>
+                            </select>
+                            <div id="broleErr" class="form-text error mb-3"></div>
+                        </div>
+                        <div class="mb-3">
+                            <label for="message-text" class="col-form-label">Profile Picture:</label>
+                            <input type="file" id="picture" class="newPics" name="picture">
+                        </div>
+                        <div class="mb-3">
+                            <img class="preview" id="previewNewPicture" src="assets/images/anonymous.svg" alt="Image Preview" style="width:100px;">
+                            <div id="pictureErr" class="form-text error mb-3"></div>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" id="createUser" name="createUser" class="btn btn-success rounded-3">Create</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Update User</h1>
+                    <button type="button" id="closePreviewBtn" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                        <!-- Profile Picture (circular) -->
+                        <div class="d-flex justify-content-center mb-3">
+                            <img class="preview rounded-circle" id="previewPicture" src="assets/images/anonymous.svg" alt="Image Preview" onerror="imageError()">
+                        </div>
+
+                        <!-- <div class="d-flex justify-content-center mb-3">
+                            <button type="button" id="editPiBtn" class="btn btn-secondary">Change picture</button>
+                        </div> -->
+
+                        <div class="d-flex justify-content-center align-items-center mb-3">
+                            <h5 class="mb-0 mr-2">Id:</h5>
+                            <p id="previewId" class="mb-0 mr-2">N/a</p>
+                        </div>
+
+                        <div class="d-flex justify-content-center align-items-center mb-3">
+                            <h5 class="mb-0 mr-2">Fullname:</h5>
+                            <p id="previewFullname" class="mb-0 mr-2">N/a</p>
+                            <!-- <button type="button" id="editFnBtn" class="btn btn-secondary"><i class="fa-regular fa-pen-to-square"></i></button> -->
+                        </div>
+
+                        <div class="d-flex justify-content-center align-items-center mb-3">
+                            <h5 class="mb-0 mr-2">Email:</h5>
+                            <p id="previewUsername" class="mb-0 mr-2">N/a</p>
+                            <button type="button" id="editUnBtn" class="btn btn-secondary"><i class="fa-regular fa-pen-to-square"></i></button>
+                        </div>
+
+                        <div class="d-flex justify-content-center align-items-center mb-3">
+                            <h5 class="mb-0 mr-2">User type:</h5>
+                            <p id="previewProfile" class="mb-0 mr-2">N/a</p>
+                            <button type="button" id="editPrBtn" class="btn btn-secondary"><i class="fa-regular fa-pen-to-square"></i></button>
+                        </div>
+
+                        <div class="d-flex justify-content-center align-items-center mb-3">
+                            <h5 class="mb-0 mr-2">Status:</h5>
+                            <p id="previewStatus" class="mb-0 mr-2">N/a</p>
+                            <button type="button" id="editStBtn" class="btn btn-secondary"><i class="fa-regular fa-pen-to-square"></i></button>
+                        </div>
+
+                        <div class="d-flex justify-content-center align-items-center mb-3">
+                            <button type="button" id="editPsBtn" class="btn btn-secondary"><span class="ml-3 item-text">Change password</span> <i class="fa-regular fa-pen-to-square"></i></button>
+                        </div>
+                        
+
+                    </div>
+                    <div class="modal-footer">
+                    </div>
+            </div>
+        </div>
+    </div>
+    
+    <!------------------------------- editModal ----------------------->
+    <div class="modal fade" id="editFnModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Update Fullname</h1>
+                    <button type="button" id="closeFnModal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <form id="editFnForm">
+                        <!-- Name Field -->
+                        <div class="mb-3">
+                            <label for="editFullname" class="form-label">Fullname:</label>
+                            <input type="text" class="form-control" id="editFullname" name="editFullname">
+                        </div>
+                        <div id="editFnErr" class="form-text error mb-3"></div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    <button type="button" id="updateFullname" name="updateFullname" class="btn btn-success rounded-3">Update</button>
+                </form>
+                </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="editUnModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Update Username</h1>
+                <button type="button" id="closeUnModal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editUnForm">
+                    <!-- Email Field -->
+                    <div class="mb-3">
+                        <label for="editUsername" class="form-label">Username:</label>
+                        <input type="text" class="form-control" id="editUsername" name="editUsername">
+                    </div>
+                    <div id="editUnErr" class="form-text error mb-3"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" id="updateUsername" name="updateUsername" class="btn btn-success rounded-3">Update</button>
+            </form>
+            </div>
+    </div>
+</div>
+</div>
+
+<div class="modal fade" id="editPrModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Update Profile</h1>
+                <button type="button" id="closePrModal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editPrForm">
+                    <!-- Profile Field -->
+                    <div class="mb-3">
+                        <label for="editProfile" class="form-label">Profile:</label>
+                        <select id="editProfile" class="form-select" aria-label="Default select example" name="editProfile">
+                            <option selected>Choose Profile</option>
+                            <option value="Super Administrator">Super Administrator</option>
+                            <option value="Administrator">Administrator</option>
+                            <option value="User">User</option>
+                        </select>
+                    </div>
+                    <div id="editPrErr" class="form-text error mb-3"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" id="updateProfile" name="updateProfile" class="btn btn-success rounded-3">Update</button>
+            </form>
+            </div>
+    </div>
+</div>
+</div>
+
+<div class="modal fade" id="editStModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Update Status</h1>
+                <button type="button" id="closeStModal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editStForm">
+                    <!-- Status Field -->
+                    <div class="mb-3">
+                        <label for="editStatus" class="form-label">Status:</label>
+                        <select id="editStatus" class="form-select" aria-label="Default select example" name="editStatus">
+                            <option selected>Choose Status</option>
+                            <option value="Active">Active</option>
+                            <option value="Inactive">Inactive</option>
+                        </select>
+                    </div>
+                    <div id="editStErr" class="form-text error mb-3"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" id="updateStatus" name="updateStatus" class="btn btn-success rounded-3">Update</button>
+            </form>
+            </div>
+    </div>
+</div>
+</div>
+
+<div class="modal fade" id="editPsModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Update Password</h1>
+                <button type="button" id="closePsModal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editPsForm">
+                    <!-- Password Field -->
+                    <div class="mb-3">
+                        <label for="editPassword" class="form-label">Password:</label>
+                        <input type="text" class="form-control" id="editPassword" name="editPassword">
+                    </div>
+                    <div id="editPsErr" class="form-text error mb-3"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" id="updatePassword" name="updatePassword" class="btn btn-success rounded-3">Update</button>
+            </form>
+            </div>
+    </div>
+</div>
+</div>
+
+<div class="modal fade" id="editPiModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Update Picture</h1>
+                <button type="button" id="closePiModal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editPiForm" enctype="multipart/form-data">
+                    <!-- Picture Field -->
+                    <div class="d-flex justify-content-center mb-3">
+                        <label for="editPicture" class="form-label">Profile picture:</label>
+                    </div>
+                    
+                    <div class="d-flex justify-content-center mb-3">
+                        <img class="preview rounded-sm" id="editPicture" src="assets/images/anonymous.svg" alt="Image Preview" onerror="imageError()">
+                    </div>
+
+                    <div class="d-flex justify-content-center mb-3">
+
+                    <!-- Button to trigger file input -->
+                    <button type="button" id="choosePiBtn" class="btn btn-secondary">Choose picture</button>
+
+                    <!-- Hidden file input -->
+                    <input type="file" id="choosePiInp" name="choosePiInp" class="choosepic" accept="image/*">
+
+                    </div>
+
+                    <div id="editPiErr" class="form-text error mb-3"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" id="updatePicture" name="updatePicture" class="btn btn-success rounded-3">Update</button>
+            </form>
+            </div>
+    </div>
+</div>
+</div>
+
+  </body>
+  <script src="js/usermanagement.js"></script>
+</html>

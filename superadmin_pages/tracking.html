@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Cards with Buttons and Search</title>
+    <link rel="stylesheet" href="css/tracking.css">
+
+</head>
+<body>
+
+    <div class="container">
+        <h2 class="mt-4">Tracking</h2>
+
+        <!-- Search bar -->
+        <div class="search-bar">
+            <input type="text" id="searchinput" class="form-control">
+        </div>
+
+        <!-- Buttons to control which set of cards are shown -->
+        <div class="mb-4">
+            <button class="btn btn-primary" id="showcategory1">Violations</button>
+            <button class="btn btn-secondary" id="showcategory2">Concerns</button>
+            <button class="btn btn-success" id="showcategory3">Reports</button>
+        </div>
+
+        <!-- Filter dropdowns based on category -->
+        <div id="category2-filter" class="filter-bar">
+            <select id="concernstatus" class="form-control">
+                <option value="none.">Filter by Concern Status</option>
+                <option value="No action.">No action.</option>
+                <option value="Reported.">Reported.</option>
+                <option value="Resolved.">Resolved.</option>
+            </select>
+        </div>
+
+        <div id="category3-filter" class="filter-bar">
+            <select id="reportstatus" class="form-control">
+                <option value="none.">Filter by Report Status</option>
+                <option value="No action.">No action.</option>
+                <option value="Forward to captain.">Forward to captain.</option>
+                <option value="Forward to cityhall.">Forward to cityhall.</option>
+                <option value="Resolved.">Resolved.</option>
+            </select>
+        </div>
+
+        <!-- Card Container -->
+        <div id="card-container" class="card-container">
+            <!-- Cards will be dynamically inserted here based on button click -->
+        </div>
+    </div>
+
+</body>
+<script src="js/tracking.js"></script>
+</html>
