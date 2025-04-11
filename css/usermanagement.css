@@ -1,0 +1,12 @@
+.preview{
+    width: 200px;
+}
+
+/* Form Validation */
+.error{
+    color: #f00;
+}
+
+.choosepic{
+    display: none;
+}

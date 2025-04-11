@@ -1,0 +1,14 @@
+.report-section {
+    margin-top: 30px;
+    display: none; /* Initially hide the report section */
+}
+
+.ctreport-section {
+    margin-top: 30px;
+    display: none; /* Initially hide the report section */
+}
+
+/* Form Validation */
+.error{
+    color: #f00;
+}
