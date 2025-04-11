@@ -1,5 +1,28 @@
 <?php
 session_start();
+
+//$_SESSION['id'] = '25';
+//$_SESSION['profile'] = 'Administrator';
+//$_SESSION['barangayRole'] = 'Secretary';
+//$_SESSION['loggedIn'] = 'ok';
+
+if (!isset($_SESSION['id'])) {
+  header("Location: index.php");
+  exit();
+}
+
+if (isset($_SESSION['status']) && $_SESSION['status'] == "Inactive") {
+  header("Location: inactive.html");
+  exit();
+}
+
+if (!isset($_SESSION['profile']) || !in_array($_SESSION['profile'], ['Super Administrator', 'Administrator', 'User'])) {
+  header("Location: unauthorizeduser.html");
+  exit();
+}
+
+
+
 ?>
 
 <!DOCTYPE html>
@@ -10,7 +33,7 @@ session_start();
     <link rel="icon" href="assets/images/unified-lgu-logo.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.6.0/css/fontawesome.min.css">
     <link rel ="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
-    <title>BFMSI</title>
+    <title>BFMS</title>
 
     <!-- Simple bar CSS (for scvrollbar)-->
     <link rel="stylesheet" href="css/simplebar.css">
@@ -102,34 +125,6 @@ session_start();
         </button>
 
         <ul class="nav">
-    
-          
-          <li class="nav-item">
-            <section class="nav-link text-muted my-2 circle-icon" href="#" data-toggle="modal" data-target=".modal-shortcut">
-              <span class="fe fe-message-circle fe-16"></span>
-            </section>
-          </li>
-
-
-          <li class="nav-item nav-notif">
-  <section class="nav-link text-muted my-2 circle-icon" href="#" data-toggle="modal" data-target=".modal-notif">
-    <span class="fe fe-bell fe-16"></span>
-   
-      <span id="notification-count" style="
-        position: absolute; 
-        top: 12px; right: 5px; 
-        font-size:13px; color: white;
-        background-color: red;
-        width:8px;
-        height: 8px;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 50px;
-      ">
-      
-  </section>
-</li>
 
           <li class="nav-item dropdown">
             <span class="nav-link text-muted pr-0 avatar-icon" href="#" id="navbarDropdownMenuLink" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -148,7 +143,6 @@ session_start();
 </span>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
               <a class="dropdown-item" href="#"><i class="fe fe-user"></i>&nbsp;&nbsp;&nbsp;Profile</a>
-              <a class="dropdown-item" href="#"><i class="fe fe-settings"></i>&nbsp;&nbsp;&nbsp;Settings</a>
               <a class="dropdown-log-out" href="logout"><i class="fe fe-log-out"></i>&nbsp;&nbsp;&nbsp;Log Out</a>
             </div>    
           </li>
@@ -164,7 +158,7 @@ session_start();
         <nav class="vertnav navbar-side navbar-light">
           <!-- nav bar -->
           <div class="w-100 mb-4 d-flex">
-            <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="#">
+            <a class="navbar-brand mx-auto mt-2 flex-fill text-center" href="dashboard">
               
                 
                 <img src="assets/images/unified-lgu-logo.png" width="45">
@@ -172,7 +166,7 @@ session_start();
 
             <div class="brand-title">
             <br>
-              <span>LGU4 - BFMSI</span>
+              <span>LGU4 - Barangay Food Market Safety</span>
             </div>
                        
             </a>
@@ -181,13 +175,13 @@ session_start();
 
           <!--Sidebar ito-->
           <?php
-          if((isset($_SESSION["profile"]) && $_SESSION["profile"] == "Administrator") || (isset($_SESSION["profile"]) && $_SESSION["profile"] == "Inspector")){
+          if((isset($_SESSION["profile"]) && $_SESSION["profile"] == "Super Administrator") || (isset($_SESSION["profile"]) && $_SESSION["profile"] == "Administrator")|| (isset($_SESSION["profile"]) && $_SESSION["profile"] == "User")){
             echo'
           <ul class="navbar-nav active flex-fill w-100 mb-2">
             <li class="nav-item dropdown">
               <a class="nav-link" href="dashboard">
               <i class="fas fa-chart-line"></i>
-                <span class="ml-3 item-text">BFMSI Dashboard</span>
+                <span class="ml-3 item-text">BFMS Dashboard</span>
               </a>
             </li>
           </ul>
@@ -198,62 +192,62 @@ session_start();
           }
 
           if(isset($_SESSION["profile"]) && $_SESSION["profile"] == "Administrator"){
-            echo'
-          <ul class="navbar-nav flex-fill w-100 mb-2">
-
+          echo'
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
-              <a class="nav-link" href="verification">
-              <i class="fa-solid fa-circle-check"></i>
-                <span class="ml-3 item-text">Verification</span>
+              <a class="nav-link" href="safetymonitoring">
+              <i class="fa-solid fa-clipboard-list"></i>
+                <span class="ml-3 item-text">Safety monitoring</span>
               </a>
             </li>
           </ul>
 
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
-              <a class="nav-link" href="schedule">
-              <i class="fa-solid fa-calendar-days"></i>
-                <span class="ml-3 item-text">Scheduling</span>
-              </a>
-            </li>
-          </ul>
-
-          <ul class="navbar-nav flex-fill w-100 mb-2">
-            <li class="nav-item dropdown">
-              <a class="nav-link" href="marketapproval">
-              <i class="fa-solid fa-thumbs-up"></i>
-                <span class="ml-3 item-text">Market Approval</span>
+              <a class="nav-link" href="concernslist">
+              <i class="fa-solid fa-clipboard-list"></i>
+                <span class="ml-3 item-text">Concerns List</span>
               </a>
             </li>
           </ul>';
-        }
-          if(isset($_SESSION["profile"]) && $_SESSION["profile"] == "Inspector"){
+          }
+
+          if(isset($_SESSION["profile"]) && ($_SESSION['profile'] == 'Administrator' || $_SESSION["profile"] == "User")){
             echo'
             <ul class="navbar-nav flex-fill w-100 mb-2">
-            <li class="nav-item w-100">
-            <a class="nav-link" href="inspectionbusiness">
-            <i class="fa-solid fa-building-circle-check"></i>
-                <span class="ml-3 item-text">Inspection</span>
+              <li class="nav-item w-100">
+                <a class="nav-link" href="reportlist">
+                <i class="fa-solid fa-clipboard-list"></i>
+                  <span class="ml-3 item-text">Report list</span>
+                </a>
+              </li>
+            </ul>';
+            }
+
+          if (isset($_SESSION['profile']) && ($_SESSION['profile'] == 'Super Administrator' || $_SESSION['profile'] == 'Administrator')) {
+            echo'
+            <ul class="navbar-nav flex-fill w-100 mb-2">
+            <li class="nav-item dropdown">
+              <a class="nav-link" href="tracking">
+              <i class="fa-solid fa-chart-simple"></i>
+                <span class="ml-3 item-text">Tracking</span>
               </a>
             </li>
-          </ul>';
-        }
+          </ul>
+          ';
+          }
 
-          if((isset($_SESSION["profile"]) && $_SESSION["profile"] == "Administrator") || (isset($_SESSION["profile"]) && $_SESSION["profile"] == "Inspector")){
-            echo'
+          if (isset($_SESSION['profile']) && $_SESSION['profile'] == 'Super Administrator') {
+          echo'
           <ul class="navbar-nav flex-fill w-100 mb-2">
-            <li class="nav-item w-100">
-            <a class="nav-link" href="categorylocator">
-            <i class="fa-solid fa-location-dot"></i>
-                <span class="ml-3 item-text">Category Locator</span>
+            <li class="nav-item dropdown">
+              <a class="nav-link" href="reportlist">
+              <i class="fa-solid fa-clipboard-list"></i>
+                <span class="ml-3 item-text">Report list</span>
               </a>
             </li>
-          </ul>';
-        }
+          </ul>
 
-          if(isset($_SESSION["profile"]) && $_SESSION["profile"] == "Administrator"){
-            echo'
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item dropdown">
               <a class="nav-link" href="usermanagement">
@@ -311,27 +305,43 @@ session_start();
       <!--YOUR CONTENTHERE-->
       <?php
         $userProfile = $_SESSION['profile'];
+        $barangayRole = $_SESSION['barangayRole'];
         
         if(isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] == "ok"){
             echo '<div class="scrollcontent">';
-            $adminRoutes = ['dashboard', 'verification', 'schedule', 'marketapproval', 'categorylocator', 'usermanagement'];
-            $inspectorRoutes = ['dashboard', 'inspectionbusiness', 'ratingandfeedback', 'inspectionreport', 'categorylocator', 'usermanagement'];
-            $vendorRoutes = ['dashboard', 'approval', 'registration', 'marketlist', 'ratingandfeedback', 'permittracker', 'notifications', 'categorylocator', 'usermanagement'];
+            $superadminRoutes = ['dashboard', 'safetymonitoring', 'reportlist', 'tracking', 'usermanagement'];
+            $adminRoutes = ['dashboard', 'safetymonitoring', 'concernslist', 'reportlist', 'tracking', 'usermanagement'];
+            $userRoutes = ['dashboard', 'reportlist', 'ratingandfeedback', 'inspectionreport', 'categorylocator', 'usermanagement'];
             if (isset($_GET["route"])) {
                 $route = basename($_GET["route"]);
-                if ($userProfile == 'Administrator' && in_array($route, $adminRoutes)) {
-                include "admin/" . $route . ".html";
-                } else if ($userProfile == 'Inspector' && in_array($route, $inspectorRoutes)) {
-                include "inspector_user/" . $route . ".html";
-                } else if ($userProfile == 'Vendor' && in_array($route, $vendorRoutes)) {
-                include "vendor_user/" . $route . ".html";
+                if ($_SESSION['profile'] == 'Super Administrator' && $_SESSION['barangayRole'] == 'Captain' && in_array($route, $superadminRoutes)) {
+                  include "superadmin_pages/" . $route . ".html";
+                } else if ($_SESSION['profile'] == 'Administrator' && $_SESSION['barangayRole'] == 'Secretary' && in_array($route, $adminRoutes)) {
+                include "admin_pages/" . $route . ".html";
+                } else if ($_SESSION['profile'] == 'User' && $_SESSION['barangayRole'] == 'Kagawad 1' && in_array($route, $userRoutes)) {       
+                include "user_pages/k1/" . $route . ".html";
+                } else if ($_SESSION['profile'] == 'User' && $_SESSION['barangayRole'] == 'Kagawad 2' && in_array($route, $userRoutes)) {  
+                include "user_pages/k2/" . $route . ".html";
+                } else if ($_SESSION['profile'] == 'User' && $_SESSION['barangayRole'] == 'Kagawad 3' && in_array($route, $userRoutes)) {
+                include "user_pages/k3/" . $route . ".html";
                 } elseif ($_GET["route"] == 'logout') {
                 include "".$_GET["route"].".php";
                 } else {
                 include "modules/404.php";
                 }
             } else {
-                include "dashboard.php";
+              // Include the appropriate page based on the user profile
+                if ($userProfile == 'Administrator') {
+                  include "admin_pages/dashboard.html";
+              } elseif ($userProfile == 'Super Administrator') {
+                  include "superadmin_pages/dashboard.html";  // You can change the path as needed
+              } else if ($_SESSION['profile'] == 'User' && $_SESSION['barangayRole'] == 'Kagawad 1') {       
+                include "user_pages/k1/dashboard.html";
+              } else if ($_SESSION['profile'] == 'User' && $_SESSION['barangayRole'] == 'Kagawad 2') {  
+                include "user_pages/k2/dashboard.html";
+              } else if ($_SESSION['profile'] == 'User' && $_SESSION['barangayRole'] == 'Kagawad 3') {
+                include "user_pages/k3/dashboard.html";
+              }
             }
              include "footer.php";
              echo '</div>';
@@ -345,36 +355,36 @@ session_start();
       
   <!-- Include jQuery -->
   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-  <script src="js/jquery.min.js"></script>
-  <script src="js/popper.min.js"></script>
-  <script src="js/moment.min.js"></script>
+  <!-- <script src="js/jquery.min.js"></script> -->
+  <!-- <script src="js/popper.min.js"></script> -->
+  <!-- <script src="js/moment.min.js"></script> -->
   <script src="js/bootstrap.min.js"></script>
   <script src="js/simplebar.min.js"></script>
-  <script src='js/daterangepicker.js'></script>
-  <script src='js/jquery.stickOnScroll.js'></script>
-  <script src="js/tinycolor-min.js"></script>
+  <!-- <script src='js/daterangepicker.js'></script> -->
+  <!-- <script src='js/jquery.stickOnScroll.js'></script> -->
+  <!-- <script src="js/tinycolor-min.js"></script>
   <script src="js/d3.min.js"></script>
   <script src="js/topojson.min.js"></script>
   <script src="js/Chart.min.js"></script>
   <script src="js/gauge.min.js"></script>
   <script src="js/jquery.sparkline.min.js"></script>
   <script src="js/apexcharts.min.js"></script>
-  <script src="js/apexcharts.custom.js"></script>
-  <script src='js/jquery.mask.min.js'></script>
-  <script src='js/select2.min.js'></script>
+  <script src="js/apexcharts.custom.js"></script> -->
+  <!-- <script src='js/jquery.mask.min.js'></script> -->
+  <!-- <script src='js/select2.min.js'></script>
   <script src='js/jquery.steps.min.js'></script>
   <script src='js/jquery.validate.min.js'></script>
   <script src='js/jquery.timepicker.js'></script>
   <script src='js/dropzone.min.js'></script>
   <script src='js/uppy.min.js'></script>
-  <script src='js/quill.min.js'></script>
+  <script src='js/quill.min.js'></script> -->
   <script src="js/apps.js"></script>
   <script src="js/preloader.js"></script>
-  <script src="js/jquery-3.6.0.min.js" crossorigin="anonymous"></script>
+  <!-- <script src="js/jquery-3.6.0.min.js" crossorigin="anonymous"></script> -->
   <script src="js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
-  <script src='js/jquery.dataTables.min.js'></script>
-  <script src='js/dataTables.bootstrap4.min.js'></script>
-  <script src='js/session-timeout.js'></script>
+  <!-- <script src='js/jquery.dataTables.min.js'></script> -->
+  <!-- <script src='js/dataTables.bootstrap4.min.js'></script> -->
+  <!-- <script src='js/session-timeout.js'></script> -->
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   </body>
