@@ -49,31 +49,31 @@ function fetchTable(currentcategory, searchinput){
     let detailsUrl = null;
     if(searchinput == ''){
         if(currentcategory == 'category1'){
-            detailsUrl = `http://localhost:8001/api/service/concernslist/k1fetchReports`;
+            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/k1fetchReports`;
         } else if(currentcategory == 'category2'){
-            detailsUrl = `http://localhost:8001/api/service/concernslist/k2fetchReports`;
+            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/k2fetchReports`;
         } else if(currentcategory == 'category3'){
-            detailsUrl = 'http://localhost:8001/api/service/concernslist/k3fetchReports';
+            detailsUrl = 'https://bfmsi.smartbarangayconnect.com/api/service/concernslist/k3fetchReports';
         } else if(currentcategory == 'category4'){
-            detailsUrl = 'http://localhost:8001/api/service/concernslist/sfetchReports';
+            detailsUrl = 'https://bfmsi.smartbarangayconnect.com/api/service/concernslist/sfetchReports';
         } else if(currentcategory == 'category5'){
-            detailsUrl = 'http://localhost:8001/api/service/concernslist/ctfetchReports';
+            detailsUrl = 'https://bfmsi.smartbarangayconnect.com/api/service/concernslist/ctfetchReports';
         } else if(currentcategory == 'category6'){
-            detailsUrl = 'http://localhost:8001/api/service/concernslist/reportUpdates';
+            detailsUrl = 'https://bfmsi.smartbarangayconnect.com/api/service/concernslist/reportUpdates';
         }
     } else{
         if(currentcategory == 'category1'){
-            detailsUrl = `http://localhost:8001/api/service/concernslist/k1search/${searchinput}`;
+            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/k1search/${searchinput}`;
         } else if(currentcategory == 'category2'){
-            detailsUrl = `http://localhost:8001/api/service/concernslist/k2search/${searchinput}`;
+            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/k2search/${searchinput}`;
         } else if(currentcategory == 'category3'){
-            detailsUrl = `http://localhost:8001/api/service/concernslist/k3search/${searchinput}`;
+            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/k3search/${searchinput}`;
         } else if(currentcategory == 'category4'){
-            detailsUrl = `http://localhost:8001/api/service/concernslist/ssearch/${searchinput}`;
+            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/ssearch/${searchinput}`;
         } else if(currentcategory == 'category5'){
-            detailsUrl = `http://localhost:8001/api/service/concernslist/ctsearch/${searchinput}`;
+            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/ctsearch/${searchinput}`;
         } else if(currentcategory == 'category6'){
-            detailsUrl = `http://localhost:8001/api/service/concernslist/updatesSearch/${searchinput}`;
+            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/updatesSearch/${searchinput}`;
         }
     }
 
@@ -145,11 +145,11 @@ function fetchTable(currentcategory, searchinput){
 
     function kfetchItemDetails(id) {
         if(currentcategory == 'category1'){
-            detailsUrl = `http://localhost:8001/api/service/concernslist/k1fetch/${id}`;
+            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/k1fetch/${id}`;
         } else if(currentcategory == 'category2'){
-            detailsUrl = `http://localhost:8001/api/service/concernslist/k2fetch/${id}`;
+            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/k2fetch/${id}`;
         } else if(currentcategory == 'category3'){
-            detailsUrl = `http://localhost:8001/api/service/concernslist/k3fetch/${id}`;
+            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/k3fetch/${id}`;
         }
 
         fetch(detailsUrl)
@@ -209,7 +209,7 @@ function fetchTable(currentcategory, searchinput){
    function cfetchItemDetails(id) {
 
         // Example URL for fetching detailed information (you may adjust it)
-        const detailsUrl = `http://localhost:8001/api/service/concernslist/sfetch/${id}`;
+        const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/sfetch/${id}`;
 
         fetch(detailsUrl)
             .then(response => response.json())
@@ -275,7 +275,7 @@ function fetchTable(currentcategory, searchinput){
     function ctfetchItemDetails(currentcategory, id) {
 
         // Example URL for fetching detailed information (you may adjust it)
-        const detailsUrl = `http://localhost:8001/api/service/concernslist/ctfetch/${id}`;
+        const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/ctfetch/${id}`;
 
         fetch(detailsUrl)
             .then(response => response.json())
@@ -433,11 +433,11 @@ function fetchTable(currentcategory, searchinput){
 
         let detailsUrl = null;
         if(currentcategory == 'category1'){
-        detailsUrl = `http://localhost:8001/api/service/concernslist/k1post`;
+        detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/k1post`;
         } else if(currentcategory == 'category2'){
-            detailsUrl = `http://localhost:8001/api/service/concernslist/k2post`;
+            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/k2post`;
         } else if(currentcategory == 'category3'){
-            detailsUrl = `http://localhost:8001/api/service/concernslist/k3post`;
+            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/k3post`;
         }
             fetch(detailsUrl, {
                 method: 'POST',
@@ -613,7 +613,7 @@ function fetchTable(currentcategory, searchinput){
         formData.append('image2', image2);
         formData.append('image3', image3);
 
-        const detailsUrl = `http://localhost:8001/api/service/concernslist/spost`;
+        const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/spost`;
             fetch(detailsUrl, {
                 method: 'POST',
                 body: formData
@@ -728,7 +728,7 @@ function fetchTable(currentcategory, searchinput){
         formData.append('reportStatus', reportStatus);
         formData.append('statusReason', statusReason);
 
-        const detailsUrl = `http://localhost:8001/api/service/concernslist/ctpost`;
+        const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/ctpost`;
             fetch(detailsUrl, {
                 method: 'POST',
                 body: formData
@@ -827,7 +827,7 @@ function fetchTable(currentcategory, searchinput){
         // Clear the table before adding new rows
         tableBody.innerHTML = ''; // This will remove all the previous rows
         // Example URL for fetching detailed information (you may adjust it)
-        const detailsUrl = `http://localhost:8001/api/service/concernslist/ssearch/${searchTerm}`;
+        const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/ssearch/${searchTerm}`;
         // Fetch data from the API endpoint to populate the table
         fetch(detailsUrl)
             .then(response => response.json())

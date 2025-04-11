@@ -57,7 +57,7 @@ document.getElementById("submitButton").addEventListener("click", function(event
         formData.append('image2', image2);
         formData.append('image3', image3);
 
-        const detailsUrl = `http://localhost:8001/api/service/concerns/postconcerns`;
+        const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concerns/postconcerns`;
             fetch(detailsUrl, {
                 method: 'POST',
                 body: formData

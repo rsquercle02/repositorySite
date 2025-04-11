@@ -34,15 +34,15 @@ function fetchTable(currentcategory, searchinput){
     let detailsUrl = null;
     if(searchinput == ''){
         if(currentcategory == 'pending'){
-            detailsUrl = `http://localhost:8001/api/service/concernslist/clrngopsPending`;
+            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/clrngopsPending`;
         } else if(currentcategory == 'sent'){
-            detailsUrl = `http://localhost:8001/api/service/concernslist/clrngopsSent`;
+            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/clrngopsSent`;
         }
     }else {
         if(currentcategory == 'pending'){
-            detailsUrl = `http://localhost:8001/api/service/concernslist/clrngopsPending?search=${searchinput}`;
+            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/clrngopsPending?search=${searchinput}`;
         } else if(currentcategory == 'sent'){
-            detailsUrl = `http://localhost:8001/api/service/concernslist/clrngopsSent?search=${searchinput}`;
+            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/clrngopsSent?search=${searchinput}`;
         }
     }
 
@@ -103,7 +103,7 @@ function fetchItemDetails(currentcategory, id) {
     console.log('Fetch function');
 
     // Example URL for fetching detailed information (you may adjust it)
-    const detailsUrl = `http://localhost:8001/api/service/concernslist/clrngopsFetch/${id}`;
+    const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/clrngopsFetch/${id}`;
 
     fetch(detailsUrl)
         .then(response => response.json())
@@ -176,7 +176,7 @@ function updateStatus(){
     formData.append('clrreportId', clrreportId);
     formData.append('status', $status);
 
-    const detailsUrl = `http://localhost:8001/api/service/concernslist/clrngopsUpdate`;
+    const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/clrngopsUpdate`;
         fetch(detailsUrl, {
             method: 'POST',
             body: formData
@@ -412,7 +412,7 @@ if(isValid){
     formData.append('afterimage2', afterimage2);
     formData.append('afterimage3', afterimage3);
 
-    const detailsUrl = `http://localhost:8001/api/service/concernslist/clrngopsreport`;
+    const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/clrngopsreport`;
         fetch(detailsUrl, {
             method: 'POST',
             body: formData

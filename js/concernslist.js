@@ -4,7 +4,7 @@ function fetchTable(){
     // Clear the table before adding new rows
     tableBody.innerHTML = ''; // This will remove all the previous rows
     // Example URL for fetching detailed information (you may adjust it)
-    const detailsUrl = 'http://localhost:8001/api/service/concernslist/fetchConcerns';
+    const detailsUrl = 'https://bfmsi.smartbarangayconnect.com/api/service/concernslist/fetchConcerns';
     // Fetch data from the API endpoint to populate the table
     fetch(detailsUrl)
         .then(response => response.json())
@@ -61,7 +61,7 @@ function fetchTable(){
     function fetchItemDetails(id) {
 
         // Example URL for fetching detailed information (you may adjust it)
-        const detailsUrl = `http://localhost:8001/api/service/concernslist/fetchDetails/${id}`;
+        const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/fetchDetails/${id}`;
 
         fetch(detailsUrl)
             .then(response => response.json())
@@ -122,7 +122,7 @@ function fetchTable(){
         // Clear the table before adding new rows
         tableBody.innerHTML = ''; // This will remove all the previous rows
         // Example URL for fetching detailed information (you may adjust it)
-        const detailsUrl = `http://localhost:8001/api/service/concernslist/searchBusiness/${searchTerm}`;
+        const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/searchBusiness/${searchTerm}`;
         // Fetch data from the API endpoint to populate the table
         fetch(detailsUrl)
             .then(response => response.json())
@@ -268,7 +268,7 @@ function fetchTable(){
         formData.append('staffSelect', staffSelect);
         formData.append('violationSelect', violationSelect);
 
-        const detailsUrl = `http://localhost:8001/api/service/concernslist/postreport`;
+        const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/postreport`;
             fetch(detailsUrl, {
                 method: 'POST',
                 body: formData

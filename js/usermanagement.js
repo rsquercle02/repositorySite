@@ -3,7 +3,7 @@ function fetchTable(){
     // Clear the table before adding new rows
     //tableBody.innerHTML = ''; // This will remove all the previous rows
     // Example URL for fetching detailed information (you may adjust it)
-    const detailsUrl = 'http://localhost:8001/api/service/usermanagement/fetch';
+    const detailsUrl = 'https://bfmsi.smartbarangayconnect.com/api/service/usermanagement/fetch';
     // Fetch data from the API endpoint to populate the table
     fetch(detailsUrl)
         .then(response => response.json())
@@ -71,7 +71,7 @@ function fetchTable(){
         // Clear the table before adding new rows
         tableBody.innerHTML = ''; //This will remove all the previous rows
         // Fetch data from the API endpoint to populate the table
-    fetch(`http://localhost:8001/api/service/usermanagement/search/${searchTerm}`)
+    fetch(`https://bfmsi.smartbarangayconnect.com/api/service/usermanagement/search/${searchTerm}`)
         .then(response => response.json())
         .then(data => {
             const tableBody = document.querySelector("#table tbody");
@@ -134,7 +134,7 @@ function fetchTable(){
 
     function fetchItemDetails(id) {
         // Example URL for fetching detailed information (you may adjust it)
-        const detailsUrl = `http://localhost:8001/api/service/usermanagement/fetchId/${id}`;
+        const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/usermanagement/fetchId/${id}`;
 
         fetch(detailsUrl)
             .then(response => response.json())
@@ -287,7 +287,7 @@ function fetchTable(){
             formData.append('brole', brole);
             formData.append('picture', picture);
 
-                const detailsUrl = `http://localhost:8001/api/service/usermanagement/createUser`;
+                const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/usermanagement/createUser`;
                 fetch(detailsUrl, {
                     method: 'POST',
                     body: formData
@@ -481,7 +481,7 @@ function fetchTable(){
         if(isValid){
             const formData = {editUsername: editUsername};
 
-                const detailsUrl = `http://localhost:8001/api/service/usermanagement/updateEmail/${id}`;
+                const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/usermanagement/updateEmail/${id}`;
                 fetch(detailsUrl, {
                     method: 'PUT',
                     headers: {
@@ -572,7 +572,7 @@ function fetchTable(){
         if(isValid){
             const formData = {editProfile: editProfile};
 
-                const detailsUrl = `http://localhost:8001/api/service/usermanagement/updateUsertype/${id}`;
+                const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/usermanagement/updateUsertype/${id}`;
                 fetch(detailsUrl, {
                     method: 'PUT',
                     headers: {
@@ -663,7 +663,7 @@ function fetchTable(){
         if(isValid){
             const formData = {editStatus: editStatus};
 
-                const detailsUrl = `http://localhost:8001/api/service/usermanagement/updateStatus/${id}`;
+                const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/usermanagement/updateStatus/${id}`;
                 fetch(detailsUrl, {
                     method: 'PUT',
                     headers: {
@@ -756,7 +756,7 @@ function fetchTable(){
                     if (result.isConfirmed) {
                         const formData = {editPassword: editPassword};
 
-                        const detailsUrl = `http://localhost:8001/api/service/usermanagement/updatePassword/${id}`;
+                        const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/usermanagement/updatePassword/${id}`;
                         fetch(detailsUrl, {
                             method: 'PUT',
                             headers: {

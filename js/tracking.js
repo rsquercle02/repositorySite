@@ -63,9 +63,9 @@ function fetchViolations(searchinput) {
     container.innerHTML = '';
     let detailsUrl = null;
     if(searchinput == ''){
-        detailsUrl = `http://localhost:8001/api/service/concernslist/Violations`;
+        detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/Violations`;
     } else {
-        detailsUrl = `http://localhost:8001/api/service/concernslist/Violations?search=${searchinput}`;
+        detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/Violations?search=${searchinput}`;
     }
 
     // Fetch data from the API endpoint
@@ -115,24 +115,24 @@ function fetchConcerns(filter, searchinput) {
     if(searchinput == ''){
         if (filter == 'none.'){
         // Example URL for fetching detailed information
-        detailsUrl = `http://localhost:8001/api/service/concernslist/Concerns`;
+        detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/Concerns`;
         } else if (filter == 'No action.'){
-            detailsUrl = `http://localhost:8001/api/service/concernslist/NoactionConcerns`;
+            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/NoactionConcerns`;
         } else if (filter == 'Reported.'){
-            detailsUrl = `http://localhost:8001/api/service/concernslist/ReportedConcerns`;
+            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/ReportedConcerns`;
         } else if (filter == 'Resolved.'){
-            detailsUrl = `http://localhost:8001/api/service/concernslist/ResolvedConcerns`;
+            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/ResolvedConcerns`;
         }
     } else {
         if (filter == 'none.'){
         // Example URL for fetching detailed information
-        detailsUrl = `http://localhost:8001/api/service/concernslist/Concerns?search=${searchinput}`;
+        detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/Concerns?search=${searchinput}`;
         } else if (filter == 'No action.'){
-            detailsUrl = `http://localhost:8001/api/service/concernslist/NoactionConcerns?search=${searchinput}`;
+            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/NoactionConcerns?search=${searchinput}`;
         } else if (filter == 'Reported.'){
-            detailsUrl = `http://localhost:8001/api/service/concernslist/ReportedConcerns?search=${searchinput}`;
+            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/ReportedConcerns?search=${searchinput}`;
         } else if (filter == 'Resolved.'){
-            detailsUrl = `http://localhost:8001/api/service/concernslist/ResolvedConcerns?search=${searchinput}`;
+            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/ResolvedConcerns?search=${searchinput}`;
         }
     }
 
@@ -175,32 +175,32 @@ function fetchReports(filter, searchinput) {
     if(searchinput == ''){
         if (filter == 'none.'){
         // Example URL for fetching detailed information
-        detailsUrl = `http://localhost:8001/api/service/concernslist/Reports`;
+        detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/Reports`;
         } else if (filter == 'No action.'){
-            detailsUrl = `http://localhost:8001/api/service/concernslist/NoactionReports`;
+            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/NoactionReports`;
         } else if (filter == 'Forward to captain.'){
             console.log(filter);
-            detailsUrl = `http://localhost:8001/api/service/concernslist/CaptainReports`;
+            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/CaptainReports`;
         } else if (filter == 'Forward to cityhall.'){
             console.log(filter);
-            detailsUrl = `http://localhost:8001/api/service/concernslist/CityReports`;
+            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/CityReports`;
         } else if (filter == 'Resolved.'){
-            detailsUrl = `http://localhost:8001/api/service/concernslist/ResolvedReports`;
+            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/ResolvedReports`;
         }
     } else {
         if (filter == 'none.'){
         // Example URL for fetching detailed information
-        detailsUrl = `http://localhost:8001/api/service/concernslist/Reports?search=${searchinput}`;
+        detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/Reports?search=${searchinput}`;
         } else if (filter == 'No action.'){
-            detailsUrl = `http://localhost:8001/api/service/concernslist/NoactionReports?search=${searchinput}`;
+            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/NoactionReports?search=${searchinput}`;
         } else if (filter == 'Forward to captain.'){
             console.log(filter);
-            detailsUrl = `http://localhost:8001/api/service/concernslist/CaptainReports?search=${searchinput}`;
+            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/CaptainReports?search=${searchinput}`;
         } else if (filter == 'Forward to cityhall.'){
             console.log(filter);
-            detailsUrl = `http://localhost:8001/api/service/concernslist/CityReports?search=${searchinput}`;
+            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/CityReports?search=${searchinput}`;
         } else if (filter == 'Resolved.'){
-            detailsUrl = `http://localhost:8001/api/service/concernslist/ResolvedReports?search=${searchinput}`;
+            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/ResolvedReports?search=${searchinput}`;
         }
     }
 
