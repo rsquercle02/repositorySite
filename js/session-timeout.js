@@ -1,6 +1,6 @@
 
   // Set the session timeout to 30 minutes
-  var timeout = 1 * 60 * 1000; // 30 minutes in milliseconds
+  var timeout = 10 * 60 * 1000; // 30 minutes in milliseconds
 
   // Set a timer to check for inactivity
   setInterval(function() {
@@ -52,7 +52,7 @@ function displayNotification() {
 
     // Add event listener to logout button
     logoutButton.addEventListener("click", function() {
-        window.location.href = "login.php";
+        window.location.href = "index.php";
     });
 
     // Add notification box and logout button to the page
@@ -61,6 +61,6 @@ function displayNotification() {
 
     // Set a timer to log out the user after 1 minute
     setTimeout(function() {
-        window.location.href = "login.php";
+        window.location.href = "index.php";
     }, 60000); // 1 minute in milliseconds
 }
