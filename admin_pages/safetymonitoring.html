@@ -7,6 +7,7 @@
     <link href="css/safetymonitoring.css" rel="stylesheet">
 </head>
 <body>
+    <div class="page">
     <h2 class="m-3">Safety Monitoring</h2>
 
     <div class="m-3 row">
@@ -29,11 +30,10 @@
     <table id="table" class="table table-hover">
     <thead>
     <tr>
-      <th scope="col">Id</th>
-      <th scope="col">Title</th>
-      <th scope="col">Date</th>
+      <th scope="col">Year</th>
+      <th scope="col">Month</th>
       <th scope="col">Status</th>
-      <th scope="col">Created At</th>
+      <th scope="col">Opearations</th>
       <th scope="col">Actions</th>
     </tr>
     </thead>
@@ -47,106 +47,100 @@
         <div class="modal-dialog modal-dialog-scrollable">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">View Concern</h1>
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Create Report</h1>
                     <button type="button" id="closereportBtn" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <div class="container mt-5">
-                        <h3 class="text-center mb-4">Clearing Operations Report</h3>
+                    <div class="container">
+                        <h2 class="mb-4 text-primary">Clearing Operations Entry</h2>
+                        <form id="activityForm" enctype="multipart/form-data">
                         
-                        <form id="reportForm" enctype="multipart/form-data">
-                    
-                        <!-- Store Details Form -->
-                        <div id="reportdetails" class="mt-4">
-                            <div class="form-group">
-                                <label for="title">Title</label>
-                                <input type="text" class="form-control" id="title" name="title">
-                                <div id="titleErr" class="form-text error mb-3"></div>
+                            <div id="clearingOpsContainer">
+                            <!-- Initial Clearing Operation -->
+                            <div class="card clearing-op">
+                                <div class="card-body">
+                                <h5 class="card-title">Clearing Operation</h5>
+                        
+                                <div class="mb-3">
+                                    <label class="form-label">Date of Operation:</label>
+                                    <input type="date" class="form-control" name="clearing_date[]">
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Conducted:</label><br>
+                                    <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="clearing_conducted_0" value="Yes">
+                                    <label class="form-check-label">Yes</label>
+                                    </div>
+                                    <div class="form-check form-check-inline">
+                                    <input class="form-check-input" type="radio" name="clearing_conducted_0" value="No">
+                                    <label class="form-check-label">No</label>
+                                    </div>
+                                </div>
+                        
+                                <div class="streetsContainer">
+                                    <div class="street-entry">
+                                    <div class="mb-3">
+                                        <label class="form-label">Street Name:</label>
+                                        <input type="text" class="form-control" name="street_name_0[]">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Road Length:</label>
+                                        <input type="text" class="form-control" name="road_length_0[]">
+                                    </div>
+                                    <div class="mb-3">
+                                        <label class="form-label">Photos (Before and after):</label>
+                                        <input type="file" class="form-control mb-2" name="clearing_photos_0_0[]" accept="image/*">
+                                        <input type="file" class="form-control mb-2" name="clearing_photos_0_0[]" accept="image/*">
+                                        <input type="file" class="form-control" name="clearing_photos_0_0[]" accept="image/*">
+                                    </div>
+                                    <button type="button" class="btn btn-outline-danger btn-sm" onclick="removeStreet(this)">❌ Remove Street</button>
+                                    </div>
+                                </div>
+                        
+                                <button type="button" class="btn btn-outline-primary btn-sm mb-3" onclick="addStreet(this)">➕ Add Street</button>
+                        
+                                <div class="mb-3">
+                                    <label class="form-label">Action Taken:</label>
+                                    <textarea class="form-control" name="clearing_action_taken[]"></textarea>
+                                </div>
+                                <div class="mb-3">
+                                    <label class="form-label">Remarks:</label>
+                                    <textarea class="form-control" name="clearing_remarks[]"></textarea>
+                                </div>
+                        
+                                <button type="button" class="btn btn-outline-danger" onclick="removeClearingOp(this)">❌ Remove Operation</button>
+                                </div>
                             </div>
-                    
-                            <div class="form-group mt-3">
-                                <label for="date">Date</label>
-                                <input type="date" class="form-control" id="date" name="date">
-                                <div id="dateErr" class="form-text error mb-3"></div>
-                            </div>
-                    
-                            <div class="form-group mt-3">
-                                <label for="time">Time</label>
-                                <input type="time" class="form-control" id="time" name="time">
-                                <div id="timeErr" class="form-text error mb-3"></div>
                             </div>
                         
-                            <div class="form-group">
-                                <label for="selectedstaff">Selected Staff</label>
-                                <!-- Display selected staff in a text input -->
-                                <input type="text" id="selectedstaff" class="form-control" readonly>
-                            
-                                <!-- Container to hold the dynamically generated buttons -->
-                                <div id="staffButtonsContainer" class="d-flex mt-2" style="max-width: 100%; overflow-x: auto; flex-wrap: nowrap;"></div>
+                            <button type="button" class="btn btn-success mb-4" onclick="addClearingOp()">➕ Add Clearing Operation</button>
+                        
+                            <hr class="my-5">
+                        
+                            <h3 class="text-secondary mb-4">Participated/Conducted BaRCO</h3>
+                        
+                            <div class="row mb-3">
+                            <div class="col-md-4 col-12">
+                                <label class="form-label">Barangay Official:</label>
+                                <input type="number" class="form-control" name="barangay_official" min="0">
                             </div>
-                            
-                            <!-- Optional: Error message container -->
-                            <div id="staffselectErr" class="form-text error mb-3"></div>
-                    
-                            <!-- Details Text Area -->
-                            <div class="form-group mt-3">
-                                <label for="details">Details</label>
-                                <textarea class="form-control" id="details" name="details" rows="4"></textarea>
-                                <div id="detailsErr" class="form-text error mb-3"></div>
+                            <div class="col-md-4 col-12">
+                                <label class="form-label">SK Official:</label>
+                                <input type="number" class="form-control" name="sk_official" min="0">
                             </div>
-                    
-                            <!-- Grouped "Before" Images -->
-                            <fieldset class="mt-3">
-                            <legend><label for="image">Before</label></legend>
-                    
-                            <!-- File 1 input Area -->
-                            <div class="form-group mt-3">
-                            <input type="file" class="form-control" id="beforeimage1" name="beforeimage1">
-                            <div id="beforeimage1Err" class="form-text error mb-3"></div>
+                            <div class="col-md-4 col-12">
+                                <label class="form-label">Barangay Tanod:</label>
+                                <input type="number" class="form-control" name="barangay_tanod" min="0">
                             </div>
-                    
-                            <!-- File 2 input Area -->
-                            <div class="form-group mt-3">
-                            <input type="file" class="form-control" id="beforeimage2" name="beforeimage2">
-                            <div id="beforeimage2Err" class="form-text error mb-3"></div>
                             </div>
-                    
-                            <!-- File 3 input Area -->
-                            <div class="form-group mt-3">
-                            <input type="file" class="form-control" id="beforeimage3" name="beforeimage3">
-                            <div id="beforeimage3Err" class="form-text error mb-3"></div>
+                        
+                            <div class="mb-4">
+                            <label class="form-label">BaRCO Photo:</label>
+                            <input type="file" class="form-control" name="barco_photo" accept="image/*">
                             </div>
-                            </fieldset>
-                    
-                            <!-- Grouped "After" Images -->
-                            <fieldset class="mt-3">
-                            <legend><label for="image">After</label></legend>
-                    
-                            <!-- File 1 input Area -->
-                            <div class="form-group mt-3">
-                            <input type="file" class="form-control" id="afterimage1" name="afterimage1">
-                            <div id="afterimage1Err" class="form-text error mb-3"></div>
-                            </div>
-                    
-                            <!-- File 2 input Area -->
-                            <div class="form-group mt-3">
-                            <input type="file" class="form-control" id="afterimage2" name="afterimage2">
-                            <div id="afterimage2Err" class="form-text error mb-3"></div>
-                            </div>
-                    
-                            <!-- File 3 input Area -->
-                            <div class="form-group mt-3">
-                            <input type="file" class="form-control" id="afterimage3" name="afterimage3">
-                            <div id="afterimage3Err" class="form-text error mb-3"></div>
-                            </div>
-                            </fieldset>
-                    
-                    
-                            <!-- Submit Button -->
-                            <div class="form-group mt-3">
-                                <button type="button" class="btn btn-primary" id="submitButton">Submit</button>
-                            </div>
-                        </div>
+                        
+                            <button type="submit" id="reportsubmit" class="btn btn-primary">📤 Submit</button>
                         </form>
                     </div>
                 </div>
@@ -155,49 +149,299 @@
         </div>
     </div>
 </div>
+</div>
 
     <!--View report -->
-    <div class="modal fade" id="reportPreview" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">View Concern</h1>
-                    <button type="button" id="closePreview" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-  
-                    <div class="container">
-                        <h1>Report Details</h1>
-                        
-                        <!-- Concern Information Section -->
-                        <p><strong>Clearing operations Id:</strong><span id="clrreportId"></span></p>
-                        <p><strong>Title:</strong> <span id="clrreportTitle"></span></p>
-                        <p><strong>Date:</strong> <span id="clrreportDate"></span></p>
-                        <p><strong>Time:</strong> <span id="clrreportTime"></span></p>
-                        <p><strong>Staff:</strong> <span id="clrreportStaff"></span></p>
-                        <p><strong>Details:</strong> <span id="clrreportDetails"></span></p>
-                        <p><strong>Before pictures:</strong></p>
-                        <div class="mb-2" id="clrbeforeFile1"></div>
-                        <div class="mb-2" id="clrbeforeFile2"></div>
-                        <div class="mb-2" id="clrbeforeFile3"></div>
-                        <p><strong>After pictures:</strong></p>
-                        <div class="mb-2" id="clrafterFile1"></div>
-                        <div class="mb-2" id="clrafterFile2"></div>
-                        <div class="mb-2" id="clrafterFile3"></div>
-                    </div>
+    <div id="reportmodal" class="reports">
+      <div class="d-inline-flex align-items-center">
+        <button class="btn btn-primary btn-sm close-button m-2" onclick="closeModal()">&lt; Back</button>
+        <button type="button" class="btn btn-primary btn-sm updateBtn m-2" id="clrupdateStatus">Mark as sent.</button>
+        <button class="btn btn-primary btn-sm print-button m-2" onclick="window.print()">🖨️ Print or Save as PDF</button>
+        <div>Report for: <span class="reportfor"></span></div>
+        
+      </div>
 
-                  <!-- Create Report Button -->
-                  <div class="action-btn mt-4">
-                    <button type="button" class="btn btn-success updateBtn" id="clrupdateStatus">Mark as sent.</button>
-                  </div>
-
-                </div>
-                <div class="modal-footer">
-                </div>
+      <div class="report-table">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 48px;">
+      
+          <!-- Left Image -->
+          <div style="flex: 0 0 80px; text-align: center;">
+            <img src="assets/images/oldcapitolsite.jpg" alt="Left Logo" style="width: 135px; height: auto; margin-left: 150px;">
+          </div>
+        
+          <!-- Center Text -->
+          <div style="flex: 1; text-align: center;">
+            <p style="margin: 0px;"><span style="font-family: Sans Serif Collection; font-size: 16px;"><strong>REPUBLIKA NG PILIPINAS</strong></span></p>
+            <p style="margin: 0px;"><span style="font-family: Sans Serif Collection; font-size: 16px;"><strong><span style="color: rgb(41, 105, 176);">LUNGSOD NG QUEZON</span></strong></span></p>
+            <p style="margin: 0px;"><span style="font-family: Arial; font-size: 29px; font-weight: normal;"><strong>BARANGAY OLD CAPITOL SITE</strong></span></p>
+            <p style="margin: 0px;"><span style="font-family: Arial; font-size: 17px;"><strong>Tanggapan ng Sangguniang Barangay</strong></span></p>
+            <p style="margin: 0px;"><span style="font-family: Arial; font-size: 12px;"><strong>Masaya Interior corner Matiwasay St. Old Capitol Site</strong></span></p>
+            <p style="margin: 0px;"><span style="font-family: Arial; font-size: 12px;"><strong>Dist IV, Quezon City</strong></span></p>
+          </div>
+        
+          <!-- Right Image -->
+          <div style="flex: 0 0 80px; text-align: center;">
+            <img src="assets/images/bagongpilipinas.png" alt="Right Logo" style="width: 135px; height: auto; margin-right: 25px;">
+          </div>
+    
+          <div style="flex: 0 0 80px; text-align: center;">
+            <img src="assets/images/quezoncity.png" alt="Right Logo" style="width: 135px; height: auto;">
+          </div>
+        
         </div>
-    </div>
-</div>                  
+        
+        <div>
+          <p style="margin: 0;text-align: center;"><span style="font-family:Cambria;font-size:12px;"><strong>Monthly Monitoring Report</strong></span></p>
+          <p style="margin: 0;text-align: center;"><span style="font-family:Cambria;font-size:12px;"><strong>On Barangay Road Clearing Operations (BaRCO)</strong></span></p>
+          <p style="margin: 0;text-align: center;"><span style="font-family:Cambria;font-size:12px;"><strong>(Latest DILG MEMORANDUM Circular No. 2022-085 dated June 20, 2022, DILG MC No. 2023-017 dated January 25, 2023, and DILG MC No. 2024-053 dated April 16, 2024)</strong></span></p>
+          <!-- <p style="text-align: center; line-height: 1;"><span style="font-family:Cambria;font-size:12px;"><strong>For the Month of JUNE CY 2024</strong></span></p> -->
+           <div id="reportmonth"></div>
+        </div>
+    
+        <div>
+          <table class="activityTable" align="center" style="border-collapse:collapse;width:800pt;border:none;font-family:Cambria, serif;font-size:12px;">
+            <thead>
+              <tr>
+                <td colspan="2" style="width: 126.5pt;">
+                  <p style="text-align:center;line-height:1.4;margin:2px 0;font-family:Cambria, serif;font-size:12px;">Conducted Road Clearing Operations</p>
+                  <p style="text-align:center;line-height:1.4;margin:2px 0;font-family:Cambria, serif;font-size:12px;">[check appropriate column]</p>
+                </td>
+                <td rowspan="2" style="width: 195.95pt;">
+                  <p style="text-align:center;line-height:1.4;margin:2px 0;font-family:Cambria, serif;font-size:12px;">Inventory of Barangay Roads, Streets, Alleys</p>
+                  <p style="text-align:center;line-height:1.4;margin:2px 0;font-family:Cambria, serif;font-size:12px;">&amp; Turned Over Road/s</p>
+                  <p style="text-align:center;line-height:1.4;margin:2px 0;font-family:Cambria, serif;font-size:12px;">[Location/Street name/Address]</p>
+                  <p style="text-align:center;line-height:1.4;margin:2px 0;font-family:Cambria, serif;font-size:12px;">(c)</p>
+                </td>
+                <td rowspan="2" style="width: 98.7pt;">
+                  <p style="text-align:center;line-height:1.4;margin:2px 0;font-family:Cambria, serif;font-size:12px;">Road Length (in km)</p>
+                  <p style="text-align:center;line-height:1.4;margin:2px 0;font-family:Cambria, serif;font-size:12px;">(d)</p>
+                </td>
+                <td rowspan="2" style="width: 85.7pt;">
+                  <p style="text-align:center;line-height:1.4;margin:2px 0;font-family:Cambria, serif;font-size:12px;">Date of Clearing Operation</p>
+                  <p style="text-align:center;line-height:1.4;margin:2px 0;font-family:Cambria, serif;font-size:12px;">(e)</p>
+                </td>
+                <td rowspan="2" style="width: 139.3pt;">
+                  <p style="text-align:center;line-height:1.4;margin:2px 0;font-family:Cambria, serif;font-size:12px;">Action Taken</p>
+                  <p style="text-align:center;line-height:1.4;margin:2px 0;font-family:Cambria, serif;font-size:12px;">(f)</p>
+                </td>
+                <td rowspan="2" style="width: 132.6pt;">
+                  <p style="text-align:center;line-height:1.4;margin:2px 0;font-family:Cambria, serif;font-size:12px;">Remarks</p>
+                  <p style="text-align:center;line-height:1.4;margin:2px 0;font-family:Cambria, serif;font-size:12px;">(g)</p>
+                </td>
+              </tr>
+              <tr>
+                <td style="width: 76.75pt;">
+                  <p style="text-align:center;line-height:1.4;margin:2px 0;font-family:Cambria, serif;font-size:12px;">YES</p>
+                  <p style="text-align:center;line-height:1.4;margin:2px 0;font-family:Cambria, serif;font-size:12px;">(a)</p>
+                </td>
+                <td style="width: 76.75pt;">
+                  <p style="text-align:center;line-height:1.4;margin:2px 0;font-family:Cambria, serif;font-size:12px;">NO</p>
+                  <p style="text-align:center;line-height:1.4;margin:2px 0;font-family:Cambria, serif;font-size:12px;">(b)</p>
+                </td>
+              </tr>
+            </thead>
+            <tbody id="tableBody"></tbody>
+          </table>                
+        </div>
+          
+          
+        </div>
+    
+      <!-- Placeholder for additional pages -->
+      <div id="additionalPages"></div>
 
+      <div class="report-streets">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 48px;">
+      
+          <!-- Left Image -->
+          <div style="flex: 0 0 80px; text-align: center;">
+            <img src="assets/images/oldcapitolsite.jpg" alt="Left Logo" style="width: 135px; height: auto; margin-left: 150px;">
+          </div>
+        
+          <!-- Center Text -->
+          <div style="flex: 1; text-align: center;">
+            <p style="margin: 0px; line-height: 1;"><span style="font-family: Sans Serif Collection; font-size: 16px;"><strong>REPUBLIKA NG PILIPINAS</strong></span></p>
+            <p style="margin: 0px; line-height: 1;"><span style="font-family: Sans Serif Collection; font-size: 16px;"><strong><span style="color: rgb(41, 105, 176);">LUNGSOD NG QUEZON</span></strong></span></p>
+            <p style="margin: 0px; line-height: 1;"><span style="font-family: Arial; font-size: 29px; font-weight: normal;"><strong>BARANGAY OLD CAPITOL SITE</strong></span></p>
+            <p style="margin: 0px; line-height: 1;"><span style="font-family: Arial; font-size: 17px;"><strong>Tanggapan ng Sangguniang Barangay</strong></span></p>
+            <p style="margin: 0px; line-height: 1;"><span style="font-family: Arial; font-size: 12px;"><strong>Masaya Interior corner Matiwasay St. Old Capitol Site</strong></span></p>
+            <p style="margin: 0px; line-height: 1;"><span style="font-family: Arial; font-size: 12px;"><strong>Dist IV, Quezon City</strong></span></p>
+          </div>
+        
+          <!-- Right Image -->
+          <div style="flex: 0 0 80px; text-align: center;">
+            <img src="assets/images/bagongpilipinas.png" alt="Right Logo" style="width: 135px; height: auto; margin-right: 25px;">
+          </div>
+    
+          <div style="flex: 0 0 80px; text-align: center;">
+            <img src="assets/images/quezoncity.png" alt="Right Logo" style="width: 135px; height: auto;">
+          </div>
+        
+        </div>
+        
+        <div>
+          <p style="text-align: center;margin:0px;"><span style="font-family:Cambria;font-size:12px;"><strong>Conduct of the Barangay Road Clearing Operations (BaRCO)</strong></span></p>
+          <!-- <p style="text-align: center;margin:0px;"><span style="font-family:Cambria;font-size:12px;"><strong>The month of JUNE CY 2024</strong></span></p> -->
+          <!-- <p style="text-align: center;margin:0px;"><span style="font-family:Cambria;font-size:12px;"><strong>Date of BaRCO conducted: JUNE 07, 2024</strong></span></p> -->
+           <div id="reportmonthstreet"></div>
+           <div id="reportdatestreet"></div>
+        </div>
+          
+        <div>
+          <p style="margin-left:0.0000pt;text-indent:18.0000pt;text-align:left;"><em><span style="font-family:Cambria;font-style:italic;font-size:16px;"><strong>LIRO STREET,</strong></span></em></p>
+          <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">
+            <img src="imagepath" style="width: 9cm; height: 11.5cm; object-fit: cover;" />
+            <img src="imagepath" style="width: 9cm; height: 11.5cm; object-fit: cover;" />
+            <img src="imagepath" style="width: 9cm; height: 11.5cm; object-fit: cover;" />
+          </div>            
+        </div>
+    
+    
+        </div>
+    
+      <!-- Placeholder for additional pages -->
+      <div id="additionalStreets"></div>
+
+      <div class="report-summary">
+        <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 48px;">
+      
+          <!-- Left Image -->
+          <div style="flex: 0 0 80px; text-align: center;">
+            <img src="assets/images/oldcapitolsite.jpg" alt="Left Logo" style="width: 135px; height: auto; margin-left: 150px;">
+          </div>
+        
+          <!-- Center Text -->
+          <div style="flex: 1; text-align: center;">
+            <p style="margin: 0px;"><span style="font-family: Sans Serif Collection; font-size: 16px;"><strong>REPUBLIKA NG PILIPINAS</strong></span></p>
+            <p style="margin: 0px;"><span style="font-family: Sans Serif Collection; font-size: 16px;"><strong><span style="color: rgb(41, 105, 176);">LUNGSOD NG QUEZON</span></strong></span></p>
+            <p style="margin: 0px;"><span style="font-family: Arial; font-size: 29px; font-weight: normal;"><strong>BARANGAY OLD CAPITOL SITE</strong></span></p>
+            <p style="margin: 0px;"><span style="font-family: Arial; font-size: 17px;"><strong>Tanggapan ng Sangguniang Barangay</strong></span></p>
+            <p style="margin: 0px;"><span style="font-family: Arial; font-size: 12px;"><strong>Masaya Interior corner Matiwasay St. Old Capitol Site</strong></span></p>
+            <p style="margin: 0px;"><span style="font-family: Arial; font-size: 12px;"><strong>Dist IV, Quezon City</strong></span></p>
+          </div>
+        
+          <!-- Right Image -->
+          <div style="flex: 0 0 80px; text-align: center;">
+            <img src="assets/images/bagongpilipinas.png" alt="Right Logo" style="width: 135px; height: auto; margin-right: 25px;">
+          </div>
+    
+          <div style="flex: 0 0 80px; text-align: center;">
+            <img src="assets/images/quezoncity.png" alt="Right Logo" style="width: 135px; height: auto;">
+          </div>
+        
+        </div>
+        
+        <div>
+          <p style="text-align: center;margin:0px;"><span style="font-family:Cambria;font-size:12px;"><strong>Conduct of the Barangay Road Clearing Operations (BaRCO)</strong></span></p>
+          <!-- <p style="text-align: center;margin:0px;"><span style="font-family:Cambria;font-size:12px;"><strong>The month of JUNE CY 2024</strong></span></p> -->
+           <div id="reportmonthsummary"></div>
+        </div>
+          
+        <div class="tableandpic" style="display: flex; justify-content: center; flex-wrap: wrap;">
+        <div>
+          <table style="border-collapse: collapse; margin-top: 125pt; margin-bottom: 10pt;margin-left: 6.75pt; margin-right: 6.75pt; border: none; width: 318px;">
+            <tbody>
+              <tr>
+                <td colspan="2" style="width: 239pt; padding: 1pt 2pt; text-align:center; border: 1pt solid windowtext; background: rgb(255, 255, 0); vertical-align: top;">
+                  <p style="margin: 0;"><strong><span style="font-family: Arial; color: rgb(255, 0, 0); font-weight: bold; font-size: 13px;">Table 1:</span></strong>
+                  <strong><span style="font-family: Arial; font-weight: bold; font-size: 13px;"> BSKOs Expected to Conduct BaRCO</span></strong></p>
+                </td>
+              </tr>
+              <tr>
+                <td style="width: 172.05pt; padding: 1pt 2pt; border: 1pt solid windowtext; background: rgb(197, 224, 179); vertical-align: top;">
+                  <p style="text-align: left; margin: 0;"><strong><span style="font-family: Arial; font-size: 13px;">No. of Elected Barangay Officials</span></strong></p>
+                </td>
+                <td style="width: 66.95pt; padding: 1pt 2pt; border: 1pt solid windowtext; background: rgb(197, 224, 179); vertical-align: top;">
+                  <p style="text-align: left; margin: 0;"><strong><span style="font-family: Arial; font-size: 13px;">8</span></strong></p>
+                </td>
+              </tr>
+              <tr>
+                <td style="width: 172.05pt; padding: 1pt 2pt; border: 1pt solid windowtext; background: rgb(197, 224, 179); vertical-align: top;">
+                  <p style="text-align: left; margin: 0;"><strong><span style="font-family: Arial; font-size: 13px;">No. of Elected SK Officials</span></strong></p>
+                </td>
+                <td style="width: 66.95pt; padding: 1pt 2pt; border: 1pt solid windowtext; background: rgb(197, 224, 179); vertical-align: top;">
+                  <p style="text-align: left; margin: 0;"><strong><span style="font-family: Arial; font-size: 13px;">8</span></strong></p>
+                </td>
+              </tr>
+              <tr>
+                <td style="width: 172.05pt; padding: 1pt 2pt; border: 1pt solid windowtext; background: rgb(197, 224, 179); vertical-align: top;">
+                  <p style="text-align: left; margin: 0;"><strong><span style="font-family: Arial; font-size: 13px;">No. of Barangay Tanods</span></strong></p>
+                </td>
+                <td style="width: 66.95pt; padding: 1pt 2pt; border: 1pt solid windowtext; background: rgb(197, 224, 179); vertical-align: top;">
+                  <p style="text-align: left; margin: 0;"><strong><span style="font-family: Arial; font-size: 13px;">15</span></strong></p>
+                </td>
+              </tr>
+              <tr>
+                <td style="width: 172.05pt; padding: 1pt 2pt; border: 1pt solid windowtext; background: rgb(255, 255, 0); vertical-align: top;">
+                  <p style="text-align: center; margin: 0;"><strong><span style="font-family: Arial; font-size: 13px;">Total</span></strong></p>
+                </td>
+                <td style="width: 66.95pt; padding: 1pt 2pt; border: 1pt solid windowtext; background: rgb(255, 255, 0); vertical-align: top;">
+                  <p style="text-align: left; margin: 0;"><strong><span style="font-family: Arial; font-size: 13px;">31</span></strong></p>
+                </td>
+              </tr>
+            </tbody>
+          </table>              
+        
+          <table style="border-collapse: collapse; margin-left: 6.75pt; margin-right: 6.75pt; border: none; width: 440px;">
+            <tbody>
+              <tr>
+                <td colspan="2" style="width: 230pt; padding: 1pt 2pt; text-align:center; border: 1pt solid windowtext; background: rgb(255, 255, 0); vertical-align: top;">
+                  <p style="margin: 0;"><strong><span style="font-family:Arial; color:rgb(255,0,0); font-size:13px;">Table 2:</span></strong>
+                  <strong><span style="font-family:Arial; font-size:13px;"> No. Of BSKOs and Brgy. Tanods Who</span></strong></p>
+                  <strong><span style="font-family:Arial; font-size:13px;"> Participated/Conducted BaRCO</span></strong></p>
+                </td>
+                <td style="width: 100.95pt; padding: 1pt 2pt; border: 1pt solid windowtext; background: rgb(255, 255, 0); vertical-align: top;">
+                  <p style="text-align:center; margin: 0;"><strong><span style="font-family:Arial; font-size:13px;">SCORE</span></strong></p>
+                </td>
+              </tr>
+              <tr>
+                <td style="width: 174.3pt; padding: 1pt 2pt; border: 1pt solid windowtext; background: rgb(197, 224, 179); vertical-align: top;">
+                  <p style="text-align:left; margin: 0;"><strong><span style="font-family:Arial; font-size:13px;">No. of Elected Barangay Officials</span></strong></p>
+                </td>
+                <td style="width: 55.7pt; padding: 1pt 2pt; border: 1pt solid windowtext; background: rgb(197, 224, 179); vertical-align: top;">
+                  <p style="text-align:left; margin: 0;"><strong><span style="font-family:Arial; font-size:13px;">8</span></strong></p>
+                </td>
+                <td rowspan="4" style="width: 100.95pt; padding: 1pt 2pt; border: 1pt solid windowtext; background: rgb(255, 149, 149); vertical-align: top;">
+                  <p style="margin-top: 8pt; margin-bottom: 4pt; text-align:left;"><strong><span style="font-family:Arial; font-size:11px;">[Total of Table 2/ Total</span></strong></p>
+                  <p style="margin-top: 8pt; margin-bottom: 4pt; text-align:left;"><strong><span style="font-family:Arial; font-size:11px;">of Table 1] x 20 =</span></strong></p>
+                  <p style="margin-top: 0; text-align:left;"><strong><span style="font-family:Arial; font-size:11px;">28/31x20 = </span></strong><strong><span style="font-family:Arial; font-size:16px;">18.06</span></strong></p>
+                </td>
+              </tr>
+              <tr>
+                <td style="width: 174.3pt; padding: 1pt 2pt; border: 1pt solid windowtext; background: rgb(197, 224, 179); vertical-align: top;">
+                  <p style="text-align:left; margin: 0;"><strong><span style="font-family:Arial; font-size:13px;">No. of Elected SK Officials</span></strong></p>
+                </td>
+                <td style="width: 55.7pt; padding: 1pt 2pt; border: 1pt solid windowtext; background: rgb(197, 224, 179); vertical-align: top;">
+                  <p style="text-align:left; margin: 0;"><strong><span style="font-family:Arial; font-size:13px;">8</span></strong></p>
+                </td>
+              </tr>
+              <tr>
+                <td style="width: 174.3pt; padding: 1pt 2pt; border: 1pt solid windowtext; background: rgb(197, 224, 179); vertical-align: top;">
+                  <p style="text-align:left; margin: 0;"><strong><span style="font-family:Arial; font-size:13px;">No. of Barangay Tanods</span></strong></p>
+                </td>
+                <td style="width: 55.7pt; padding: 1pt 2pt; border: 1pt solid windowtext; background: rgb(197, 224, 179); vertical-align: top;">
+                  <p style="text-align:left; margin: 0;"><strong><span style="font-family:Arial; font-size:13px;">15</span></strong></p>
+                </td>
+              </tr>
+              <tr>
+                <td style="width: 174.3pt; padding: 1pt 2pt; border: 1pt solid windowtext; background: rgb(255, 255, 0); vertical-align: top;">
+                  <p style="text-align:center; margin: 0;"><strong><span style="font-family:Arial; font-size:13px;">Total</span></strong></p>
+                </td>
+                <td style="width: 55.7pt; padding: 1pt 2pt; border: 1pt solid windowtext; background: rgb(255, 255, 0); vertical-align: top;">
+                  <p style="text-align:left; margin: 0;"><strong><span style="font-family:Arial; font-size:13px;">31</span></strong></p>
+                </td>
+              </tr>
+            </tbody>
+          </table>      
+        </div>
+    
+          <img src="imagepath" class="summaryimage" style="margin-top: 25px;" width="516" height="376">
+        </div>
+        </div>
+    
+      <!-- Placeholder for additional pages -->
+      <div id="additionalSummary"></div>
+      </div>
 
 </body>
 <script src="js/safetymonitoring.js"></script>
