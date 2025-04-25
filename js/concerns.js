@@ -389,10 +389,8 @@ document.getElementById("submitButton").addEventListener("click", function(event
                 confirmButtonColor: "#0f0"
             }).then((result) => {
                 if (result.isConfirmed) {
-                    //fetchTable();
                     //document.getElementById('closeFormBtn').click();
                     document.getElementById("concernsForm").reset();
-                    //document.getElementById("previewNewPicture").src = 'assets/images/anonymous.svg';
                 }
             });
         });
