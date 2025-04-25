@@ -1,47 +1,39 @@
 
-.suggestions {
-    border-radius: 8px;
-    border: 1px solid #ddd;
-    max-height: 150px;
-    overflow-y: auto;
-    position: absolute;
-    width: 100%;
-    background-color: #fff;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    z-index: 100;
-}
-
-.suggestion-item {
-    padding: 12px;
-    cursor: pointer;
-    font-size: 0.9rem;
-}
-
-.suggestion-item:hover {
-    background-color: #f8f8f8;
-}
-
-.no-records {
-    padding: 12px;
-    font-style: italic;
-    color: #fff;
-    background-color: #f39c12;
-    cursor: pointer;
-    font-size: 0.9rem;
+/* Census search */
+  .result {
+    margin-top: 20px;
+    padding: 10px;
+    background-color: #f0f0f0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+  }
+  .form-section {
+    display: none;
+  }
+  .loading {
     text-align: center;
-}
-
-.no-records:hover {
-    background-color: #e67e22;
-}
-
-.form-container {
-    position: relative;
-}
-
-.mt-3 {
-    margin-top: 1.5rem;
-}
+    font-size: 18px;
+    font-weight: bold;
+    color: #4CAF50;
+  }
+  
+/* Business info */
+  .suggestions {
+    border: 1px solid #ccc;
+    max-height: 200px;
+    overflow-y: auto;
+    width: 300px;
+    position: absolute;
+    background: #fff;
+    z-index: 999;
+  }
+  .suggestion-item {
+    padding: 8px;
+    cursor: pointer;
+  }
+  .suggestion-item:hover {
+    background: #f0f0f0;
+  }
 
 /* Form Validation */
 .error{

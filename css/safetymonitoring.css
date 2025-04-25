@@ -124,3 +124,97 @@
 #staffButtonsContainer::-webkit-scrollbar-track {
     background: #f1f1f1;
 }
+
+.street-entry {
+    border: 1px dashed #ccc;
+    padding: 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    background-color: #f8f9fa;
+}
+
+.clearing-op {
+margin-bottom: 30px;
+}
+
+/* Reports page */
+.reports {
+    display: none;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgb(255, 255, 255);
+    justify-content: center;
+    z-index: 1000;
+    overflow-y: auto;
+  }
+
+  .close-btn:hover {
+    color: red;
+  }
+
+  @page {
+    size: 13in 8.5in;
+    margin: 1in;
+  }
+
+  body {
+    margin: 0;
+    padding: 0;
+    background: #eee;
+  }
+
+  .report-table, .report-streets, .report-summary {
+    width: 13in;
+    height: 8.5in;
+    margin: auto;
+    background: white;
+    padding: 0.5in 1in 0in 1in;
+    box-sizing: border-box;
+    font-family: 'Georgia', serif;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+  }
+
+  h1 {
+    text-align: center;
+    font-size: 24pt;
+    margin-bottom: 0.5em;
+  }
+
+  .activityTable th, .activityTable td {
+    border: 1pt solid black;
+    padding: 5px;
+    vertical-align: top;
+    text-align: center;
+  }
+
+  @media print {
+    .print-button, .close-button, .updateBtn, .reportfor {
+      display: none !important;
+    }
+
+    .reports {
+      display: none;
+      background: rgb(255, 255, 255);
+      overflow: visible;
+      page-break-before: avoid !important;
+    }
+
+    .report-table, .report-streets, .report-summary {
+      width: 13in;
+      height: 8in;
+    }
+
+    body {
+      background: rgb(255, 255, 255);
+    }
+    
+  }
+
+  /* Prevent background from scrolling when modal is open */
+  body.modal-open {
+    overflow: hidden;
+  }

@@ -1,0 +1,24 @@
+#loading-indicator {
+    margin-top: 20%;
+    margin-left: 50%;
+    margin-bottom: 20%;
+    transform: translate(-50%, -50%);
+    font-size: 3rem;
+    color: #333;
+    text-align: center;
+}
+
+#loading-indicator p {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    color: #555; /* Optional: adjust text color */
+}
+
+.text-block {
+background: #f7f7f7;
+border-left: 4px solid #007acc;
+padding: 15px;
+margin-bottom: 20px;
+white-space: pre-wrap;
+word-break: break-word;
+}

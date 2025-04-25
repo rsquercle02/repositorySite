@@ -1,0 +1,95 @@
+@import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap");
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background-image: url('../assets/images/imahe3.jpg');
+  background-position: center;
+  background-size: cover;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+.login {
+  width: 300px;
+  padding: 20px; /* Add padding for spacing inside the border */
+  border: 2px solid #ffffff; /* White border */
+  border-radius: 15px; /* Optional: rounded corners */
+  background-color: rgba(0, 0, 0, 0.5); /* Optional: a slight background for readability */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.login h2 {
+  font-size: 2em;
+  color: #ffffff; /* Change text color to white for visibility */
+}
+
+.login .inputBx {
+  position: relative;
+  width: 100%;
+}
+
+.login .inputBx input {
+  position: relative;
+  width: 100%;
+  padding: 12px 20px;
+  background: transparent;
+  border: 2px solid #ffffff; /* White border for inputs */
+  border-radius: 15px;
+  font-size: 1.2em;
+  color: #ffffff; /* White text color */
+  box-shadow: none;
+  outline: none;
+}
+
+.loginbtn {
+  width: 100%;
+  height: 50px;
+  background: linear-gradient(45deg, #ff357a, #fff172);
+  border: none;
+  border-radius: 25px;
+  cursor: pointer;
+  color: #ffffff; /* White text color */
+}
+
+.signupbtn {
+  width: 100%;
+  background: linear-gradient(45deg, #ff357a, #fff172);
+  border: none;
+  cursor: pointer;
+  color: #ffffff; /* White text color */
+}
+
+.login .inputBx input::placeholder {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.login .links {
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 20px;
+}
+
+.login .links a {
+  color: #ffffff;
+  text-decoration: none;
+}
+
+.respmsg{
+  color: #ffffff;
+}
