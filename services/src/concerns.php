@@ -65,8 +65,7 @@ $group->post('/postconcerns', function (Request $request, Response $response) us
         }
 
         // Function to handle file upload and return the file path 
-        function handleFileUpload($file, $uploadDir, $username)
-        {
+        function handleFileUploads($file, $uploadDir, $username){
             // Allowed file types (moved inside the function)
             $allowedFileTypes = array(
                 'application/msword', // .doc
@@ -121,17 +120,18 @@ $group->post('/postconcerns', function (Request $request, Response $response) us
 
         // Upload files and collect their paths
         $filePaths = [];
-        $filePaths['file1'] = handleFileUpload($image1, $uploadDir, $input['storeName']);
-        $filePaths['file2'] = handleFileUpload($image2, $uploadDir, $input['storeName']);
-        $filePaths['file3'] = handleFileUpload($image3, $uploadDir, $input['storeName']);
+        $filePaths['file1'] = handleFileUploads($image1, $uploadDir, $input['storeName']);
+        $filePaths['file2'] = handleFileUploads($image2, $uploadDir, $input['storeName']);
+        $filePaths['file3'] = handleFileUploads($image3, $uploadDir, $input['storeName']);
 
         // Start the transaction
         $db->beginTransaction();
 
-        $query = "INSERT INTO stores (store_name, store_address) VALUES (:store_name, :store_address)";
+        $query = "INSERT INTO stores (store_name, store_address, record_status) VALUES (:store_name, :store_address, :record_status)";
         $stmt = $db->prepare($query);
         $stmt->bindValue(':store_name', $input['storeName']);
         $stmt->bindValue(':store_address', $input['storeAddress']);
+        $stmt->bindValue(':record_status', $input['recordStatus']);
         $stmt->execute();
 
         // Get the last inserted user ID (for linking to the order)
@@ -145,6 +145,15 @@ $group->post('/postconcerns', function (Request $request, Response $response) us
 
         // Get the last inserted user ID (for linking to the order)
         $concernId = $db->lastInsertId();
+
+        $query = "INSERT INTO concernedcitizen (concern_id, firstname, middlename, lastname, anonymity_status) VALUES (:concern_id, :firstname, :middlename, :lastname, :anonymity_status)";
+        $stmt = $db->prepare($query);
+        $stmt->bindValue(':concern_id', $concernId);
+        $stmt->bindValue(':firstname', $input['firstname']);
+        $stmt->bindValue(':middlename', $input['middlename']);
+        $stmt->bindValue(':lastname', $input['lastname']);
+        $stmt->bindValue(':anonymity_status', $input['anonymityStatus']);
+        $stmt->execute();
 
         //files query
         $query = "INSERT INTO concernsuploads (concern_id, file1, file2, file3) VALUES (:concern_id, :file1, :file2, :file3)";
