@@ -15,12 +15,14 @@ $app->addBodyParsingMiddleware();
 $app->addRoutingMiddleware();
 $app->setBasePath('/api/service');
 $app->add(new Tuupola\Middleware\CorsMiddleware([
+    "origin" => ["*"],  // ✅ allow all origins
     "methods" => ["GET", "POST"],
     "headers.allow" => ["Content-Type", "Authorization"],
     "headers.expose" => ["Authorization"],
-    "credentials" => true, // ✅ this allows cookies to be sent
+    "credentials" => true, // ✅ allows cookies to be sent
     "cache" => 0,
 ]));
+
 
 
 
