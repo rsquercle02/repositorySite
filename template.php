@@ -217,7 +217,7 @@ if (!isset($_SESSION['profile']) || !in_array($_SESSION['profile'], ['Super Admi
           </p>';
           }
 
-          if(isset($_SESSION["profile"]) && $_SESSION["profile"] == "Administrator"){
+          if((isset($_SESSION["profile"]) && $_SESSION["profile"] == "Super Administrator") || (isset($_SESSION["profile"]) && $_SESSION["profile"] == "Administrator")){
           echo'
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
@@ -235,10 +235,11 @@ if (!isset($_SESSION['profile']) || !in_array($_SESSION['profile'], ['Super Admi
                 <span class="ml-3 item-text">Concerns List</span>
               </a>
             </li>
-          </ul>';
+          </ul>
+          ';
           }
-
-          if(isset($_SESSION["profile"]) && ($_SESSION['profile'] == 'Administrator' || $_SESSION["profile"] == "User")){
+          
+          if (isset($_SESSION['profile']) && ($_SESSION['profile'] == 'Super Administrator' || $_SESSION['profile'] == 'Administrator' || $_SESSION['profile'] == 'User')) {
             echo'
             <ul class="navbar-nav flex-fill w-100 mb-2">
               <li class="nav-item w-100">
@@ -247,10 +248,11 @@ if (!isset($_SESSION['profile']) || !in_array($_SESSION['profile'], ['Super Admi
                   <span class="ml-3 item-text">Report list</span>
                 </a>
               </li>
-            </ul>';
-            }
+            </ul>
+          ';
+          }
 
-          if (isset($_SESSION['profile']) && ($_SESSION['profile'] == 'Super Administrator' || $_SESSION['profile'] == 'Administrator')) {
+          if((isset($_SESSION["profile"]) && $_SESSION["profile"] == "Super Administrator") || (isset($_SESSION["profile"]) && $_SESSION["profile"] == "Administrator")){
             echo'
             <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item dropdown">
@@ -260,20 +262,20 @@ if (!isset($_SESSION['profile']) || !in_array($_SESSION['profile'], ['Super Admi
               </a>
             </li>
           </ul>
+          
+          <ul class="navbar-nav flex-fill w-100 mb-2">
+            <li class="nav-item dropdown">
+              <a class="nav-link" href="aiinsights">
+              <i class="fa-solid fa-star"></i>
+                <span class="ml-3 item-text">AI Insights</span>
+              </a>
+            </li>
+          </ul>
           ';
           }
 
           if (isset($_SESSION['profile']) && $_SESSION['profile'] == 'Super Administrator') {
           echo'
-          <ul class="navbar-nav flex-fill w-100 mb-2">
-            <li class="nav-item dropdown">
-              <a class="nav-link" href="reportlist">
-              <i class="fa-solid fa-clipboard-list"></i>
-                <span class="ml-3 item-text">Report list</span>
-              </a>
-            </li>
-          </ul>
-
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item dropdown">
               <a class="nav-link" href="usermanagement">
@@ -335,8 +337,8 @@ if (!isset($_SESSION['profile']) || !in_array($_SESSION['profile'], ['Super Admi
         
         if(isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] == "ok"){
             echo '<div class="scrollcontent">';
-            $superadminRoutes = ['admindashboard', 'safetymonitoring', 'reportlist', 'tracking', 'usermanagement'];
-            $adminRoutes = ['admindashboard', 'safetymonitoring', 'concernslist', 'reportlist', 'tracking', 'usermanagement'];
+            $superadminRoutes = ['admindashboard', 'safetymonitoring', 'reportlist', 'tracking', 'aiinsights', 'usermanagement'];
+            $adminRoutes = ['admindashboard', 'safetymonitoring', 'concernslist', 'reportlist', 'tracking', 'aiinsights', 'usermanagement'];
             $userRoutes = ['dashboard', 'reportlist', 'ratingandfeedback', 'inspectionreport', 'categorylocator', 'usermanagement'];
             if (isset($_GET["route"])) {
                 $route = basename($_GET["route"]);
@@ -369,7 +371,9 @@ if (!isset($_SESSION['profile']) || !in_array($_SESSION['profile'], ['Super Admi
                 include "user_pages/k3/dashboard.html";
               }
             }
-             include "footer.php";
+            echo'<div class="page">';
+             include "footer.html";
+             echo'</div>';
              echo '</div>';
         }else{
         include "login.php";
