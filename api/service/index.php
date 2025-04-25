@@ -125,6 +125,12 @@ $app->group('/reportlist', function (RouteCollectorProxy $group) {
     require __DIR__ . '/../../services/src/reportlist.php';
 })->add(rateLimitMiddleware('report-service', 55, 60)); // 55 requests per 60 seconds
 
+// Integration Service Group with Rate Limiting
+$app->group('/integration', function (RouteCollectorProxy $group) {
+    
+    require __DIR__ . '/../../services/src/integration.php';
+})->add(rateLimitMiddleware('integration-service', 55, 60)); // 55 requests per 60 seconds
+
 $app->get('/sessiontest', function (Request $request, Response $response) {
     // Setting the session variable somewhere (e.g., after login)
     //$_SESSION["id"] = '115';

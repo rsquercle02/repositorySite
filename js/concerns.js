@@ -8,12 +8,12 @@ let data = [];
 // Fetch data from an API or server endpoint
 function fetchData() {
   document.getElementById('loadingMessage').style.display = 'block';
-  fetch('https://bfmsi.smartbarangayconnect.com/api/service/concernslist/census')
+  fetch('https://bfmsi.smartbarangayconnect.com/api/service/integration/census')
     .then(response => response.json())
     .then(responseData => {
       console.log('Fetched data:', responseData);
 
-      if (Array.isArray(responseData.data)) {
+      /* if (Array.isArray(responseData.data)) {
         data = responseData.data.map(item => ({
           _id: item.id,
           firstname: item.firstname || 'FirstName',
@@ -23,7 +23,7 @@ function fetchData() {
         }));
       } else {
         console.error('Error: The fetched data is invalid.');
-      }
+      } */
 
       console.log('Processed data:', data);
       // Hide loading and show form if still non-anonymous
@@ -146,7 +146,7 @@ window.onload = function() {
 let recordStatus = '';
 
 // Fetch store data from API, passing query as a parameter
-const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/business`;
+const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/integration/business`;
 
 fetch(detailsUrl)
   .then(response => response.json())
