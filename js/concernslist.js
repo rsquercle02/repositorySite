@@ -28,7 +28,7 @@ function fetchTable(){
                 row.appendChild(addressCell);
 
                 const statusCell = document.createElement("td");
-                statusCell.textContent = item.concern_status;
+                statusCell.textContent = item.anonymity_status;
                 row.appendChild(statusCell);
 
                 const createdAtCell = document.createElement("td");
@@ -69,9 +69,15 @@ function fetchTable(){
                 //document.getElementById("previewId").innerText = data.id;
                 // Populate HTML with dynamic data
                 document.getElementById('concernId').textContent = data.concern_id;
+                if(data.anonymity_status == 'non-anonymous'){
+                    document.getElementById('concernedCitizen').textContent = data.fullname;
+                } else if(data.anonymity_status == 'anonymous'){
+                    document.getElementById('concernedCitizen').textContent = "Anonymous";
+                }
                 document.getElementById('storeId').textContent = data.store_id;
                 document.getElementById('storeName').textContent = data.store_name;
                 document.getElementById('storeAddress').textContent = data.store_address;
+                document.getElementById('storeRecord').textContent = data.record_status;
                 document.getElementById('concernDetails').textContent = data.concern_details;
                 document.getElementById('concernStatus').textContent = data.concern_status;
                 document.getElementById('cStatusReason').textContent = data.cstatus_reason;
@@ -146,7 +152,7 @@ function fetchTable(){
                     row.appendChild(addressCell);
     
                     const statusCell = document.createElement("td");
-                    statusCell.textContent = item.concern_status;
+                    statusCell.textContent = item.anonymity_status;
                     row.appendChild(statusCell);
     
                     const createdAtCell = document.createElement("td");
@@ -285,9 +291,11 @@ function fetchTable(){
                     if (result.isConfirmed) {
                         // Remove data of the form
                         document.getElementById('concernId').textContent = '';
+                        document.getElementById('concernedCitizen').textContent = '';
                         document.getElementById('storeId').textContent = '';
                         document.getElementById('storeName').textContent = '';
                         document.getElementById('storeAddress').textContent = '';
+                        document.getElementById('storeRecord').textContent = '';
                         document.getElementById('concernDetails').textContent = '';
                         document.getElementById('createAt').textContent = '';
                         document.getElementById('reportTextarea').value = '';
@@ -313,9 +321,11 @@ function fetchTable(){
                         if (result.isConfirmed) {
                             // Remove data of the form
                             document.getElementById('concernId').textContent = '';
+                            document.getElementById('concernedCitizen').textContent = '';
                             document.getElementById('storeId').textContent = '';
                             document.getElementById('storeName').textContent = '';
                             document.getElementById('storeAddress').textContent = '';
+                            document.getElementById('storeRecord').textContent = '';
                             document.getElementById('concernDetails').textContent = '';
                             document.getElementById('createAt').textContent = '';
                             document.getElementById('reportTextarea').value = '';
@@ -340,9 +350,11 @@ function fetchTable(){
                 if (result.isConfirmed) {
                     // Remove data of the form
                     document.getElementById('concernId').textContent = '';
+                    document.getElementById('concernedCitizen').textContent = '';
                     document.getElementById('storeId').textContent = '';
                     document.getElementById('storeName').textContent = '';
                     document.getElementById('storeAddress').textContent = '';
+                    document.getElementById('storeRecord').textContent = '';
                     document.getElementById('concernDetails').textContent = '';
                     document.getElementById('createAt').textContent = '';
                     document.getElementById('reportTextarea').value = '';

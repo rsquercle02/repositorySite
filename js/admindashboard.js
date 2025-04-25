@@ -1,5 +1,5 @@
 // Fetch data from the API endpoint
-detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/ViolationTally`;
+detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/InfoTally`;
 fetch(detailsUrl)
   .then(response => response.json())
   .then(data => {

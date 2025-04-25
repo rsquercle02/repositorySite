@@ -159,9 +159,15 @@ function fetchTable(currentcategory, searchinput){
                 // Populate HTML with dynamic data
                 document.getElementById('kreportId').textContent = data.report_id;
                 document.getElementById('kconcernId').textContent = data.concern_id;
+                if(data.anonymity_status == 'non-anonymous'){
+                    document.getElementById('kconcernedCitizen').textContent = data.fullname;
+                } else if(data.anonymity_status == 'anonymous'){
+                    document.getElementById('kconcernedCitizen').textContent = "Anonymous";
+                }
                 document.getElementById('kstoreId').textContent = data.store_id;
                 document.getElementById('kstoreName').textContent = data.store_name;
                 document.getElementById('kstoreAddress').textContent = data.store_address;
+                document.getElementById('kstoreRecords').textContent = data.storeRecords;
                 document.getElementById('kreportDetails').textContent = data.report_details;
                 document.getElementById('kstoreViolations').textContent = data.store_violations;
                 document.getElementById('kcreateAt').textContent = data.create_at;
@@ -218,9 +224,15 @@ function fetchTable(currentcategory, searchinput){
                 // Populate HTML with dynamic data
                 document.getElementById('creportId').textContent = data.report_id;
                 document.getElementById('cconcernId').textContent = data.concern_id;
+                if(data.anonymity_status == 'non-anonymous'){
+                    document.getElementById('cconcernedCitizen').textContent = data.fullname;
+                } else if(data.anonymity_status == 'anonymous'){
+                    document.getElementById('cconcernedCitizen').textContent = "Anonymous";
+                }
                 document.getElementById('cstoreId').textContent = data.store_id;
                 document.getElementById('cstoreName').textContent = data.store_name;
                 document.getElementById('cstoreAddress').textContent = data.store_address;
+                document.getElementById('cstoreRecords').textContent = data.record_status;
                 document.getElementById('creportDetails').textContent = data.report_details;
                 document.getElementById('cstoreViolations').textContent = data.store_violations;
                 document.getElementById('ccreateAt').textContent = data.create_at;

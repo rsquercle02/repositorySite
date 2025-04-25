@@ -70,9 +70,15 @@ function fetchTable(){
                 // Populate HTML with dynamic data
                 document.getElementById('reportId').textContent = data.report_id;
                 document.getElementById('concernId').textContent = data.concern_id;
+                if(data.anonymity_status == 'non-anonymous'){
+                    document.getElementById('concernedCitizen').textContent = data.fullname;
+                } else if(data.anonymity_status == 'anonymous'){
+                    document.getElementById('concernedCitizen').textContent = "Anonymous";
+                }
                 document.getElementById('storeId').textContent = data.store_id;
                 document.getElementById('storeName').textContent = data.store_name;
                 document.getElementById('storeAddress').textContent = data.store_address;
+                document.getElementById('storeRecord').textContent = data.record_status;
                 document.getElementById('reportDetails').textContent = data.report_details;
                 document.getElementById('storeViolations').textContent = data.store_violations;
                 document.getElementById('createAt').textContent = data.create_at;
@@ -283,9 +289,11 @@ function fetchTable(){
                         // Remove data of the form
                         document.getElementById('reportId').textContent = '';
                         document.getElementById('concernId').textContent = '';
+                        document.getElementById('concernedCitizen').textContent = '';
                         document.getElementById('storeId').textContent = '';
                         document.getElementById('storeName').textContent = '';
                         document.getElementById('storeAddress').textContent = '';
+                        document.getElementById('storeRecord').textContent = '';
                         document.getElementById('reportDetails').textContent = '';
                         document.getElementById('storeViolations').textContent = '';
                         document.getElementById('createAt').textContent = '';
@@ -311,9 +319,11 @@ function fetchTable(){
                             // Remove data of the form
                             document.getElementById('reportId').textContent = '';
                             document.getElementById('concernId').textContent = '';
+                            document.getElementById('concernedCitizen').textContent = '';
                             document.getElementById('storeId').textContent = '';
                             document.getElementById('storeName').textContent = '';
                             document.getElementById('storeAddress').textContent = '';
+                            document.getElementById('storeRecord').textContent = '';
                             document.getElementById('reportDetails').textContent = '';
                             document.getElementById('storeViolations').textContent = '';
                             document.getElementById('createAt').textContent = '';
@@ -340,9 +350,11 @@ function fetchTable(){
                     // Remove data of the form
                     document.getElementById('reportId').textContent = '';
                     document.getElementById('concernId').textContent = '';
+                    document.getElementById('concernedCitizen').textContent = '';
                     document.getElementById('storeId').textContent = '';
                     document.getElementById('storeName').textContent = '';
                     document.getElementById('storeAddress').textContent = '';
+                    document.getElementById('storeRecord').textContent = '';
                     document.getElementById('reportDetails').textContent = '';
                     document.getElementById('storeViolations').textContent = '';
                     document.getElementById('createAt').textContent = '';

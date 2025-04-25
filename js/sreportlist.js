@@ -6,7 +6,10 @@ function fetchTable(){
     // Example URL for fetching detailed information (you may adjust it)
     const detailsUrl = 'https://bfmsi.smartbarangayconnect.com/api/service/concernslist/sfetchReports';
     // Fetch data from the API endpoint to populate the table
-    fetch(detailsUrl)
+    fetch(detailsUrl, {
+        method: 'GET', // Or POST if needed
+        credentials: 'include', // Make sure cookies are sent with the request
+    })
         .then(response => response.json())
         .then(data => {
             const tableBody = document.querySelector("#table tbody");
