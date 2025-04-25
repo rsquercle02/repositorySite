@@ -24,8 +24,6 @@ if (!isset($_SESSION['profile']) || $_SESSION['profile'] != "Citizen") {
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-    <!-- Set the base URL for all relative paths -->
-    <base href="/WebBFMSI/">
     <link rel="icon" href="assets/images/unified-lgu-logo.png">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.6.0/css/fontawesome.min.css">
     <link rel ="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css">
