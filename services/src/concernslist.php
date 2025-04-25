@@ -25,6 +25,7 @@ $dotenv->load();
 $group->get('/fetchConcerns', function (Request $request, Response $response) use ($db) {
     $query = "SELECT
     c.concern_id,
+    cc.anonymity_status,
     s.store_name,
     s.store_address,
     cst.concern_status,
@@ -35,6 +36,10 @@ $group->get('/fetchConcerns', function (Request $request, Response $response) us
         stores s
     ON
     	c.store_id = s.store_id
+    JOIN
+        concernedcitizen cc
+    ON
+    	cc.concern_id = c.concern_id
     JOIN
         cstatus cst
     ON
@@ -52,7 +57,7 @@ $group->get('/fetchConcerns', function (Request $request, Response $response) us
 $group->get('/searchBusiness/{searchTerm}', function (Request $request, Response $response, $args) use ($db) {
     $query = "SELECT
     c.concern_id,
-    s.store_id,
+    cc.anonymity_status,
     s.store_name,
     s.store_address,
     cst.concern_status,
@@ -64,11 +69,15 @@ $group->get('/searchBusiness/{searchTerm}', function (Request $request, Response
     ON
     	c.store_id = s.store_id
     JOIN
+        concernedcitizen cc
+    ON
+    	cc.concern_id = c.concern_id
+    JOIN
         cstatus cst
     ON
         c.concern_id = cst.concern_id
     WHERE
-        cst.concern_status = 'No action.' AND s.store_name LIKE :searchTerm
+        cst.concern_status = 'No action.'
     ORDER BY c.create_at ASC";
 
     $stmt = $db->prepare($query);
@@ -83,9 +92,12 @@ $group->get('/searchBusiness/{searchTerm}', function (Request $request, Response
 $group->get('/fetchDetails/{id}', function (Request $request, Response $response, $args) use ($db) {
     $query = "SELECT
     c.concern_id,
+    cc.anonymity_status,
+    CONCAT(cc.firstname, ' ', cc.middlename, ' ', cc.lastname) AS fullname,
     s.store_id,
     s.store_name,
     s.store_address,
+    s.record_status,
     c.concern_details,
     cu.file1,
     cu.file2,
@@ -99,6 +111,10 @@ $group->get('/fetchDetails/{id}', function (Request $request, Response $response
         concerns c
     ON
     	s.store_id = c.store_id
+    JOIN
+        concernedcitizen cc
+    ON
+    	cc.concern_id = c.concern_id
     JOIN
         concernsuploads cu
     ON
@@ -229,7 +245,9 @@ $group->get('/k1search/{searchTerm}', function (Request $request, Response $resp
 $group->get('/k1fetch/{id}', function (Request $request, Response $response, $args) use ($db) {
     $query = "SELECT 
     r.report_id, 
-    r.concern_id, 
+    r.concern_id,
+    cc.anonymity_status,
+    CONCAT(cc.firstname, ' ', cc.middlename, ' ', cc.lastname) AS fullname, 
     r.report_details, 
     cu.file1,
     cu.file2,
@@ -239,12 +257,15 @@ $group->get('/k1fetch/{id}', function (Request $request, Response $response, $ar
     rs.create_at, 
     s.store_id,
     s.store_name, 
-    s.store_address, 
+    s.store_address,
+    s.record_status,
     v.store_violations
     FROM 
         stores s
     JOIN 
         reports r ON s.store_id = r.store_id
+    JOIN 
+        concernedcitizen cc ON cc.concern_id = r.concern_id
     JOIN
         concernsuploads cu ON r.concern_id = cu.concern_id
     JOIN
@@ -590,7 +611,9 @@ $group->get('/k2search/{searchTerm}', function (Request $request, Response $resp
 $group->get('/k2fetch/{id}', function (Request $request, Response $response, $args) use ($db) {
     $query = "SELECT 
     r.report_id, 
-    r.concern_id, 
+    r.concern_id,
+    cc.anonymity_status,
+    CONCAT(cc.firstname, ' ', cc.middlename, ' ', cc.lastname) AS fullname, 
     r.report_details, 
     cu.file1,
     cu.file2,
@@ -600,12 +623,15 @@ $group->get('/k2fetch/{id}', function (Request $request, Response $response, $ar
     rs.create_at, 
     s.store_id,
     s.store_name, 
-    s.store_address, 
+    s.store_address,
+    s.record_status,
     v.store_violations
     FROM 
         stores s
     JOIN 
         reports r ON s.store_id = r.store_id
+    JOIN 
+        concernedcitizen cc ON cc.concern_id = r.concern_id
     JOIN
         concernsuploads cu ON r.concern_id = cu.concern_id
     JOIN
@@ -613,7 +639,7 @@ $group->get('/k2fetch/{id}', function (Request $request, Response $response, $ar
     LEFT JOIN 
         storeviolations v ON s.store_id = v.store_id  -- Join violations table
     WHERE 
-        rs.concerned_staff = 'Kagawad 2.' 
+        rs.concerned_staff = 'Kagawad 1.' 
         AND r.report_id = :id
     ORDER BY 
         rs.create_at ASC;
@@ -951,7 +977,9 @@ $group->get('/k3search/{searchTerm}', function (Request $request, Response $resp
 $group->get('/k3fetch/{id}', function (Request $request, Response $response, $args) use ($db) {
     $query = "SELECT 
     r.report_id, 
-    r.concern_id, 
+    r.concern_id,
+    cc.anonymity_status,
+    CONCAT(cc.firstname, ' ', cc.middlename, ' ', cc.lastname) AS fullname, 
     r.report_details, 
     cu.file1,
     cu.file2,
@@ -961,12 +989,15 @@ $group->get('/k3fetch/{id}', function (Request $request, Response $response, $ar
     rs.create_at, 
     s.store_id,
     s.store_name, 
-    s.store_address, 
+    s.store_address,
+    s.record_status,
     v.store_violations
     FROM 
         stores s
     JOIN 
         reports r ON s.store_id = r.store_id
+    JOIN 
+        concernedcitizen cc ON cc.concern_id = r.concern_id
     JOIN
         concernsuploads cu ON r.concern_id = cu.concern_id
     JOIN
@@ -974,7 +1005,7 @@ $group->get('/k3fetch/{id}', function (Request $request, Response $response, $ar
     LEFT JOIN 
         storeviolations v ON s.store_id = v.store_id  -- Join violations table
     WHERE 
-        rs.concerned_staff = 'Kagawad 3.' 
+        rs.concerned_staff = 'Kagawad 1.' 
         AND r.report_id = :id
     ORDER BY 
         rs.create_at ASC;
@@ -1277,10 +1308,10 @@ $group->get('/sfetchReports', function (Request $request, Response $response) us
     ON
     r.report_id = rs.report_id
     WHERE
-    rs.concerned_staff = 'Captain.'";
+    rs.concerned_staff = :staff";
     $stmt = $db->prepare($query);
-    //$svariable = $_SESSION['profile'];
-    //$stmt->bindValue(':staff', $svariable);
+    $svariable = $_SESSION['barangayRole'] . ".";
+    $stmt->bindValue(':staff', $svariable);
     $stmt->execute();
     //$svariable = $_SESSION['profile'];
     //echo 'hello' . $svariable;
@@ -1316,7 +1347,8 @@ $group->get('/ssearch/{searchTerm}', function (Request $request, Response $respo
 $group->get('/sfetch/{id}', function (Request $request, Response $response, $args) use ($db) {
     $query = "SELECT 
     r.report_id, 
-    r.concern_id, 
+    r.concern_id,
+    CONCAT(cc.firstname, ' ', cc.middlename, ' ', cc.lastname) AS fullname, 
     r.report_details, 
     cu.file1,
     cu.file2,
@@ -1326,7 +1358,8 @@ $group->get('/sfetch/{id}', function (Request $request, Response $response, $arg
     rs.create_at, 
     s.store_id,
     s.store_name, 
-    s.store_address, 
+    s.store_address,
+    s.record_status, 
     v.store_violations,
     ar.actions,
     rf.afile1,
@@ -1336,6 +1369,8 @@ $group->get('/sfetch/{id}', function (Request $request, Response $response, $arg
         stores s
     JOIN 
         reports r ON s.store_id = r.store_id
+    JOIN 
+        concernedcitizen ON cc.concern_id = r.concern_id
     JOIN
         concernsuploads cu ON r.concern_id = cu.concern_id
     JOIN
@@ -1863,16 +1898,32 @@ $group->get('/clrngopsPending', function (Request $request, Response $response) 
     $search = isset($queryParams['search']) ? $queryParams['search'] : null;
 
     if($search == null){
-    $query = "SELECT clr.clrngops_id, clr.title, clr.date, cls.clrngops_status, clr.create_at  FROM clrngopsrprt clr
-        JOIN clrngopsstatus cls ON clr.clrngops_id = cls.clrngops_id
-        WHERE cls.clrngops_status = 'Pending.'";
+    $query = "SELECT 
+        YEAR(operation_date) AS year,
+        DATE_FORMAT(operation_date, '%Y-%m') AS `year_month`,
+        MONTH(operation_date) AS month_number,
+        MONTHNAME(operation_date) AS month,
+        status,
+        COUNT(*) AS report_count
+        FROM clearingoperations
+        WHERE status = 'Pending.'
+        GROUP BY year, `year_month`, month_number, month, status
+        ORDER BY year, month_number";
     $stmt = $db->prepare($query);
     $stmt->execute();
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }else {
-    $query = "SELECT clr.clrngops_id, clr.title, clr.date, cls.clrngops_status, clr.create_at  FROM clrngopsrprt clr
-        JOIN clrngopsstatus cls ON clr.clrngops_id = cls.clrngops_id
-        WHERE cls.clrngops_status = 'Pending.' AND clr.title LIKE :searchTerm";
+    $query = "SELECT 
+        YEAR(operation_date) AS year,
+        DATE_FORMAT(operation_date, '%Y-%m') AS `year_month`,
+        MONTH(operation_date) AS month_number,
+        MONTHNAME(operation_date) AS month,
+        status,
+        COUNT(*) AS report_count
+        FROM clearingoperations
+        WHERE status = 'Pending.' AND MONTHNAME(operation_date) LIKE :searchTerm
+        GROUP BY year, `year_month`, month_number, month, status
+        ORDER BY year, month_number";
     $stmt = $db->prepare($query);
     $stmt->bindValue(':searchTerm', '%' . $search . '%', PDO::PARAM_STR);
     $stmt->execute();
@@ -1891,16 +1942,32 @@ $group->get('/clrngopsSent', function (Request $request, Response $response) use
     $search = isset($queryParams['search']) ? $queryParams['search'] : null;
 
     if($search == null){
-    $query = "SELECT clr.clrngops_id, clr.title, clr.date, cls.clrngops_status, clr.create_at  FROM clrngopsrprt clr
-        JOIN clrngopsstatus cls ON clr.clrngops_id = cls.clrngops_id
-        WHERE cls.clrngops_status = 'Sent.'";
+    $query = "SELECT 
+        YEAR(operation_date) AS year,
+        DATE_FORMAT(operation_date, '%Y-%m') AS `year_month`,
+        MONTH(operation_date) AS month_number,
+        MONTHNAME(operation_date) AS month,
+        status,
+        COUNT(*) AS report_count
+        FROM clearingoperations
+        WHERE status = 'Sent.'
+        GROUP BY year, `year_month`, month_number, month, status
+        ORDER BY year, month_number";
     $stmt = $db->prepare($query);
     $stmt->execute();
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
     }else {
-    $query = "SELECT clr.clrngops_id, clr.title, clr.date, cls.clrngops_status, clr.create_at  FROM clrngopsrprt clr
-        JOIN clrngopsstatus cls ON clr.clrngops_id = cls.clrngops_id
-        WHERE cls.clrngops_status = 'Sent.' AND clr.title LIKE :searchTerm";
+    $query = "SELECT 
+        YEAR(operation_date) AS year,
+        DATE_FORMAT(operation_date, '%Y-%m') AS `year_month`,
+        MONTH(operation_date) AS month_number,
+        MONTHNAME(operation_date) AS month,
+        status,
+        COUNT(*) AS report_count
+        FROM clearingoperations
+        WHERE status = 'Sent.' AND MONTHNAME(operation_date) LIKE :searchTerm
+        GROUP BY year, `year_month`, month_number, month, status
+        ORDER BY year, month_number";
     $stmt = $db->prepare($query);
     $stmt->bindValue(':searchTerm', '%' . $search . '%', PDO::PARAM_STR);
     $stmt->execute();
@@ -2077,10 +2144,10 @@ $group->post('/clrngopsUpdate', function (Request $request, Response $response) 
         $input = $request->getParsedBody();
 
         //update status
-        $statusquery = "UPDATE clrngopsstatus SET clrngops_status = :clrngops_status WHERE clrngops_id = :clrngops_id";
+        $statusquery = "UPDATE clearingoperations SET status = :status WHERE DATE_FORMAT(operation_date, '%Y-%m') = :year_month";
         $statusstmt = $db->prepare($statusquery);
-        $statusstmt->bindParam(':clrngops_status', $input['status']);
-        $statusstmt->bindParam(':clrngops_id', $input['clrreportId']);
+        $statusstmt->bindValue(':status', $input['status']);
+        $statusstmt->bindValue(':year_month', $input['year_month']);
         $statusstmt->execute();
         
         // Optionally, you can return a success message or result after execution
@@ -2490,7 +2557,7 @@ $group->get('/ResolvedReports', function (Request $request, Response $response) 
     return $response->withHeader('Content-Type', 'application/json');
 });
 
-$group->get('/ViolationTally', function (Request $request, Response $response) use ($db) {
+$group->get('/InfoTally', function (Request $request, Response $response) use ($db) {
     $query = "
     SELECT
         SUM(CASE WHEN vt.store_violation LIKE '%EXPIRED PRODUCTS%' THEN 1 ELSE 0 END) AS expired_products_count,
@@ -2571,5 +2638,334 @@ $group->get('/sessiontest', function (Request $request, Response $response) use 
     $responseData = array_merge($id, $username, $profile, $barangayRole, $status, $picture);
     //$data = $_SESSION["id"];
     $response->getBody()->write(json_encode($responseData));
+    return $response->withHeader('Content-Type', 'application/json');
+});
+
+$group->get('/fetchactivity', function (Request $request, Response $response) use ($db) {
+    
+    $query = "
+        SELECT  
+            a.id AS activity_id,
+            a.conducted_activity,
+            a.date,
+            a.action_taken,
+            a.remarks,
+            s.street_name,
+            s.road_length
+        FROM streets s
+        JOIN activities a ON s.activity_id = a.id
+        WHERE a.id = '3'";
+    $stmt = $db->prepare($query);
+    $stmt->execute();
+    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $response->getBody()->write(json_encode($data));
+    return $response->withHeader('Content-Type', 'application/json');
+});
+
+/*
+// Helper function to save uploaded files
+function saveUploadedFile($uploadedFile, $directory)
+{
+    // Get the file extension and generate a unique name for the file
+    $extension = pathinfo($uploadedFile->getClientFilename(), PATHINFO_EXTENSION);
+    $filename = uniqid() . '.' . $extension;
+
+    // Move the uploaded file to the target directory
+    $uploadedFile->moveTo($directory . DIRECTORY_SEPARATOR . $filename);
+
+    return $filename;
+}
+
+// Save activity endpoint
+$group->post('/save_activity', function (Request $request, Response $response) use ($db) {
+    $data = json_decode($request->getBody(), true);
+
+    // Define the directory where uploaded photos will be saved
+    $uploadDirectory = '../../uploads/safetymonitoring/';  // Set your actual uploads directory
+
+    // Get the uploaded files from the form
+    $uploadedFiles = $request->getUploadedFiles();
+    $streetPhotos = []; // Array to hold the file names for street photos
+    $barcoPhotoName = null;
+
+    // Process street photos (assuming there are up to 3 photos per street)
+    foreach ($data['clearing_operations'][0]['streets'] as $index => $street) {
+        $photos = $street['photos'] ?? [];
+        $savedPhotos = [];
+        foreach ($photos as $photoIndex => $photo) {
+            // Check if the file exists in the uploaded files
+            $uploadedFile = $uploadedFiles['streets'][$index]['photos'][$photoIndex] ?? null;
+            if ($uploadedFile && $uploadedFile->getError() === UPLOAD_ERR_OK) {
+                $savedPhotos[] = saveUploadedFile($uploadedFile, $uploadDirectory);
+            }
+        }
+        $streetPhotos[] = $savedPhotos; // Store the saved filenames for each street
+    }
+
+    // Process the BaRCO participant photo
+    $barcoPhotoFile = $uploadedFiles['barco_photo'] ?? null;
+    if ($barcoPhotoFile && $barcoPhotoFile->getError() === UPLOAD_ERR_OK) {
+        $barcoPhotoName = saveUploadedFile($barcoPhotoFile, $uploadDirectory);
+    }
+
+    // Begin transaction to ensure everything is saved atomically
+    $db->beginTransaction();
+    try {
+        // Insert clearing operation
+        $stmt = $db->prepare('INSERT INTO clearing_operations (conducted, action_taken, remarks) VALUES (?, ?, ?)');
+        $stmt->execute([$data['clearing_operations'][0]['clearing_conducted'], $data['clearing_operations'][0]['action_taken'], $data['clearing_operations'][0]['remarks']]);
+        $clearingOpId = $db->lastInsertId();
+
+        // Insert streets
+        foreach ($data['clearing_operations'][0]['streets'] as $index => $street) {
+            $stmt = $db->prepare('INSERT INTO streets (clearing_operation_id, street_name, road_length, photo1, photo2, photo3) VALUES (?, ?, ?, ?, ?, ?)');
+            $stmt->execute([
+                $clearingOpId,
+                $street['street_name'],
+                $street['road_length'],
+                $streetPhotos[$index][0] ?? null, // Save first photo
+                $streetPhotos[$index][1] ?? null, // Save second photo
+                $streetPhotos[$index][2] ?? null  // Save third photo
+            ]);
+        }
+
+        // Insert BaRCO participants
+        $stmt = $db->prepare('INSERT INTO barco_participants (barangay_official, sk_official, barangay_tanod, barco_photo) VALUES (?, ?, ?, ?)');
+        $stmt->execute([
+            $data['barco_participants']['barangay_official'],
+            $data['barco_participants']['sk_official'],
+            $data['barco_participants']['barangay_tanod'],
+            $barcoPhotoName
+        ]);
+
+        // Commit the transaction
+        $db->commit();
+
+        // Send success response
+        $response->getBody()->write(json_encode(['success' => true]));
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+    } catch (\Exception $e) {
+        // Rollback transaction in case of error
+        $db->rollBack();
+        $response->getBody()->write(json_encode(['success' => false, 'message' => $e->getMessage()]));
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
+    }
+}); */
+
+// Function to handle file upload and return the file path
+function handleFileUpload($file, $uploadDir, $reportId)
+{
+    // Allowed file types
+    $allowedFileTypes = array(
+        'application/msword', // .doc
+        'application/vnd.openxmlformats-officedocument.wordprocessingml.document', // .docx
+        'image/jpeg', // .jpeg
+        'image/png', // .png
+        'application/pdf', // .pdf
+    );
+
+    if ($file) {
+        $fileName = $file->getClientFilename();
+        $fileSize = $file->getSize();
+        $fileType = $file->getClientMediaType();
+        $fileError = $file->getError();
+
+        if ($fileError !== UPLOAD_ERR_OK) {
+            error_log("Error uploading file $fileName. Error code: $fileError");
+            return null;
+        }
+
+        if (!in_array($fileType, $allowedFileTypes)) {
+            error_log("Invalid file type for file $fileName. Only .jpeg, .png, .pdf, .doc, .docx allowed.");
+            return null;
+        }
+
+        // Ensure upload directory exists
+        if (!is_dir($uploadDir)) {
+            mkdir($uploadDir, 0777, true);
+        }
+
+        $randomNumber = mt_rand(1000, 9999);
+        $newFileName = $reportId . "_" . $randomNumber . "." . pathinfo($fileName, PATHINFO_EXTENSION);
+        $destination = $uploadDir . DIRECTORY_SEPARATOR . $newFileName;
+
+        $file->moveTo($destination);
+
+        return $newFileName; // Or return relative path if needed
+    }
+
+    return null;
+}
+
+$group->post('/save_activity', function (Request $request, Response $response) use ($db) {
+    $formData = $request->getParsedBody();
+    $uploadedFiles = $request->getUploadedFiles();
+
+    try {
+        $db->beginTransaction();
+
+        $barangayOfficial = $formData['barangay_official'] ?? 0;
+        $skOfficial = $formData['sk_official'] ?? 0;
+        $barangayTanod = $formData['barangay_tanod'] ?? 0;
+
+        // First, safely extract the date string
+        $clearingDate = $formData['clearing_date'][0];
+
+        // Now safely use strtotime
+        $barcoDateFolder = date('Ym', strtotime($clearingDate));  // e.g. 202505
+
+        $barcoPhotoPath = null;
+        if (!empty($uploadedFiles['barco_photo']) && $uploadedFiles['barco_photo']->getError() === UPLOAD_ERR_OK) {
+            $uploadFolder = "../../uploads/safetymonitoring/barco_$barcoDateFolder";
+            $pathFolder = "uploads/safetymonitoring/barco_$barcoDateFolder";
+            if (!is_dir($uploadFolder)) mkdir($uploadFolder, 0777, true);
+
+            $photoFile = $uploadedFiles['barco_photo'];
+            $filename = uniqid() . '_' . $photoFile->getClientFilename();
+            $filePath = "$uploadFolder/$filename";
+            $photoFile->moveTo($filePath);
+
+            $barcoPhotoPath = "$pathFolder/$filename";  // full relative path
+        }
+
+        $stmt = $db->prepare("INSERT INTO barcoinfo (barangay_official, sk_official, barangay_tanod, barco_photo_path) VALUES (?, ?, ?, ?)");
+        $stmt->execute([$barangayOfficial, $skOfficial, $barangayTanod, $barcoPhotoPath]);
+        $barcoId = $db->lastInsertId();
+
+        foreach ($formData['clearing_date'] as $index => $clearingDate) {
+            $conducted = $formData["clearing_conducted_$index"] ?? 'No';
+            $actionTaken = $formData['clearing_action_taken'][$index] ?? '';
+            $remarks = $formData['clearing_remarks'][$index] ?? '';
+
+            // Insert clearing operation data
+            $stmt = $db->prepare("INSERT INTO clearingoperations (operation_date, conducted, action_taken, remarks, barco_id) VALUES (?, ?, ?, ?, ?)");
+            $stmt->execute([$clearingDate, $conducted, $actionTaken, $remarks, $barcoId]);
+            $operationId = $db->lastInsertId();
+
+            // Create base path with date folder
+            $baseUploadDir = __DIR__ . "/../../uploads/safetymonitoring/";
+            $operationFolder = $baseUploadDir . $clearingDate;
+            if (!is_dir($operationFolder)) mkdir($operationFolder, 0777, true);
+
+            $streetNames = $formData["street_name_$index"] ?? [];
+            $roadLengths = $formData["road_length_$index"] ?? [];
+
+            foreach ($streetNames as $sIdx => $streetName) {
+                $roadLength = $roadLengths[$sIdx] ?? '';
+            
+                // Sanitize folder name
+                $safeStreetName = preg_replace('/[^a-zA-Z0-9_\-]/', '_', $streetName);
+                $streetFolder = "$operationFolder/$safeStreetName";
+                if (!is_dir($streetFolder)) mkdir($streetFolder, 0777, true);
+            
+                $photoField = "clearing_photos_{$index}_{$sIdx}";
+                $filePaths = [null, null, null]; // up to 3
+            
+                if (!empty($uploadedFiles[$photoField])) {
+                    $photoFiles = array_slice($uploadedFiles[$photoField], 0, 3); // Limit to 3
+                    foreach ($photoFiles as $i => $file) {
+                        if ($file->getError() === UPLOAD_ERR_OK) {
+                            $filename = uniqid() . '_' . $file->getClientFilename();
+                            $filePath = "$streetFolder/$filename";
+                            $file->moveTo($filePath);
+            
+                            $relativePath = "uploads/safetymonitoring/$clearingDate/$safeStreetName/$filename";
+                            $filePaths[$i] = $relativePath;
+                        }
+                    }
+                }
+            
+                // Insert street with up to 3 image paths
+                $stmt = $db->prepare("INSERT INTO clearingstreets (operation_id, street_name, road_length, file_path1, file_path2, file_path3) VALUES (?, ?, ?, ?, ?, ?)");
+                $stmt->execute([$operationId, $streetName, $roadLength, $filePaths[0], $filePaths[1], $filePaths[2]]);
+            }            
+        }
+
+        $db->commit();
+        $response->getBody()->write(json_encode(['success' => true]));
+    } catch (Exception $e) {
+        $db->rollBack();
+        $response->getBody()->write(json_encode(['success' => false, 'message' => $e->getMessage()]));
+    }
+
+    return $response->withHeader('Content-Type', 'application/json');
+});
+
+$group->get('/reporttable/{year_month}', function (Request $request, Response $response, $args) use ($db) {
+    $query = "SELECT co.operation_date, co.conducted, co.action_taken, co.remarks, cs.street_name, cs.road_length
+    FROM clearingoperations co
+    JOIN clearingstreets cs ON co.id = cs.operation_id
+    WHERE DATE_FORMAT(co.operation_date, '%Y-%m') = :year_month";
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':year_month', $args['year_month'], PDO::PARAM_STR);
+    $stmt->execute();
+    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $response->getBody()->write(json_encode($data));
+    return $response->withHeader('Content-Type', 'application/json');
+});
+
+$group->get('/reportstreets/{year_month}', function (Request $request, Response $response, $args) use ($db) {
+    $query = "SELECT co.operation_date,cs.street_name, cs.file_path1, cs.file_path2, cs.file_path3
+        FROM clearingoperations co
+        JOIN clearingstreets cs ON co.id = cs.operation_id
+        WHERE DATE_FORMAT(co.operation_date, '%Y-%m') = :year_month";
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':year_month', $args['year_month'], PDO::PARAM_STR);
+    $stmt->execute();
+    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $response->getBody()->write(json_encode($data));
+    return $response->withHeader('Content-Type', 'application/json');
+});
+
+$group->get('/reportinfo/{year_month}', function (Request $request, Response $response, $args) use ($db) {
+    $query = "SELECT co.operation_date, bi.barangay_official, bi.sk_official, bi.barangay_tanod, bi.barco_photo_path
+        FROM clearingoperations co
+        JOIN barcoinfo bi ON co.barco_id = bi.id
+        WHERE DATE_FORMAT(co.operation_date, '%Y-%m') = :year_month";
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':year_month', $args['year_month'], PDO::PARAM_STR);
+    $stmt->execute();
+    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $response->getBody()->write(json_encode($data));
+    return $response->withHeader('Content-Type', 'application/json');
+});
+
+$group->get('/reportactivity', function (Request $request, Response $response) use ($db) {
+    $query = "SELECT bi.barangay_official, bi.sk_official, bi.barangay_tanod, bi.barco_photo_path
+        FROM barcoinfo bi
+        JOIN clearingoperations co ON bi.operation_id = co.id
+        WHERE co.operation_date = '2025-04-16'";
+    $stmt = $db->prepare($query);
+    $stmt->execute();
+    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+    $response->getBody()->write(json_encode($data));
+    return $response->withHeader('Content-Type', 'application/json');
+});
+
+$group->get('/business', function (Request $request, Response $response) use ($db) {
+    $url = "https://businesspermit.unifiedlgu.com/admin/business_approve_data_list_table.php";
+    
+    // Fetch the external data
+    $data = file_get_contents($url);
+    
+    // Write it to the response body directly (assuming it's already JSON)
+    $response->getBody()->write(json_encode($data));
+    
+    return $response->withHeader('Content-Type', 'application/json');
+});
+
+$group->get('/census', function (Request $request, Response $response) use ($db) {
+    $url = "https://backend-api-5m5k.onrender.com/api/cencus";
+    
+    // Fetch the external data
+    $data = file_get_contents($url);
+    
+    // Write it to the response body directly (assuming it's already JSON)
+    $response->getBody()->write(json_encode($data));
+    
     return $response->withHeader('Content-Type', 'application/json');
 });
