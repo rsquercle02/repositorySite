@@ -3,62 +3,12 @@
     display: none; /* Initially hide the report section */
 }
 
+.ctreport-section {
+    margin-top: 30px;
+    display: none; /* Initially hide the report section */
+}
+
 /* Form Validation */
 .error{
     color: #f00;
-}
-
-/* Additional styling for the buttons */
-.violation-option {
-    display: inline-block;
-    margin: 5px;
-    padding: 10px 20px;
-    background-color: #007bff;
-    color: white;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s, transform 0.2s;
-}
-
-.violation-option.selected {
-    background-color: #28a745;
-}
-
-.violation-option:hover {
-    background-color: #0056b3;
-    transform: scale(1.05);
-}
-
-/* Scrollable container for the violation list */
-.violation-list-container {
-    max-height: 150px;
-    overflow-y: auto;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 10px;
-    margin-top: 10px;
-    background-color: #f9f9f9;
-}
-
-/* Styling for selected violations list */
-.selected-violations-container {
-    max-height: 100px;
-    overflow-y: auto;
-    border: 1px solid #ccc;
-    border-radius: 5px;
-    padding: 5px;
-    margin-top: 10px;
-    background-color: #f9f9f9;
-}
-
-.selected-violation {
-    display: inline-block;
-    background-color: #d1ecf1;
-    color: #0c5460;
-    padding: 5px 10px;
-    border-radius: 20px;
-    margin: 3px;
-    font-size: 14px;
-    cursor: pointer;
 }
