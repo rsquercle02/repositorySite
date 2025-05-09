@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="icon" href="../assets/images/unified-lgu-logo.png">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/usermanagement.css">
+</head>
+<body>
+    <div class="container m-5 p-5">
+        <h3 class="text-center mb-4">Sign up</h3>
+        <form id="createUsrForm" enctype="multipart/form-data">
+            <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">First name:</label>
+                <input type="text" id="firstname" class="form-control" name="firstname">
+            </div>
+            <div id="firstnameErr" class="form-text error mb-3"></div>
+            <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">Middle name:</label>
+                <input type="text" id="middlename" class="form-control" name="middlename">
+            </div>
+            <div id="middlenameErr" class="form-text error mb-3"></div>
+            <div class="mb-3">
+                <label for="recipient-name" class="col-form-label">Last name:</label>
+                <input type="text" id="lastname" class="form-control" name="lastname">
+            </div>
+            <div id="lastnameErr" class="form-text error mb-3"></div>
+            <div class="mb-3">
+                <label for="gender" class="form-label">Gender</label><br>
+            </div>
+            <div class="mb-3">
+                <input type="radio" id="male" name="gender" value="Male">
+                <label for="male">Male</label>
+            </div>
+            <div class="mb-3">
+                <input type="radio" id="female" name="gender" value="Female">
+                <label for="female">Female</label>
+            </div>
+            <div id="genderErr" class="form-text error mb-3"></div>
+
+            <div class="mb-3">
+                <label for="message-text" class="col-form-label">Email:</label>
+                <input type="text" id="email" class="form-control" name="email">
+            </div>
+            <div id="emailErr" class="form-text error mb-3"></div>
+            <div class="mb-3">
+                <label for="message-text" class="col-form-label">Password:</label>
+                <input type="password" id="password" class="form-control mb-3" name="password">
+                <label for="confirmPassword" class="form-label">Confirm Password:</label>
+                <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
+            </div>
+            <div id="passwordErr" class="form-text error mb-3"></div>
+            <div class="mb-3" hidden>
+                <label for="message-text" class="col-form-label">User type:</label>
+                <select id="usertype" class="form-select" aria-label="Default select example" name="profile">
+                    <option value="">Choose Profile</option>
+                    <option value="Super Administrator">Super Administrator</option>
+                    <option value="Administrator">Administrator</option>
+                    <option value="User" selected>User</option>
+                </select>
+                <div id="usertypeErr" class="form-text error mb-3"></div>
+            </div>
+            <div class="mb-3" hidden>
+                <label for="message-text" class="col-form-label">Barangay role:</label>
+                <select id="brole" class="form-select" aria-label="Default select example" name="profile">
+                    <option>Choose Role</option>
+                    <option value="Captain">Captain</option>
+                    <option value="Secretary">Secretary</option>
+                    <option value="Resident">Resident</option>
+                    <option value="Non resident">Non resident</option>
+                    <option value="Unknown" selected>Unknown</option>
+                </select>
+                <div id="broleErr" class="form-text error mb-3"></div>
+            </div>
+            <div class="mb-3">
+                <label for="message-text" class="col-form-label">Profile Picture:</label>
+                <input type="file" id="picture" class="newPics" name="picture">
+            </div>
+            <div class="mb-3">
+                <img class="preview" id="previewNewPicture" src="assets/images/anonymous.svg" alt="Image Preview" style="width:100px;">
+                <div id="pictureErr" class="form-text error mb-3"></div>
+            </div>
+            <button type="button" id="createUser" name="createUser" class="btn btn-success rounded-3">Sign up</button>
+    </form>
+</div>
+</body>
+<script src="../js/signup.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+</html>

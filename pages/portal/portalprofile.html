@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>User Profile Dashboard</title>
+  <link rel="stylesheet" href="css/profile.css">
+</head>
+<body>
+
+<div class="container-fluid">
+    <h2>User Profile</h2>
+
+  <div class="row justify-content-center mt-4">
+    <!-- Profile Card -->
+    <div class="col-lg-4 col-md-6 col-sm-12">
+      <div class="card shadow-sm p-3 mb-4 rounded">
+        <img src="" alt="Profile Picture" id="session-picture" class="card-img-top rounded-circle mx-auto d-block" style="width: 120px; height: 120px; object-fit: cover;">
+        <div class="card-body text-center">
+          <h4 id="session-fullname">Loading...</h4>
+          <h5 id="session-email">Loading...</h5>
+          <p class="text-muted" id="session-role">---</p>
+          <div class="mb-3">
+            <p><strong>ID:</strong> <span id="session-id">---</span></p>
+            <p><strong>Profile:</strong> <span id="session-profile">---</span></p>
+            <p><strong>Status:</strong> <span id="session-status-badge" class="badge">---</span></p>
+          </div>
+          <div class="d-grid gap-2">
+            <button class="btn btn-primary" onclick="openModal('emailModal')">Update Email</button>
+            <button class="btn btn-primary" onclick="openModal('passwordModal')">Update Password</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Email Modal -->
+  <div class="modal" id="emailModal" tabindex="-1" aria-labelledby="emailModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="emailModalLabel">Update Email</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="updateEmailForm">
+            <input type="hidden" id="session-id-input">
+            <div class="mb-3">
+              <label for="newEmail" class="form-label">New Email:</label>
+              <input type="email" class="form-control" id="newEmail" novalidate>
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Update Email</button>
+          </form>
+          <div class="message" id="emailMessage"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Password Modal -->
+  <div class="modal" id="passwordModal" tabindex="-1" aria-labelledby="passwordModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="passwordModalLabel">Update Password</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="updatePasswordForm">
+            <input type="hidden" id="session-id-input-password">
+            <div class="mb-3">
+              <label for="newPassword" class="form-label">New Password:</label>
+              <input type="password" class="form-control" id="newPassword">
+            </div>
+            <div class="mb-3">
+              <label for="confirmPassword" class="form-label">Confirm New Password:</label>
+              <input type="password" class="form-control" id="confirmPassword">
+            </div>
+            <button type="submit" class="btn btn-primary w-100">Update Password</button>
+          </form>
+          <div class="message" id="passwordMessage"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/profile.js"></script>
+</body>
+</html>

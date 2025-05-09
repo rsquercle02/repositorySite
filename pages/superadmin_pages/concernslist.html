@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concern List</title>
+    <link rel="stylesheet" href="css/concernslist.css"
+</head>
+<body>
+    <h2 class="m-3">Concern List</h2>
+
+    <div class="m-3 row">
+    <div class="w-25">
+    <input type="text" class="form-control" id="searchTerm" placeholder="Search users">
+    </div>
+    </div>
+
+    <div id="loading-indicator" style="display:none;">
+      <i class="fa-solid fa-spinner fa-spin"></i>
+      <p>Loading, please wait...</p>
+    </div>
+
+    <div class="m-3 border rounded-2 tablehtml" style="height: 70vh; overflow: auto;">
+    <table id="table" class="table table-hover">
+    <thead>
+    <tr>
+      <th scope="col">Id</th>
+      <th scope="col">Store name</th>
+      <th scope="col">Store address</th>
+      <th scope="col">Resident Type</th>
+      <th scope="col">Anonymity</th>
+      <th scope="col">Created At</th>
+      <th scope="col">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+    </tbody>
+    </table>
+    </div>
+
+    <div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">View Concern</h1>
+                  <button type="button" id="closePreviewBtn" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+
+                <div class="container">
+                  <h1>Concern Details</h1>
+                  
+                  <!-- Concern Information Section -->
+                      <p><strong>Concern Id:</strong> <span id="concernId"></span></p>
+                      <p><strong>Concerned Citizen:</strong> <span id="concernedCitizen"></span></p>
+                      <p hidden><strong>Store Id:</strong> <span id="storeId"></span></p>
+                      <p><strong>Store Name:</strong> <span id="storeName"></span></p>
+                      <p><strong>Store Address:</strong> <span id="storeAddress"></span></p>
+                      <p><strong>Store Record:</strong> <span id="storeRecord"></span></p>
+                      <p><strong>Date Created:</strong> <span id="createAt"></span></p>
+                      <!-- Concern Status Section -->
+                      <p><strong>Status:</strong> <span id="concernStatus"></span></p>
+                      <p hidden><strong>Status reason:</strong> <span id="cStatusReason"></span></p>
+                      <p><strong>Concern Details:</strong> <span id="concernDetails"></span></p>
+                      <p><strong>Pictures:</strong></p>
+                      <div class="mb-2" id="file1"></div>
+
+                  <!-- Create Report Button -->
+                  <div class="action-btn mt-4 d-flex">
+                    <button class="btn btn-success mr-2" id="notValidBtn">Not Valid</button>
+                    <button class="btn btn-success" id="createReportBtn">Create Report</button>
+                  </div>
+                  
+
+                  <!-- Create Report Section -->
+                  <div class="report-section">
+                    <h4>Create Report</h4>
+                    <textarea class="form-control report-textarea" id="reportTextarea" placeholder="Enter your report here..."></textarea>
+                    <div id="reportTxtErr" class="form-text error mb-3"></div>
+
+                  <!-- Food Market Violations Dropdown -->
+                  <div class="form-group">
+                    <label for="violationSelect">Violation Type:</label><br>
+                
+                    <!-- Scrollable container for the violation list -->
+                    <div class="violation-list-container" id="violationList">
+                      <button class="violation-option btn btn-primary mb-2 mr-2" data-value="expired_products">Expired Products</button>
+                      <button class="violation-option btn btn-primary mb-2 mr-2" data-value="unhygienic_conditions">Unhygienic Conditions</button>
+                      <button class="violation-option btn btn-primary mb-2 mr-2" data-value="incorrect_labelling">Incorrect Labelling</button>
+                      <button class="violation-option btn btn-primary mb-2 mr-2" data-value="overpricing">Overpricing of Products</button>
+                      <button class="violation-option btn btn-primary mb-2 mr-2" data-value="unsanitary_storage">Unsanitary Storage</button>
+                      <button class="violation-option btn btn-primary mb-2 mr-2" data-value="misleading_advertisement">Misleading Advertisement</button>
+                      <button class="violation-option btn btn-primary mb-2 mr-2" data-value="improper_packaging">Improper Packaging</button>
+                      <button class="violation-option btn btn-primary mb-2 mr-2" data-value="lack_of_proper_license">Lack of Proper License</button>
+                      <button class="violation-option btn btn-primary mb-2 mr-2" data-value="unsafe_food_handling">Unsafe Food Handling</button>                      
+                    </div>
+                
+                    <!-- Display selected violations in a text input -->
+                    <div class="mt-3">
+                        <label for="selectedViolations">Selected Violations:</label>
+                        <input type="text" id="violationSelect" class="form-control" readonly>
+                    </div>
+                    <div id="violationSelectErr" class="form-text error mb-3"></div>
+
+                    <!-- Forward To Dropdown -->
+                    <div class="form-group mt-3">
+                      <label for="categorySelect">Category:</label>
+                      <select class="form-control" id="categorySelect">
+                          <option value="" disabled selected>Select Category</option>
+                          <option value="Low risk.">Low risk</option>
+                          <option value="Medium risk.">Medium risk</option>
+                          <option value="High risk.">High risk</option>
+                          <!-- Add more staff options as needed -->
+                      </select>
+                      <div id="categorySelectErr" class="form-text error mb-3"></div>
+                  </div>
+                    <button type="button" class="btn btn-secondary mt-3" id="cancelReport">Cancel</button>
+                    <button type="button" class="btn btn-success mt-3" id="submitReport">Submit Report</button>
+                  </div>
+                  </div>
+
+                  </div>
+                  <div class="modal-footer">
+                  </div>
+                  </div>
+          </div>
+      </div>
+  </div>
+
+</body>
+<script src="js/concernslist.js"></script>
+</html>

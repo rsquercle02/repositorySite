@@ -1,0 +1,11 @@
+
+.modal-content {
+    border-radius: 10px;
+  }
+  .message {
+    margin-top: 15px;
+    font-size: 13px;
+    text-align: center;
+  }
+  .success { color: #28a745; }
+  .error { color: #dc3545; }
