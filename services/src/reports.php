@@ -190,7 +190,7 @@ $group->get('/resolvedReports', function (Request $request, Response $response) 
 });
 
 $group->get('/ssearch/{searchTerm}', function (Request $request, Response $response, $args) use ($db) {
-    $query = "SELECT r.report_id, rs.report_status, rs.create_at, s.store_name, s.store_address
+    $query = "SELECT DISTINCT r.report_id, rs.report_status, rs.create_at, s.store_name, s.store_address
     FROM stores s
     JOIN
     reports r
@@ -468,7 +468,7 @@ $group->post('/actionreportpost', function (Request $request, Response $response
 });
 
 $group->get('/reportdetails/{id}', function (Request $request, Response $response, $args) use ($db) {
-    $query = "SELECT 
+    $query = "SELECT DISTINCT
     s.store_name,
     s.store_address,
     r.report_details, 
@@ -667,7 +667,7 @@ $group->get('/highriskfetch/{id}', function (Request $request, Response $respons
 });
 
 $group->get('/resolvedfetch/{id}', function (Request $request, Response $response, $args) use ($db) {
-    $query = "SELECT s.store_name, s.store_address, ar.action_id, ar.report_id, ar.create_at, ar.actions, ar.staff, af.afile1
+    $query = "SELECT DISTINCT s.store_name, s.store_address, ar.action_id, ar.report_id, ar.create_at, ar.actions, ar.staff, af.afile1
         FROM stores s
         JOIN reports r ON s.store_id = r.store_id
         JOIN rstatus rs ON r.report_id = rs.report_id
@@ -691,7 +691,7 @@ $group->get('/Reports', function (Request $request, Response $response) use ($db
     $search = isset($queryParams['search']) ? $queryParams['search'] : null;
 
     if($search != null){
-        $query = "SELECT r.report_id, c.concern_id, s.store_name, s.store_address, rs.report_status, rs.create_at, r.report_category, r.report_details
+        $query = "SELECT DISTINCT r.report_id, c.concern_id, s.store_name, s.store_address, rs.report_status, rs.create_at, r.report_category, r.report_details
             FROM reports r
             JOIN concerns c ON r.concern_id = c.concern_id
             JOIN stores s ON c.store_id = s.store_id 
@@ -701,7 +701,7 @@ $group->get('/Reports', function (Request $request, Response $response) use ($db
         $stmt->bindValue(':searchTerm', '%' . $search . '%', PDO::PARAM_STR);
         $stmt->execute();
     } else {
-        $query = "SELECT r.report_id, c.concern_id, s.store_name, s.store_address, rs.report_status, rs.create_at, r.report_category, r.report_details
+        $query = "SELECT DISTINCT r.report_id, c.concern_id, s.store_name, s.store_address, rs.report_status, rs.create_at, r.report_category, r.report_details
         FROM reports r
         JOIN concerns c ON r.concern_id = c.concern_id
         JOIN stores s ON c.store_id = s.store_id 
@@ -822,7 +822,7 @@ $group->get('/createdReports', function (Request $request, Response $response) u
     $search = isset($queryParams['search']) ? $queryParams['search'] : null;
 
     if($search != null){
-    $query = "SELECT r.report_id, c.concern_id, s.store_name, s.store_address, rs.report_status, r.report_details
+    $query = "SELECT DISTINCT r.report_id, c.concern_id, s.store_name, s.store_address, rs.report_status, r.report_details
         FROM reports r
         JOIN concerns c ON r.concern_id = c.concern_id
         JOIN stores s ON c.store_id = s.store_id 
@@ -832,7 +832,7 @@ $group->get('/createdReports', function (Request $request, Response $response) u
     $stmt->bindValue(':searchTerm', '%' . $search . '%', PDO::PARAM_STR);
     $stmt->execute();
     } else {
-        $query = "SELECT r.report_id, rs.report_status, s.store_name, s.store_address, r.report_details
+        $query = "SELECT DISTINCT r.report_id, rs.report_status, s.store_name, s.store_address, r.report_details
             FROM reports r 
             JOIN rstatus rs ON r.report_id = rs.report_id
             JOIN stores s ON r.store_id = s.store_id
@@ -848,7 +848,7 @@ $group->get('/createdReports', function (Request $request, Response $response) u
 
 /************* Fetch resolved reports ********/
 $group->get('/allresolvedReports', function (Request $request, Response $response) use ($db) {
-    $query = "SELECT r.report_id, rs.report_status, rs.create_at, s.store_name, s.store_address
+    $query = "SELECT DISTINCT r.report_id, rs.report_status, rs.create_at, s.store_name, s.store_address
     FROM stores s
     JOIN
     reports r
