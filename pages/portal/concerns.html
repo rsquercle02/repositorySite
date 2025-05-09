@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="icon" href="../assets/images/unified-lgu-logo.png">
     <title>Concerns Form</title>
-    <link href="css/concerns.css" rel="stylesheet">
-    <!-- <link rel="stylesheet" href="css/main.css"> -->
+    <link rel="stylesheet" href="css/concerns.css">
 </head>
 <body>
 
@@ -19,44 +18,48 @@
     <div id="store-details" class="mt-4">
         <!-- Resident search -->
         <div class="form-group">
-            <label>Resident:</label><br>
+            <label>Resident</label><br>
             <!-- Option for Anonymous or Non-Anonymous -->
-            <select class="form-control" id="anonymousOption">
+            <select class="form-control mb-3" id="anonymousOption">
                 <option value="non-anonymous">Non-Anonymous</option>
                 <option value="anonymous">Anonymous</option>
             </select>
-            <!-- Loading message -->
-            <div id="loadingMessage" class="loading mt-3">Loading data...</div>
             <!-- Form section for non-anonymous -->
             <div class="form-section" id="formSection">
-                <label for="firstname">First name:</label>
-                <input type="text" class="form-control mt-3" id="firstname" placeholder="Enter First Name" required disabled />
+                <label for="firstname">First name</label>
+                <input type="text" class="form-control" id="firstname" placeholder="Enter First Name">
                 <div id="firstnameErr" class="form-text error mb-3"></div>
-                <label for="middlename">Middle name:</label>
-                <input type="text" class="form-control mt-3" id="middlename" placeholder="Enter Middle Name" required disabled />
+                <label for="middlename">Middle name</label>
+                <input type="text" class="form-control" id="middlename" placeholder="Enter Middle Name">
                 <div id="middlenameErr" class="form-text error mb-3"></div>
-                <label for="lastname">Last name:</label>
-                <input type="text" class="form-control mt-3" id="lastname" placeholder="Enter Last Name" required disabled />
+                <label for="lastname">Last name</label>
+                <input type="text" class="form-control" id="lastname" placeholder="Enter Last Name">
                 <div id="lastnameErr" class="form-text error mb-3"></div>
-                <button type="button" class="btn btn-primary mt-3" id="searchbtn" disabled>Search</button>
+                <button type="button" class="btn btn-primary mt-3" id="searchButton">Search</button>
             </div>
-            <div class="result mt-3" id="result"></div>
+            <div class="result" id="result"></div>
         </div>
         <!-- Searchbox for business name -->
         <div class="form-group mt-3">
-            <label>Search Business Name:</label><br>
+            <label>Search Business Name</label><br>
             <input type="text" class="form-control" id="searchBox" placeholder="Type business name...">
             <div id="suggestions" class="suggestions" style="display:none;"></div>
         </div>
             
         <div class="form-group mt-3">
-            <label for="store-name">Store Name</label>
+            <label for="storeId">Store Id</label>
+            <input type="text" class="form-control" id="storeId" name="storeId" readonly>
+            <div id="storeIdErr" class="form-text error mb-3"></div>
+        </div>
+
+        <div class="form-group mt-3">
+            <label for="storeName">Store Name</label>
             <input type="text" class="form-control" id="storeName" name="storeName" readonly>
             <div id="storeNameErr" class="form-text error mb-3"></div>
         </div>
 
         <div class="form-group mt-3">
-            <label for="store-address">Address</label>
+            <label for="storeAddress">Address</label>
             <input type="text" class="form-control" id="storeAddress" name="storeAddress" readonly>
             <div id="storeAddressErr" class="form-text error mb-3"></div>
         </div>
@@ -70,23 +73,9 @@
 
         <!-- File 1 input Area -->
         <div class="form-group mt-3">
-            <label for="image1">Image 1</label>
+            <label for="image1">Upload photo</label>
             <input type="file" class="form-control" id="image1" name="image1">
             <div id="image1Err" class="form-text error mb-3"></div>
-        </div>
-
-        <!-- File 2 input Area -->
-        <div class="form-group mt-3">
-            <label for="image2">Image 2</label>
-            <input type="file" class="form-control" id="image2" name="image2">
-            <div id="image2Err" class="form-text error mb-3"></div>
-        </div>
-
-        <!-- file 3 input Area -->
-        <div class="form-group mt-3">
-            <label for="image3">Image 3</label>
-            <input type="file" class="form-control" id="image3" name="image3">
-            <div id="image3Err" class="form-text error mb-3"></div>
         </div>
 
         <!-- Submit Button -->

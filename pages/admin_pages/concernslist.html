@@ -15,13 +15,19 @@
     </div>
     </div>
 
-    <div class="m-3 border rounded-2" style="height: 70vh; overflow: auto;">
+    <div id="loading-indicator" style="display:none;">
+      <i class="fa-solid fa-spinner fa-spin"></i>
+      <p>Loading, please wait...</p>
+    </div>
+
+    <div class="m-3 border rounded-2 tablehtml" style="height: 70vh; overflow: auto;">
     <table id="table" class="table table-hover">
     <thead>
     <tr>
       <th scope="col">Id</th>
       <th scope="col">Store name</th>
       <th scope="col">Store address</th>
+      <th scope="col">Resident Type</th>
       <th scope="col">Anonymity</th>
       <th scope="col">Created At</th>
       <th scope="col">Actions</th>
@@ -45,9 +51,9 @@
                   <h1>Concern Details</h1>
                   
                   <!-- Concern Information Section -->
-                      <p><strong>Concern Id:</strong><span id="concernId"></span></p>
-                      <p><strong>Concerned Citizen:</strong><span id="concernedCitizen"></span></p>
-                      <p hidden><strong>Store Id:</strong><span id="storeId"></span></p>
+                      <p><strong>Concern Id:</strong> <span id="concernId"></span></p>
+                      <p><strong>Concerned Citizen:</strong> <span id="concernedCitizen"></span></p>
+                      <p hidden><strong>Store Id:</strong> <span id="storeId"></span></p>
                       <p><strong>Store Name:</strong> <span id="storeName"></span></p>
                       <p><strong>Store Address:</strong> <span id="storeAddress"></span></p>
                       <p><strong>Store Record:</strong> <span id="storeRecord"></span></p>
@@ -58,13 +64,13 @@
                       <p><strong>Concern Details:</strong> <span id="concernDetails"></span></p>
                       <p><strong>Pictures:</strong></p>
                       <div class="mb-2" id="file1"></div>
-                      <div class="mb-2" id="file2"></div>
-                      <div class="mb-2" id="file3"></div>
 
                   <!-- Create Report Button -->
-                  <div class="action-btn mt-4">
+                  <div class="action-btn mt-4 d-flex">
+                    <button class="btn btn-success mr-2" id="notValidBtn">Not Valid</button>
                     <button class="btn btn-success" id="createReportBtn">Create Report</button>
                   </div>
+                  
 
                   <!-- Create Report Section -->
                   <div class="report-section">
@@ -94,20 +100,19 @@
                         <label for="selectedViolations">Selected Violations:</label>
                         <input type="text" id="violationSelect" class="form-control" readonly>
                     </div>
-                    </div>
                     <div id="violationSelectErr" class="form-text error mb-3"></div>
 
                     <!-- Forward To Dropdown -->
                     <div class="form-group mt-3">
-                      <label for="staffSelect">Forward To:</label>
-                      <select class="form-control" id="staffSelect">
-                          <option value="" disabled selected>Select Staff</option>
-                          <option value="Kagawad 1.">Kagawad 1</option>
-                          <option value="Kagawad 2.">kagawad 2</option>
-                          <option value="Kagawad 3.">kagawad 3</option>
+                      <label for="categorySelect">Category:</label>
+                      <select class="form-control" id="categorySelect">
+                          <option value="" disabled selected>Select Category</option>
+                          <option value="Low risk.">Low risk</option>
+                          <option value="Medium risk.">Medium risk</option>
+                          <option value="High risk.">High risk</option>
                           <!-- Add more staff options as needed -->
                       </select>
-                      <div id="staffSelectErr" class="form-text error mb-3"></div>
+                      <div id="categorySelectErr" class="form-text error mb-3"></div>
                   </div>
                     <button type="button" class="btn btn-secondary mt-3" id="cancelReport">Cancel</button>
                     <button type="button" class="btn btn-success mt-3" id="submitReport">Submit Report</button>
@@ -116,6 +121,7 @@
 
                   </div>
                   <div class="modal-footer">
+                  </div>
                   </div>
           </div>
       </div>

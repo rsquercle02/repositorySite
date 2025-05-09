@@ -5,12 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Dynamic Cards with Buttons and Search</title>
     <link rel="stylesheet" href="css/tracking.css">
+    <link rel="stylesheet" id="printviolations" href="css/printviolations.css" disabled>
+    <link rel="stylesheet" id="printreports" href="css/reports.css" disabled>
 
 </head>
 <body>
 
     <div class="container">
-        <h2 class="mt-4">Tracking</h2>
+        <div class="d-flex align-items-center mt-4 mb-2">
+            <h2 class="mr-2">Tracking</h2>
+            <button type="button" id="printtracking" class="btn btn-success rounded-3">Print</button>
+        </div>
 
         <!-- Search bar -->
         <div class="search-bar">
@@ -19,9 +24,21 @@
 
         <!-- Buttons to control which set of cards are shown -->
         <div class="mb-4">
-            <button class="btn btn-primary" id="showcategory1">Violations</button>
-            <button class="btn btn-secondary" id="showcategory2">Concerns</button>
-            <button class="btn btn-success" id="showcategory3">Reports</button>
+            <select id="category" class="form-control">
+                <option value="category1">Store Violations</option>
+                <option value="category2">Concerns</option>
+                <option value="category3">Reports</option>
+                <option value="category4">Stores list</option>
+                <option value="category5">Census</option>
+            </select>
+        </div>
+
+        <!-- Filter dropdowns based on category -->
+        <div id="category1-filter">
+            <select id="violationcategory" class="form-control">
+                <option value="has records.">Registred.</option>
+                <option value="no records.">Not registered.</option>
+            </select>
         </div>
 
         <!-- Filter dropdowns based on category -->
@@ -31,18 +48,48 @@
                 <option value="No action.">No action.</option>
                 <option value="Reported.">Reported.</option>
                 <option value="Resolved.">Resolved.</option>
+                <option value="Not valid.">Not valid.</option>
             </select>
         </div>
 
-        <div id="category3-filter" class="filter-bar">
+        <!-- <div id="category3-filter" class="filter-bar">
             <select id="reportstatus" class="form-control">
                 <option value="none.">Filter by Report Status</option>
-                <option value="For kagawad.">For kagawad.</option>
-                <option value="For captain.">For captain.</option>
-                <option value="For cityhall.">For cityhall.</option>
-                <option value="Forwarded to cityhall.">Forward to cityhall.</option>
-                <option value="Resolved.">Resolved.</option>
+                <option value="alllowrisk.">All Low risk.</option>
+                <option value="allmediumrisk.">All Medium risk.</option>
+                <option value="allhighrisk.">All High risk.</option>
+                <option value="resolvedlowrisk.">Actions for Low risk.</option>
+                <option value="resolvedmediumrisk.">Actions for Medium risk.</option>
+                <option value="resolvedhighrisk.">Actions for High risk.</option>
             </select>
+        </div> -->
+
+        <div id="category3-filter" class="filter-bar">
+            <select id="reportfilter" class="form-control">
+              <option value="none.">Reports</option>
+              <option value="createdLowRisk.">Report Created - Low Risk</option>
+              <option value="createdMediumRisk.">Report Created - Medium Risk</option>
+              <option value="createdHighRisk.">Report Created - High Risk</option>
+              <option value="resolvedLowRisk.">Report Resolved - Low Risk</option>
+              <option value="resolvedMediumRisk.">Report Resolved - Medium Risk</option>
+              <option value="resolvedHighRisk.">Report Resolved - High Risk</option>
+              <option value="actionLowRisk.">Action Reports - Low Risk</option>
+              <option value="actionMediumRisk.">Action Reports - Medium Risk</option>
+              <option value="actionHighRisk.">Action Reports - High Risk</option>
+            </select>
+        </div>
+          
+        <!-- Filter dropdowns based on category -->
+        <div id="category4-filter" class="filter-bar">
+            <select id="recordstatus" class="form-control">
+                <option value="has records.">Registred.</option>
+                <option value="no records.">Not registered.</option>
+            </select>
+        </div>
+
+        <div id="loading-indicator" style="display:none;">
+            <i class="fa-solid fa-spinner fa-spin"></i>
+            <p>Loading, please wait...</p>
         </div>
 
         <!-- Card Container -->
@@ -50,6 +97,217 @@
             <!-- Cards will be dynamically inserted here based on button click -->
         </div>
     </div>
+
+    <!-- Census list -->
+    <div class="list-container" id="listContainer"></div>
+
+    <div id="detailsModal" class="modalcensus">
+      <div class="modalcensus-content">
+        <span class="btn close-btn" id="closeModal">&times;</span>
+        <div id="modalContent"></div>
+      </div>
+    </div>
+
+    <!-- Print select -->
+    <div class="modal fade" id="selectdateModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h1 class="modal-title fs-5" id="exampleModalLabel">Select Date</h1>
+                    <button type="button" id="closeselectdateModal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Selection -->
+                    <form id="selectForm">
+                        <div class="form-group">
+                          <label for="selectType">Select Type:</label>
+                          <select id="selectType" class="form-control">
+                            <option value="">-- Choose an option --</option>
+                            <option value="month">Month</option>
+                            <option value="date">Date</option>
+                          </select>
+                          <div id="selectErr" class="form-text error mb-3"></div>
+                        </div>
+                    
+                        <div class="form-group" id="monthInput" style="display: none;">
+                          <label for="monthPicker">Select Month:</label>
+                          <input type="month" class="form-control" id="monthPicker" name="monthPicker">
+                          <div id="monthErr" class="form-text error mb-3"></div>
+                        </div>
+                    
+                        <div class="form-group" id="dateInput" style="display: none;">
+                          <label for="datePicker">Select Date:</label>
+                          <input type="date" class="form-control" id="datePicker" name="datePicker">
+                          <div id="dateErr" class="form-text error mb-3"></div>
+                        </div>
+                    
+                        <button type="button" id="selectSubmit" class="btn btn-success rounded-3">Print</button>
+                      </form>
+                </div>
+                <div class="modal-footer">
+                </div>
+        </div>
+    </div>
+    </div>
+
+    <!-- Print report -->
+  <div id="trackingmodal" class="reportstracking">
+    <div class="d-inline-flex align-items-center buttonandtext">
+      <button class="btn btn-primary btn-sm close-button m-2" onclick="closeTrackingModal()">&lt; Back</button>
+      <button class="btn btn-primary btn-sm print-button m-2" onclick="printWithStyle('landscape')">🖨️ Print or Save as PDF</button>
+    </div>
+
+    <!-- Master Page Template (Visible) -->
+    <div class="report-violations" id="masterReportPage">
+        <div id="reportHeader">
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+            <div style="flex: 0 0 80px; text-align: center;">
+              <img src="assets/images/oldcapitolsite.jpg" alt="Left Logo" style="width: 100px; height: auto; margin-left: 5px;">
+            </div>
+            <div style="flex: 1; text-align: center;">
+              <p style="margin: 0px;"><span style="font-family: Sans Serif Collection; font-size: 16px; letter-spacing: 2px;">Republic of the Philippines</span></p>
+              <p style="margin: 0px;"><strong>OLD CAPITOL SITE</strong></p>
+              <p style="margin: 0px;">Quezon City</p>
+              <p style="margin: 0px;">Masaya Interior corner Matiwasay St.</p>
+              <p style="margin: 0px;">oldcapitolsitemercado@gmail.com</p>
+            </div>
+            <div style="flex: 0 0 80px; text-align: center;">
+              <img src="assets/images/quezoncity.png" alt="Right Logo" style="width: 100px; height: auto;">
+            </div>
+          </div>
+          <hr style="height:2px; background-color:#000; border:none; margin:0;">
+          <hr style="height:2px; background-color:#000; border:none; margin:2px 0 44px 0;">
+          <div><p style="text-align: center; font-size:27px; letter-spacing: 10px;">STORE VIOLATIONS REPORT</p></div>
+          <p id="storeType" style="text-align:center;"><span>Store Type</span></p>
+          <p id="reportDate" style="text-align:center;"><span>Date: February 25, 2025</span></p>
+        </div>
+  
+        <div class="table-con">
+          <table class="fr-table-selection-hover" style="border-collapse: collapse; border: none; width: 1035px;">
+            <thead>
+              <tr>
+                <th style="border: 1px solid #000000;padding: 10px;text-align: left;vertical-align: top;">Store ID</th>
+                <th style="border: 1px solid #000000;padding: 10px;text-align: left;vertical-align: top;">Store Name</th>
+                <th style="border: 1px solid #000000;padding: 10px;text-align: left;vertical-align: top;">Store Address</th>
+                <th style="border: 1px solid #000000;padding: 10px;text-align: left;vertical-align: top;">Violations</th>
+              </tr>
+            </thead>
+            <tbody id="store-table-body"></tbody>
+          </table>
+        </div>
+  
+      </div>
+  
+      <div id="additionalPages"></div>
+    </div>
+  </div>
+
+   <!-- Print report -->
+  <div id="reportmodal" class="reportsprint">
+    <div class="d-inline-flex align-items-center buttonandtext">
+      <button class="btn btn-primary btn-sm close-button m-2" onclick="closeReportModal()">&lt; Back</button>
+      <button class="btn btn-primary btn-sm print-button m-2" onclick="printWithStyle('portrait')">🖨️ Print or Save as PDF</button>
+    </div>
+
+    <div class="reportpage">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+        <!-- Left Image -->
+        <div style="flex: 0 0 80px; text-align: center;">
+          <img src="assets/images/oldcapitolsite.jpg" alt="Left Logo" style="width: 100px; height: auto; margin-left: 5px;">
+        </div>
+
+        <!-- Center Text -->
+        <div style="flex: 1; text-align: center;">
+          <p style="margin: 0px;"><span style="font-family: Sans Serif Collection; font-size: 16px; letter-spacing: 2px;">Republic of the Philippines</span></p>
+          <p style="margin: 0px;"><span style="font-family: Arial; font-size: 16px; font-weight: bold; letter-spacing: 2px;"><strong>OLD CAPITOL SITE</strong></span></p>
+          <p style="margin: 0px;"><span style="font-family: Sans Serif Collection; font-size: 17px; letter-spacing: 2px;">Quezon City</span></p>
+          <p style="margin: 0px;"><span style="font-family: Arial; font-size: 12px; letter-spacing: 2px;">Masaya Interior corner Matiwasay St.</span></p>
+          <p style="margin: 0px;"><span style="font-family: Arial; font-size: 12px; letter-spacing: 2px;">oldcapitolsitemercado@gmail.com</span></p>
+        </div>
+
+        <div style="flex: 0 0 80px; text-align: center;">
+          <img src="assets/images/quezoncity.png" alt="Right Logo" style="width: 100px; height: auto;">
+        </div>
+      </div>
+
+      <hr style="height:2px; background-color:#000; border:none; margin:0;">
+      <hr style="height:2px; background-color:#000; border:none; margin:2px 0 44px 0;">
+
+      <div>
+        <p style="text-align: center;"><span style="font-family:Cambria;font-size:27px;letter-spacing: 10px;">REPORT</span></p>
+      </div>
+
+      <div>
+        <p style="text-align: center;"><br></p>
+        <p id="dateParagraph"><span style="font-family:Cambria;font-size:15px;">Date: February 25, 2025</span></p>
+        <p id="storename"><span style="font-family:Cambria;font-size:15px;">Reported store: Store name</span></p>
+        <p id="storeaddress"><span style="font-family:Cambria;font-size:15px;">Address: Store address</span></p>
+        <p><span style="font-family:Cambria;font-size:15px;">&nbsp;</span></p>
+        <p id="reportParagraph" style="text-align: justify;"><span style="font-family:Cambria;font-size:16px;">&nbsp; &nbsp;<span style="font-family:Cambria;font-weight:normal;font-size:16px;">Noong Mayo 4, 2025 sa ganap na 5:04 ng hapon, isang ulat ang ginawa kaugnay ng reklamo mula sa isang mamamayan laban sa Tangol store na matatagpuan sa 123 Cap St. Ayon sa sumbong, isinagawa ang inspeksyon at napag-alamang hindi malinis ang kalagayan ng nasabing tindahan.</span></span></p>
+        <div>
+          <p><span style="font-family:Cambria;font-size:15px;">Picture:</span></p>
+          <img id="reportImage" src="assets/images/clearing-operations.jpg" class="reportimage" style="margin-top: 8px;" width="516" height="376">
+        </div>
+      </div>
+
+      <!-- Placeholder for additional pages -->
+      <div id="additionalreport"></div>
+    </div>
+  </div>
+
+  <!-- Print report -->
+  <div id="actionmodal" class="reportsprint">
+    <div class="d-inline-flex align-items-center buttonandtext">
+      <button class="btn btn-primary btn-sm close-button m-2" onclick="closeActionModal()">&lt; Back</button>
+      <button class="btn btn-primary btn-sm print-button m-2" onclick="printWithStyle('portrait')">🖨️ Print or Save as PDF</button>
+    </div>
+
+    <div class="actionpage">
+      <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 4px;">
+        <!-- Left Image -->
+        <div style="flex: 0 0 80px; text-align: center;">
+          <img src="assets/images/oldcapitolsite.jpg" alt="Left Logo" style="width: 100px; height: auto; margin-left: 5px;">
+        </div>
+
+        <!-- Center Text -->
+        <div style="flex: 1; text-align: center;">
+          <p style="margin: 0px;"><span style="font-family: Sans Serif Collection; font-size: 16px; letter-spacing: 2px;">Republic of the Philippines</span></p>
+          <p style="margin: 0px;"><span style="font-family: Arial; font-size: 16px; font-weight: bold; letter-spacing: 2px;"><strong>OLD CAPITOL SITE</strong></span></p>
+          <p style="margin: 0px;"><span style="font-family: Sans Serif Collection; font-size: 17px; letter-spacing: 2px;">Quezon City</span></p>
+          <p style="margin: 0px;"><span style="font-family: Arial; font-size: 12px; letter-spacing: 2px;">Masaya Interior corner Matiwasay St.</span></p>
+          <p style="margin: 0px;"><span style="font-family: Arial; font-size: 12px; letter-spacing: 2px;">oldcapitolsitemercado@gmail.com</span></p>
+        </div>
+
+        <div style="flex: 0 0 80px; text-align: center;">
+          <img src="assets/images/quezoncity.png" alt="Right Logo" style="width: 100px; height: auto;">
+        </div>
+      </div>
+
+      <hr style="height:2px; background-color:#000; border:none; margin:0;">
+      <hr style="height:2px; background-color:#000; border:none; margin:2px 0 44px 0;">
+
+      <div>
+        <p style="text-align: center;"><span style="font-family:Cambria;font-size:27px;letter-spacing: 10px;">ACTION REPORT</span></p>
+      </div>
+
+      <div>
+        <p style="text-align: center;"><br></p>
+        <p id="dateConducted"><span style="font-family:Cambria;font-size:15px;">Date: February 25, 2025</span></p>
+        <p id="store"><span style="font-family:Cambria;font-size:15px;">Action for: Store name</span></p>
+        <p id="address"><span style="font-family:Cambria;font-size:15px;">Address: Store address</span></p>
+        <p id="actionStaff"><span style="font-family:Cambria;font-size:15px;">Staff: Barangay Commitee</span></p>
+        <p><span style="font-family:Cambria;font-size:15px;">&nbsp;</span></p>
+        <p id="actionConducted" style="text-align: justify;"><span style="font-family:Cambria;font-size:16px;">&nbsp; &nbsp;<span style="font-family:Cambria;font-weight:normal;font-size:16px;">Noong Mayo 4, 2025 sa ganap na 5:04 ng hapon, isang ulat ang ginawa kaugnay ng reklamo mula sa isang mamamayan laban sa Tangol store na matatagpuan sa 123 Cap St. Ayon sa sumbong, isinagawa ang inspeksyon at napag-alamang hindi malinis ang kalagayan ng nasabing tindahan.</span></span></p>
+        <div>
+          <p><span style="font-family:Cambria;font-size:15px;">Picture:</span></p>
+          <img id="actionImage" src="assets/images/clearing-operations.jpg" class="reportimage" style="margin-top: 8px;" width="510" height="325">
+        </div>
+      </div>
+
+      <!-- Placeholder for additional pages -->
+      <div id="additionalaction"></div>
+    </div>
+  </div>
 
 </body>
 <script src="js/tracking.js"></script>

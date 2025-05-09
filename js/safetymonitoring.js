@@ -46,15 +46,15 @@ function fetchTable(currentcategory, searchinput){
     let detailsUrl = null;
     if(searchinput == ''){
         if(currentcategory == 'pending'){
-            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/clrngopsPending`;
+            detailsUrl = `http://localhost:8001/api/service/safetymonitoring/clrngopsPending`;
         } else if(currentcategory == 'sent'){
-            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/clrngopsSent`;
+            detailsUrl = `http://localhost:8001/api/service/safetymonitoring/clrngopsSent`;
         }
     }else {
         if(currentcategory == 'pending'){
-            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/clrngopsPending?search=${searchinput}`;
+            detailsUrl = `http://localhost:8001/api/service/safetymonitoring/clrngopsPending?search=${searchinput}`;
         } else if(currentcategory == 'sent'){
-            detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/clrngopsSent?search=${searchinput}`;
+            detailsUrl = `http://localhost:8001/api/service/safetymonitoring/clrngopsSent?search=${searchinput}`;
         }
     }
 
@@ -113,9 +113,9 @@ function fetchItemDetails(currentcategory, year_month) {
   document.getElementById("clrupdateStatus").style.display = 'none';
   }
 
-  document.querySelector(".reportfor").textContent = year_month;
+  document.querySelector(".yearmonth").textContent = year_month;
 
-  tabledetailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/reporttable/${year_month}`;
+  tabledetailsUrl = `http://localhost:8001/api/service/safetymonitoring/reporttable/${year_month}`;
     // Fetch data from the API endpoint to populate the table
     fetch(tabledetailsUrl)
         .then(response => response.json())
@@ -234,7 +234,7 @@ function fetchItemDetails(currentcategory, year_month) {
     template.style.display = "none";
   }
 
-  const streetdetailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/reportstreets/${year_month}`;
+  const streetdetailsUrl = `http://localhost:8001/api/service/safetymonitoring/reportstreets/${year_month}`;
   
     fetch(streetdetailsUrl)
       .then(response => response.json())
@@ -344,7 +344,7 @@ function fetchItemDetails(currentcategory, year_month) {
       }
     }
 
-    const summarydetailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/reportinfo/${year_month}`;
+    const summarydetailsUrl = `http://localhost:8001/api/service/safetymonitoring/reportinfo/${year_month}`;
   
     fetch(summarydetailsUrl)
       .then(response => response.json())
@@ -414,14 +414,14 @@ function fetchItemDetails(currentcategory, year_month) {
 }
 
 function updateStatus(){
-    const year_month = document.querySelector(".reportfor").textContent;
+    const year_month = document.querySelector(".yearmonth").textContent;
     const status = 'Sent.';
     // Create a FormData object to send the file
     const formData = new FormData();
     formData.append('year_month', year_month);
     formData.append('status', status);
 
-    const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/clrngopsUpdate`;
+    const detailsUrl = `http://localhost:8001/api/service/safetymonitoring/clrngopsUpdate`;
         fetch(detailsUrl, {
             method: 'POST',
             body: formData
@@ -590,10 +590,10 @@ let clearingIndex = 1;
     if (!dateValue) {
       showError(dateInput, 'Date of operation is required.');
       isValid = false;
-    } else if (dateValue > today) {
+    } /* else if (dateValue > today) {
       showError(dateInput, 'Date cannot be in the future.');
       isValid = false;
-    }
+    } */
 
     // ✅ Validate Conducted (radio)
     const conductedRadios = op.querySelectorAll(`input[name="clearing_conducted_${opIndex}"]`);
@@ -682,7 +682,7 @@ let clearingIndex = 1;
   // Submit using fetch
   const formData = new FormData(form);
 
-  fetch('https://bfmsi.smartbarangayconnect.com/api/service/concernslist/save_activity', {
+  fetch('http://localhost:8001/api/service/safetymonitoring/save_activity', {
     method: 'POST',
     body: formData
   })

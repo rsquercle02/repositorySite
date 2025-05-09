@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Bootstrap demo</title>
-    <link rel="stylesheet" href="css/usermanagement.css"
+    <link rel="stylesheet" href="css/usermanagement.css">
   </head>
   <body>
     <h2 class="m-3">User Management</h2>
@@ -25,7 +25,7 @@
     <tr>
       <th scope="col">Id</th>
       <th scope="col">Fullname</th>
-      <th scope="col">Username</th>
+      <th scope="col">Email</th>
       <th scope="col">User type</th>
       <th scope="col">Barangay role</th>
       <th scope="col">Status</th>
@@ -49,17 +49,17 @@
                     <form id="createUsrForm" enctype="multipart/form-data">
                         <div class="mb-3">
                             <label for="recipient-name" class="col-form-label">First name:</label>
-                            <input type="text" id="firstname" class="form-control" name="fullname" required>
+                            <input type="text" id="firstname" class="form-control" name="firstname">
                         </div>
                         <div id="firstnameErr" class="form-text error mb-3"></div>
                         <div class="mb-3">
                             <label for="recipient-name" class="col-form-label">Middle name:</label>
-                            <input type="text" id="middlename" class="form-control" name="fullname" required>
+                            <input type="text" id="middlename" class="form-control" name="middlename">
                         </div>
                         <div id="middlenameErr" class="form-text error mb-3"></div>
                         <div class="mb-3">
                             <label for="recipient-name" class="col-form-label">Last name:</label>
-                            <input type="text" id="lastname" class="form-control" name="fullname" required>
+                            <input type="text" id="lastname" class="form-control" name="lastname">
                         </div>
                         <div id="lastnameErr" class="form-text error mb-3"></div>
                         <div class="mb-3">
@@ -77,17 +77,19 @@
     
                         <div class="mb-3">
                             <label for="message-text" class="col-form-label">Email:</label>
-                            <input type="text" id="email" class="form-control" name="username" required>
+                            <input type="text" id="email" class="form-control" name="email">
                         </div>
                         <div id="emailErr" class="form-text error mb-3"></div>
                         <div class="mb-3">
                             <label for="message-text" class="col-form-label">Password:</label>
-                            <input type="password" id="password" class="form-control" name="password" required>
+                            <input type="password" id="password" class="form-control mb-3" name="password">
+                            <label for="confirmPassword" class="form-label">Confirm Password:</label>
+                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword">
                         </div>
                         <div id="passwordErr" class="form-text error mb-3"></div>
                         <div class="mb-3">
                             <label for="message-text" class="col-form-label">User type:</label>
-                            <select id="usertype" class="form-select" aria-label="Default select example" name="profile" required>
+                            <select id="usertype" class="form-select" aria-label="Default select example" name="profile">
                                 <option value="" selected>Choose Profile</option>
                                 <option value="Super Administrator">Super Administrator</option>
                                 <option value="Administrator">Administrator</option>
@@ -97,13 +99,13 @@
                         </div>
                         <div class="mb-3">
                             <label for="message-text" class="col-form-label">Barangay role:</label>
-                            <select id="brole" class="form-select" aria-label="Default select example" name="profile" required>
-                                <option value="" selected>Choose Profile</option>
+                            <select id="brole" class="form-select" aria-label="Default select example" name="profile">
+                                <option selected>Choose Role</option>
                                 <option value="Captain">Captain</option>
                                 <option value="Secretary">Secretary</option>
-                                <option value="Kagawad 1">Kagawad 1</option>
-                                <option value="Kagawad 2">Kagawad 2</option>
-                                <option value="Kagawad 3">Kagawad 3</option>
+                                <option value="Resident">Resident</option>
+                                <option value="Non resident">Non resident</option>
+                                <option value="Unknown">Unknown</option>
                             </select>
                             <div id="broleErr" class="form-text error mb-3"></div>
                         </div>
@@ -155,7 +157,7 @@
 
                         <div class="d-flex justify-content-center align-items-center mb-3">
                             <h5 class="mb-0 mr-2">Email:</h5>
-                            <p id="previewUsername" class="mb-0 mr-2">N/a</p>
+                            <p id="previewEmail" class="mb-0 mr-2">N/a</p>
                             <button type="button" id="editUnBtn" class="btn btn-secondary"><i class="fa-regular fa-pen-to-square"></i></button>
                         </div>
 
@@ -163,6 +165,12 @@
                             <h5 class="mb-0 mr-2">User type:</h5>
                             <p id="previewProfile" class="mb-0 mr-2">N/a</p>
                             <button type="button" id="editPrBtn" class="btn btn-secondary"><i class="fa-regular fa-pen-to-square"></i></button>
+                        </div>
+
+                        <div class="d-flex justify-content-center align-items-center mb-3">
+                            <h5 class="mb-0 mr-2">Barangay role:</h5>
+                            <p id="previewRole" class="mb-0 mr-2">N/a</p>
+                            <button type="button" id="editRoBtn" class="btn btn-secondary"><i class="fa-regular fa-pen-to-square"></i></button>
                         </div>
 
                         <div class="d-flex justify-content-center align-items-center mb-3">
@@ -209,25 +217,25 @@
     </div>
 </div>
 
-<div class="modal fade" id="editUnModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal fade" id="editEmModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title fs-5" id="exampleModalLabel">Update Username</h1>
-                <button type="button" id="closeUnModal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Update Email</h1>
+                <button type="button" id="closeEmModal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form id="editUnForm">
                     <!-- Email Field -->
                     <div class="mb-3">
-                        <label for="editUsername" class="form-label">Username:</label>
-                        <input type="text" class="form-control" id="editUsername" name="editUsername">
+                        <label for="editEmail" class="form-label">Email</label>
+                        <input type="text" class="form-control" id="editEmail" name="editEmail">
                     </div>
                     <div id="editUnErr" class="form-text error mb-3"></div>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                <button type="button" id="updateUsername" name="updateUsername" class="btn btn-success rounded-3">Update</button>
+                <button type="button" id="updateEmail" name="updateEmail" class="btn btn-success rounded-3">Update</button>
             </form>
             </div>
     </div>
@@ -258,6 +266,38 @@
             <div class="modal-footer">
                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
                 <button type="button" id="updateProfile" name="updateProfile" class="btn btn-success rounded-3">Update</button>
+            </form>
+            </div>
+    </div>
+</div>
+</div>
+
+<div class="modal fade" id="editRoModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm modal-dialog-centered modal-dialog-scrollable">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title fs-5" id="exampleModalLabel">Update Role</h1>
+                <button type="button" id="closeRoModal" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form id="editRoForm">
+                    <!-- Profile Field -->
+                    <div class="mb-3">
+                        <label for="editRole" class="form-label">Barangay role:</label>
+                        <select id="editRole" class="form-select" aria-label="Default select example" name="editProfile">
+                            <option selected>Choose Role</option>
+                            <option value="Captain">Captain</option>
+                            <option value="Secretary">Secretary</option>
+                            <option value="Resident">Resident</option>
+                            <option value="Non resident">Non resident</option>
+                            <option value="Unknown">Unknown</option>
+                        </select>
+                    </div>
+                    <div id="editPrErr" class="form-text error mb-3"></div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                <button type="button" id="updateRole" name="updateRole" class="btn btn-success rounded-3">Update</button>
             </form>
             </div>
     </div>
@@ -305,7 +345,9 @@
                     <!-- Password Field -->
                     <div class="mb-3">
                         <label for="editPassword" class="form-label">Password:</label>
-                        <input type="text" class="form-control" id="editPassword" name="editPassword">
+                        <input type="password" class="form-control mb-3" id="editPassword" name="editPassword">
+                        <label for="editconfirmPassword" class="form-label">Confirm Password:</label>
+                        <input type="password" class="form-control" id="editconfirmPassword" name="editconfirmPassword">
                     </div>
                     <div id="editPsErr" class="form-text error mb-3"></div>
             </div>

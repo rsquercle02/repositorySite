@@ -1,10 +1,14 @@
 
 function fetchTable(){
+    // Show loading
+    document.getElementById('loading-indicator').style.display = 'block';
+    document.querySelector('.tablehtml').style.display = 'none';
+
     const tableBody = document.querySelector("#table tbody");
     // Clear the table before adding new rows
     tableBody.innerHTML = ''; // This will remove all the previous rows
     // Example URL for fetching detailed information (you may adjust it)
-    const detailsUrl = 'https://bfmsi.smartbarangayconnect.com/api/service/concernslist/fetchConcerns';
+    const detailsUrl = 'http://localhost:8001/api/service/concerns/fetchConcerns';
     // Fetch data from the API endpoint to populate the table
     fetch(detailsUrl)
         .then(response => response.json())
@@ -26,6 +30,10 @@ function fetchTable(){
                 const addressCell = document.createElement("td");
                 addressCell.textContent = item.store_address;
                 row.appendChild(addressCell);
+
+                const residenttypeCell = document.createElement("td");
+                residenttypeCell.textContent = item.resident_type;
+                row.appendChild(residenttypeCell);
 
                 const statusCell = document.createElement("td");
                 statusCell.textContent = item.anonymity_status;
@@ -55,13 +63,18 @@ function fetchTable(){
                 tableBody.appendChild(row);
             });
         })
-        .catch(error => console.error('Error fetching data:', error));
+        .catch(error => console.error('Error fetching data:', error))
+        .finally(() => {
+            // Hide loading
+            document.getElementById('loading-indicator').style.display = 'none';
+            document.querySelector('.tablehtml').style.display = 'block';
+        });
     }
 
     function fetchItemDetails(id) {
 
         // Example URL for fetching detailed information (you may adjust it)
-        const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/fetchDetails/${id}`;
+        const detailsUrl = `http://localhost:8001/api/service/concerns/fetchDetails/${id}`;
 
         fetch(detailsUrl)
             .then(response => response.json())
@@ -80,11 +93,8 @@ function fetchTable(){
                 document.getElementById('storeRecord').textContent = data.record_status;
                 document.getElementById('concernDetails').textContent = data.concern_details;
                 document.getElementById('concernStatus').textContent = data.concern_status;
-                document.getElementById('cStatusReason').textContent = data.cstatus_reason;
                 document.getElementById('createAt').textContent = data.create_at;
                 document.getElementById("file1").innerHTML = '';
-                document.getElementById("file2").innerHTML = '';
-                document.getElementById("file3").innerHTML = '';
 
                 // Function to extract file extension from URL
                 function getFileExtension(url) {
@@ -115,8 +125,6 @@ function fetchTable(){
 
                 // Call the function for each file individually
                 displayFile(data.file1, "file1");
-                displayFile(data.file2, "file2");
-                displayFile(data.file3, "file3");
                 
             })
             .catch(error => console.error('Error fetching details:', error));
@@ -128,7 +136,7 @@ function fetchTable(){
         // Clear the table before adding new rows
         tableBody.innerHTML = ''; // This will remove all the previous rows
         // Example URL for fetching detailed information (you may adjust it)
-        const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/searchBusiness/${searchTerm}`;
+        const detailsUrl = `http://localhost:8001/api/service/concerns/searchBusiness/${searchTerm}`;
         // Fetch data from the API endpoint to populate the table
         fetch(detailsUrl)
             .then(response => response.json())
@@ -151,6 +159,10 @@ function fetchTable(){
                     addressCell.textContent = item.store_address;
                     row.appendChild(addressCell);
     
+                    const residenttypeCell = document.createElement("td");
+                    residenttypeCell.textContent = item.resident_type;
+                    row.appendChild(residenttypeCell);
+
                     const statusCell = document.createElement("td");
                     statusCell.textContent = item.anonymity_status;
                     row.appendChild(statusCell);
@@ -193,6 +205,123 @@ function fetchTable(){
         }
     });
 
+    function notValid(){
+        Swal.fire({
+            title: "Update status?",
+            text: "",
+            icon: "question",
+            showCancelButton: true,
+            confirmButtonColor: "#3085d6",
+            cancelButtonColor: "#d33",
+            confirmButtonText: "Yes, update."
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    const concernId = document.getElementById("concernId").textContent;
+                    const concernStatus = "Not valid.";
+                    const formData = new FormData();
+                    formData.append("concernStatus", concernStatus);
+                    formData.append("concernId", concernId);
+
+                    const detailsUrl = `http://localhost:8001/api/service/concerns/notValid`;
+                        fetch(detailsUrl, {
+                            method: 'POST',
+                            body: formData
+                        })
+                        .then(response => {
+                            // Check if the response is okay (status 200-299)
+                        if (response.ok) {
+                            Swal.fire({
+                                title: "Update status",
+                                text: "The status is updated.",
+                                icon: "success",
+                                confirmButtonColor: "#0f0"
+                            }).then((result) => {
+                                if (result.isConfirmed) {
+                                    // Remove data of the form
+                                    document.getElementById('concernId').textContent = '';
+                                    document.getElementById('concernedCitizen').textContent = '';
+                                    document.getElementById('storeId').textContent = '';
+                                    document.getElementById('storeName').textContent = '';
+                                    document.getElementById('storeAddress').textContent = '';
+                                    document.getElementById('storeRecord').textContent = '';
+                                    document.getElementById('concernDetails').textContent = '';
+                                    document.getElementById('createAt').textContent = '';
+                                    document.getElementById('reportTextarea').value = '';
+                                    document.getElementById('categorySelect').value = '';
+                                    document.getElementById('violationSelect').value = '';
+                                    fetchTable();
+                                    document.getElementById('closePreviewBtn').click();
+                                    document.getElementById('cancelReport').click();
+                                    clearAllViolations();
+
+
+                                }
+                            });
+                        } else {
+                        // If the response is not ok, parse the error response
+                        return response.json().then(errorData => {
+                                Swal.fire({
+                                    title: "Update Cancelled!",
+                                    text: `Error: ${errorData.error}`,
+                                    icon: "error",
+                                    confirmButtonColor: "#0f0"
+                                }).then((result) => {
+                                    if (result.isConfirmed) {
+                                        // Remove data of the form
+                                        document.getElementById('concernId').textContent = '';
+                                        document.getElementById('concernedCitizen').textContent = '';
+                                        document.getElementById('storeId').textContent = '';
+                                        document.getElementById('storeName').textContent = '';
+                                        document.getElementById('storeAddress').textContent = '';
+                                        document.getElementById('storeRecord').textContent = '';
+                                        document.getElementById('concernDetails').textContent = '';
+                                        document.getElementById('createAt').textContent = '';
+                                        document.getElementById('reportTextarea').value = '';
+                                        document.getElementById('categorySelect').value = '';
+                                        document.getElementById('violationSelect').value = '';
+                                        fetchTable();
+                                        document.getElementById('closePreviewBtn').click();  
+                                        document.getElementById('cancelReport').click();
+                                        clearAllViolations();                      }
+                                });
+                        });
+                    }
+                    })
+                    .catch(error => {
+                        // Check for specific error message
+                        Swal.fire({
+                            title: "Update Cancelled!",
+                            text: `Error: ${error}`,
+                            icon: "error",
+                            confirmButtonColor: "#0f0"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                // Remove data of the form
+                                document.getElementById('concernId').textContent = '';
+                                document.getElementById('concernedCitizen').textContent = '';
+                                document.getElementById('storeId').textContent = '';
+                                document.getElementById('storeName').textContent = '';
+                                document.getElementById('storeAddress').textContent = '';
+                                document.getElementById('storeRecord').textContent = '';
+                                document.getElementById('concernDetails').textContent = '';
+                                document.getElementById('createAt').textContent = '';
+                                document.getElementById('reportTextarea').value = '';
+                                document.getElementById('categorySelect').value = '';
+                                document.getElementById('violationSelect').value = '';
+                                fetchTable();
+                                document.getElementById('closePreviewBtn').click();
+                                document.getElementById('cancelReport').click();
+                                clearAllViolations();
+                            }
+                        });
+                    });
+                }
+            });
+    }
+
+    document.getElementById('notValidBtn').addEventListener('click', function() {
+        notValid();
+    });
     // Toggle visibility of the report section and hide "Create Report" button when the "Create Report" button is clicked
     document.getElementById('createReportBtn').addEventListener('click', function() {
         var reportSection = document.querySelector('.report-section');
@@ -226,7 +355,7 @@ function fetchTable(){
         document.getElementById('concernDetails').textContent = '';
         document.getElementById('createAt').textContent = '';
         document.getElementById('reportTextarea').value = '';
-        document.getElementById('staffSelect').value = '';
+        document.getElementById('categorySelect').value = '';
         document.getElementById('violationSelect').value = '';
         fetchTable();
         document.getElementById('closePreviewBtn').click();
@@ -239,12 +368,12 @@ function fetchTable(){
     document.getElementById('submitReport').addEventListener('click', function(event) {
         event.preventDefault();
         document.getElementById('reportTxtErr').innerHTML = '';
-        document.getElementById('staffSelectErr').innerHTML = '';
+        document.getElementById('categorySelectErr').innerHTML = '';
         document.getElementById('violationSelectErr').innerHTML = '';
         const concernId = document.getElementById('concernId').innerText;
         const storeId = document.getElementById('storeId').innerText;
         const reportText = document.getElementById('reportTextarea').value;
-        const staffSelect = document.getElementById('staffSelect').value;
+        const categorySelect = document.getElementById('categorySelect').value;
         const violationSelect = document.getElementById('violationSelect').value;
 
     let isValid = true;
@@ -259,22 +388,22 @@ function fetchTable(){
         isValid = false;
     }
 
-    if(staffSelect == ''){
-        document.getElementById('staffSelectErr').innerHTML = 'Enter staff.';
+    if(categorySelect == ''){
+        document.getElementById('categorySelectErr').innerHTML = 'Select category.';
         isValid = false;
     }
 
     if(isValid){
-
+        
         // Create a FormData object to send the file
         const formData = new FormData();
         formData.append('concernId', concernId);
         formData.append('storeId', storeId);
         formData.append('reportText', reportText);
-        formData.append('staffSelect', staffSelect);
+        formData.append('categorySelect', categorySelect);
         formData.append('violationSelect', violationSelect);
 
-        const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/concernslist/postreport`;
+        const detailsUrl = `http://localhost:8001/api/service/concerns/postreport`;
             fetch(detailsUrl, {
                 method: 'POST',
                 body: formData
@@ -299,7 +428,7 @@ function fetchTable(){
                         document.getElementById('concernDetails').textContent = '';
                         document.getElementById('createAt').textContent = '';
                         document.getElementById('reportTextarea').value = '';
-                        document.getElementById('staffSelect').value = '';
+                        document.getElementById('categorySelect').value = '';
                         document.getElementById('violationSelect').value = '';
                         fetchTable();
                         document.getElementById('closePreviewBtn').click();
@@ -329,7 +458,7 @@ function fetchTable(){
                             document.getElementById('concernDetails').textContent = '';
                             document.getElementById('createAt').textContent = '';
                             document.getElementById('reportTextarea').value = '';
-                            document.getElementById('staffSelect').value = '';
+                            document.getElementById('categorySelect').value = '';
                             document.getElementById('violationSelect').value = '';
                             fetchTable();
                             document.getElementById('closePreviewBtn').click();  
@@ -358,7 +487,7 @@ function fetchTable(){
                     document.getElementById('concernDetails').textContent = '';
                     document.getElementById('createAt').textContent = '';
                     document.getElementById('reportTextarea').value = '';
-                    document.getElementById('staffSelect').value = '';
+                    document.getElementById('categorySelect').value = '';
                     document.getElementById('violationSelect').value = '';
                     fetchTable();
                     document.getElementById('closePreviewBtn').click();

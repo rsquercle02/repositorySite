@@ -17,35 +17,42 @@
     <div class="stats-container">
         <div class="stat-card" style="background-color: #ff6666;">
             <h2>Total market</h2>
-            <span id="totalStore">0</span>
+            <span id="storeTotal">0</span>
             <i class="fa-solid fa-store"></i>
         </div>
         <div class="stat-card" style="background-color: #66b3ff;">
             <h2>Safety monitoring</h2>
-            <span id="totalClrngops">0</span>
+            <span id="clrngopsTotal">0</span>
             <i class="fas fa-clipboard-list"></i>
         </div>
         <div class="stat-card" style="background-color: #ffcc66;">
             <h2>Resolved reports</h2> 
-            <span id="resolvedReport">0</span>
+            <span id="reportResolved">0</span>
             <i class="fas fa-check-circle"></i>
         </div>
         <div class="stat-card" style="background-color: #ffff66;">
-            <h2>For cityhall</h2>
-            <span id="fwrdCityReport">0</span>
-            <i class="fa-solid fa-building-columns"></i>
+            <h2>Report created</h2>
+            <span id="reportCreated">0</span>
+            <i class="fa-solid fa-file"></i>
         </div>
     </div>
 
     <!-- Charts -->
     <div class="charts-container">
         <div class="chart-card">
-            <h3>Violations</h3>
-            <canvas id="barChart"></canvas>
+            <h3>Report category</h3>
+            <canvas id="categoryChart"></canvas>
         </div>
         <div class="chart-card">
             <h3>Report status</h3>
             <canvas id="doughnutChart"></canvas>
+        </div>
+    </div>
+
+    <div class="charts-container">
+        <div class="chart-card">
+            <h3>Violations</h3>
+            <canvas id="barChart"></canvas>
         </div>
     </div>
 

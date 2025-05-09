@@ -3,7 +3,7 @@ function fetchTable(){
     // Clear the table before adding new rows
     //tableBody.innerHTML = ''; // This will remove all the previous rows
     // Example URL for fetching detailed information (you may adjust it)
-    const detailsUrl = 'https://bfmsi.smartbarangayconnect.com/api/service/usermanagement/fetch';
+    const detailsUrl = 'http://localhost:8001/api/service/usermanagement/fetch';
     // Fetch data from the API endpoint to populate the table
     fetch(detailsUrl)
         .then(response => response.json())
@@ -71,7 +71,7 @@ function fetchTable(){
         // Clear the table before adding new rows
         tableBody.innerHTML = ''; //This will remove all the previous rows
         // Fetch data from the API endpoint to populate the table
-    fetch(`https://bfmsi.smartbarangayconnect.com/api/service/usermanagement/search/${searchTerm}`)
+    fetch(`http://localhost:8001/api/service/usermanagement/search/${searchTerm}`)
         .then(response => response.json())
         .then(data => {
             const tableBody = document.querySelector("#table tbody");
@@ -134,16 +134,17 @@ function fetchTable(){
 
     function fetchItemDetails(id) {
         // Example URL for fetching detailed information (you may adjust it)
-        const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/usermanagement/fetchId/${id}`;
+        const detailsUrl = `http://localhost:8001/api/service/usermanagement/fetchId/${id}`;
 
         fetch(detailsUrl)
             .then(response => response.json())
             .then(data => {
                 document.getElementById("previewId").innerText = data.account_id;
                 document.getElementById("previewFullname").innerText = data.full_name;
-                document.getElementById("previewUsername").innerText = data.email;
+                document.getElementById("previewEmail").innerText = data.email;
                 //document.getElementById("editPassword").value = data.password;
                 document.getElementById("previewProfile").innerText = data.user_type;
+                document.getElementById("previewRole").innerText = data.barangay_role;
                 document.getElementById("previewStatus").innerText = data.status;
                 // Remove the "../../" from the beginning of the path
                 data.picture = data.picture.replace(/^(\.\.\/){2}/, '');
@@ -215,9 +216,10 @@ function fetchTable(){
         const firstname = document.getElementById('firstname').value;
         const middlename = document.getElementById('middlename').value;
         const lastname = document.getElementById('lastname').value;
-        const gender = document.querySelector('input[name="gender"]:checked');
+        const gender = document.querySelector('input[name="gender"]:checked').value;
         const email = document.getElementById('email').value;
         const password = document.getElementById('password').value;
+        const confirmPassword = document.getElementById('confirmPassword').value;
         const usertype = document.getElementById('usertype').value;
         const brole = document.getElementById('brole').value;
         const pictureInput = document.getElementById('picture');
@@ -248,11 +250,16 @@ function fetchTable(){
         if(email === ''){
             document.getElementById('emailErr').innerHTML = 'Enter email.';
             isValid = false;
-        }
+        } else {
 
-        if(password === ''){
-            document.getElementById('passwordErr').innerHTML = 'Enter password.';
-            isValid = false;
+            // Regular expression for validating email format
+            const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+            // Test if the email matches the pattern
+            if (!emailPattern.test(email)) {
+                document.getElementById('emailErr').innerHTML = 'Please enter a valid email address.';
+                isValid = false;
+            }
         }
 
         if(usertype === ''){
@@ -270,10 +277,60 @@ function fetchTable(){
             isValid = false;
         }
 
+        /*Password validation */
+        if(password === ''){
+            document.getElementById('passwordErr').innerHTML = 'No Value.';
+            isValid = false;
+            return;
+        }
+
+        if (password.length < 8) {
+            document.getElementById('passwordErr').innerHTML = 'Password must be at least 8 characters long.';
+            isValid = false;
+            return;
+        }
+
+        if (!/[A-Z]/.test(password)) {
+            document.getElementById('passwordErr').innerHTML = 'Password must contain at least one uppercase letter.';
+            isValid = false;
+            return;
+        }
+
+        if (!/[a-z]/.test(password)) {
+            document.getElementById('passwordErr').innerHTML = 'Password must contain at least one lowercase letter.';
+            isValid = false;
+            return;
+        }
+
+        if (!/\d/.test(password)) {
+            document.getElementById('passwordErr').innerHTML = 'Password must contain at least one number.';
+            isValid = false;
+            return;
+        }
+
+        if (!/[!@#$%^&*]/.test(password)) {
+            document.getElementById('passwordErr').innerHTML = 'Password must contain at least one special character (!@#$%^&*).';
+            isValid = false;
+            return;
+        }
+
+        if (confirmPassword === '') {
+            document.getElementById('passwordErr').innerHTML = 'Re-type password.';
+            isValid = false;
+            return;
+        }
+
+        if (password !== confirmPassword) {
+            document.getElementById('passwordErr').innerHTML = 'Passwords do not match.';
+            isValid = false;
+            return;
+        }
+
         if(isValid){
             // Get the file from the input
             const pictureInp = document.getElementById('choosePiInp').files[0];
             //const file = pictureInp.files[0];
+            const status = "Active";
 
             // Create a FormData object to send the file
             const formData = new FormData();
@@ -285,9 +342,10 @@ function fetchTable(){
             formData.append('password', password);
             formData.append('usertype', usertype);
             formData.append('brole', brole);
+            formData.append('status', status);
             formData.append('picture', picture);
 
-                const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/usermanagement/createUser`;
+                const detailsUrl = `http://localhost:8001/api/service/usermanagement/createUser`;
                 fetch(detailsUrl, {
                     method: 'POST',
                     body: formData
@@ -440,48 +498,49 @@ function fetchTable(){
     });
     */
 
-    //*************For Update Username*********/
+    //*************For Update Email *********/
     const editUnBtn = document.getElementById("editUnBtn");
     editUnBtn.setAttribute("data-bs-toggle", "modal");
-    editUnBtn.setAttribute("data-bs-target", "#editUnModal");
+    editUnBtn.setAttribute("data-bs-target", "#editEmModal");
 
-    let previewUsername = null;
-    let editUsername = null;
+    let previewEmail = null;
+    let editEmail = null;
 
     editUnBtn.addEventListener('click', function() {
         id = document.getElementById('previewId').textContent;
-        previewUsername = document.getElementById('previewUsername').textContent;
+        previewEmail = document.getElementById('previewEmail').textContent;
         document.getElementById('editUnErr').innerHTML = '';
-        document.getElementById('editUsername').value = previewUsername;
+        document.getElementById('editEmail').value = previewEmail;
     });
 
-    document.getElementById('updateUsername').addEventListener('click', function(){
-        editUsername = document.getElementById('editUsername').value;
+    document.getElementById('updateEmail').addEventListener('click', function(){
+        editEmail = document.getElementById('editEmail').value;
         let isValid = true;
 
-        if(editUsername === ''){
-            document.getElementById('editUnErr').innerHTML = 'No value.';
+        if(editEmail === ''){
+            document.getElementById('editUnErr').innerHTML = 'Enter email.';
             isValid = false;
-        }
-        
-        if(previewUsername === editUsername){
-            document.getElementById('editUnErr').innerHTML = 'No changes.';
-            isValid = false;
-        }
+        } else {
 
-        // Regular expression for validating email format
-        const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+            if(previewEmail === editEmail){
+                document.getElementById('editUnErr').innerHTML = 'No changes.';
+                isValid = false;
+            }
 
-        // Test if the email matches the pattern
-        if (!emailPattern.test(editUsername)) {
-            document.getElementById('editUnErr').innerHTML = 'Not email.';
-            isValid = false;
+            // Regular expression for validating email format
+            const emailPattern = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+
+            // Test if the email matches the pattern
+            if (!emailPattern.test(editEmail)) {
+                document.getElementById('editUnErr').innerHTML = 'Not email.';
+                isValid = false;
+            }
         }
 
         if(isValid){
-            const formData = {editUsername: editUsername};
+            const formData = {editEmail: editEmail};
 
-                const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/usermanagement/updateEmail/${id}`;
+                const detailsUrl = `http://localhost:8001/api/service/usermanagement/updateEmail/${id}`;
                 fetch(detailsUrl, {
                     method: 'PUT',
                     headers: {
@@ -501,7 +560,7 @@ function fetchTable(){
                         if (result.isConfirmed) {
                             fetchTable();
                             document.getElementById('closePreviewBtn').click();
-                            document.getElementById('closeUnModal').click();
+                            document.getElementById('closeEmModal').click();
                         }
                     });
                 } else {
@@ -516,7 +575,7 @@ function fetchTable(){
                             if (result.isConfirmed) {
                                 fetchTable();
                                 document.getElementById('closePreviewBtn').click();
-                                document.getElementById('closeUnModal').click();
+                                document.getElementById('closeEmModal').click();
                             }
                         });
                 });
@@ -533,7 +592,7 @@ function fetchTable(){
                     if (result.isConfirmed) {
                         fetchTable();
                         document.getElementById('closePreviewBtn').click();
-                        document.getElementById('closeUnModal').click();
+                        document.getElementById('closeEmModal').click();
                     }
                 });
             });
@@ -572,7 +631,7 @@ function fetchTable(){
         if(isValid){
             const formData = {editProfile: editProfile};
 
-                const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/usermanagement/updateUsertype/${id}`;
+                const detailsUrl = `http://localhost:8001/api/service/usermanagement/updateUsertype/${id}`;
                 fetch(detailsUrl, {
                     method: 'PUT',
                     headers: {
@@ -631,6 +690,100 @@ function fetchTable(){
         }
     });
 
+    //*************For Update Role*********/
+    const editRoBtn = document.getElementById("editRoBtn");
+    editRoBtn.setAttribute("data-bs-toggle", "modal");
+    editRoBtn.setAttribute("data-bs-target", "#editRoModal");
+
+    let previewRole = null;
+    let editRole = null;
+
+    editRoBtn.addEventListener('click', function() {
+        id = document.getElementById('previewId').textContent;
+        previewRole = document.getElementById('previewRole').textContent;
+        document.getElementById('editRoErr').innerHTML = '';
+        document.getElementById('editRole').value = previewRole;
+    });
+
+    document.getElementById('updateRole').addEventListener('click', function(){
+        editRole = document.getElementById('editRole').value;
+        let isValid = true;
+
+        if(editRole === 'Choose Role'){
+            document.getElementById('editPrErr').innerHTML = 'No role.';
+            isValid = false;
+        }
+        
+        if(previewRole === editRole){
+            document.getElementById('editPrErr').innerHTML = 'No changes.';
+            isValid = false;
+        }
+
+        if(isValid){
+            const formData = {editRole: editRole};
+
+                const detailsUrl = `http://localhost:8001/api/service/usermanagement/updateRole/${id}`;
+                fetch(detailsUrl, {
+                    method: 'PUT',
+                    headers: {
+                    'Content-Type': 'application/json',  // Specifies that the body is in JSON format
+                },
+                    body: JSON.stringify(formData),
+                })
+                .then(response => {
+                    // Check if the response is okay (status 200-299)
+                if (response.ok) {
+                    Swal.fire({
+                        title: "Update Information!",
+                        text: "The information is updated.",
+                        icon: "success",
+                        confirmButtonColor: "#0f0"
+                    }).then((result) => {
+                        if (result.isConfirmed) {
+                            fetchTable();
+                            document.getElementById('editRoForm').reset();
+                            document.getElementById('closePreviewBtn').click();
+                            document.getElementById('closeRoModal').click();
+                        }
+                    });
+                } else {
+                // If the response is not ok, parse the error response
+                return response.json().then(errorData => {
+                        Swal.fire({
+                            title: "Update Cancelled!",
+                            text: `Error: ${errorData.error}`,
+                            icon: "error",
+                            confirmButtonColor: "#0f0"
+                        }).then((result) => {
+                            if (result.isConfirmed) {
+                                fetchTable();
+                                document.getElementById('editRoForm').reset();
+                                document.getElementById('closePreviewBtn').click();
+                                document.getElementById('closeRoModal').click();
+                            }
+                        });
+                });
+            }
+            })
+            .catch(error => {
+                // Check for specific error message
+                Swal.fire({
+                    title: "Update Cancelled!",
+                    text: `Error: ${error}`,
+                    icon: "error",
+                    confirmButtonColor: "#0f0"
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetchTable();
+                        document.getElementById('editRoForm').reset();
+                        document.getElementById('closePreviewBtn').click();
+                        document.getElementById('closeRoModal').click();
+                    }
+                });
+            });
+        }
+    });
+
     //*************For Update Status*********/
     const editStBtn = document.getElementById("editStBtn");
     editStBtn.setAttribute("data-bs-toggle", "modal");
@@ -663,7 +816,7 @@ function fetchTable(){
         if(isValid){
             const formData = {editStatus: editStatus};
 
-                const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/usermanagement/updateStatus/${id}`;
+                const detailsUrl = `http://localhost:8001/api/service/usermanagement/updateStatus/${id}`;
                 fetch(detailsUrl, {
                     method: 'PUT',
                     headers: {
@@ -735,12 +888,56 @@ function fetchTable(){
 
     document.getElementById('updatePassword').addEventListener('click', function(){
         editPassword = document.getElementById('editPassword').value;
+        const editconfirmPassword = document.getElementById('editconfirmPassword').value;
         document.getElementById('editPsErr').innerHTML = '';
         let isValid = true;
 
         if(editPassword === ''){
             document.getElementById('editPsErr').innerHTML = 'No Value.';
             isValid = false;
+            return;
+        }
+
+        if (editPassword.length < 8) {
+            document.getElementById('editPsErr').innerHTML = 'Password must be at least 8 characters long.';
+            isValid = false;
+            return;
+        }
+
+        if (!/[A-Z]/.test(editPassword)) {
+            document.getElementById('editPsErr').innerHTML = 'Password must contain at least one uppercase letter.';
+            isValid = false;
+            return;
+        }
+
+        if (!/[a-z]/.test(editPassword)) {
+            document.getElementById('editPsErr').innerHTML = 'Password must contain at least one lowercase letter.';
+            isValid = false;
+            return;
+        }
+
+        if (!/\d/.test(editPassword)) {
+            document.getElementById('editPsErr').innerHTML = 'Password must contain at least one number.';
+            isValid = false;
+            return;
+        }
+
+        if (!/[!@#$%^&*]/.test(editPassword)) {
+            document.getElementById('editPsErr').innerHTML = 'Password must contain at least one special character (!@#$%^&*).';
+            isValid = false;
+            return;
+        }
+
+        if (editconfirmPassword === '') {
+            document.getElementById('editPsErr').innerHTML = 'Re-type password.';
+            isValid = false;
+            return;
+        }
+
+        if (editPassword !== editconfirmPassword) {
+            document.getElementById('editPsErr').innerHTML = 'Passwords do not match.';
+            isValid = false;
+            return;
         }
 
         if(isValid){
@@ -756,7 +953,7 @@ function fetchTable(){
                     if (result.isConfirmed) {
                         const formData = {editPassword: editPassword};
 
-                        const detailsUrl = `https://bfmsi.smartbarangayconnect.com/api/service/usermanagement/updatePassword/${id}`;
+                        const detailsUrl = `http://localhost:8001/api/service/usermanagement/updatePassword/${id}`;
                         fetch(detailsUrl, {
                             method: 'PUT',
                             headers: {
@@ -775,6 +972,7 @@ function fetchTable(){
                             }).then((result) => {
                                 if (result.isConfirmed) {
                                     fetchTable();
+                                    document.getElementById('editPsForm').reset();
                                     document.getElementById('closePreviewBtn').click();
                                     document.getElementById('closePsModal').click();
                                 }
@@ -790,6 +988,7 @@ function fetchTable(){
                                 }).then((result) => {
                                     if (result.isConfirmed) {
                                         fetchTable();
+                                        document.getElementById('editPsForm').reset();
                                         document.getElementById('closePreviewBtn').click();
                                         document.getElementById('closePsModal').click();
                                     }
@@ -807,6 +1006,7 @@ function fetchTable(){
                         }).then((result) => {
                             if (result.isConfirmed) {
                                 fetchTable();
+                                document.getElementById('editPsForm').reset();
                                 document.getElementById('closePreviewBtn').click();
                                 document.getElementById('closePsModal').click();
                             }

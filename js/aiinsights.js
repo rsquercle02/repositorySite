@@ -3,7 +3,7 @@ function summaryandsuggestions(data){
     // Show loading
     document.getElementById('loading-indicator').style.display = 'block';
 
-    fetch('https://bfmsi.smartbarangayconnect.com/api/service/approval/generatecontent', {
+    fetch('http://localhost:8001/api/service/ai/generatecontent', {
         method: 'GET',  // HTTP method
         headers: {
             'Content-Type': 'application/json'  // Set content type to JSON

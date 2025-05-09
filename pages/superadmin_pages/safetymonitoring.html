@@ -153,12 +153,11 @@
 
     <!--View report -->
     <div id="reportmodal" class="reports">
-      <div class="d-inline-flex align-items-center">
+      <div class="d-inline-flex align-items-center buttonandtext">
         <button class="btn btn-primary btn-sm close-button m-2" onclick="closeModal()">&lt; Back</button>
         <button type="button" class="btn btn-primary btn-sm updateBtn m-2" id="clrupdateStatus">Mark as sent.</button>
         <button class="btn btn-primary btn-sm print-button m-2" onclick="window.print()">🖨️ Print or Save as PDF</button>
-        <div>Report for: <span class="reportfor"></span></div>
-        
+        <span>Report for:</span>&nbsp;<span class="yearmonth"></span>
       </div>
 
       <div class="report-table">
