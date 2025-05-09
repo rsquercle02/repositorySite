@@ -1,5 +1,23 @@
+    /* Loading indicator */
+    #loading-indicator {
+        margin-top: 20%;
+        margin-left: 50%;
+        margin-bottom: 20%;
+        transform: translate(-50%, -50%);
+        font-size: 3rem;
+        color: #333;
+        text-align: center;
+    }
+    
+    #loading-indicator p {
+        margin-top: 1rem;
+        font-size: 1.2rem;
+        color: #555; /* Optional: adjust text color */
+    }
+    
     /* The card container is now scrollable */
     .card-container {
+        min-height: 150px; /* Minimum height for all screens */
         display: flex;
         flex-direction: column;
         gap: 16px;
@@ -9,6 +27,7 @@
     }
 
     .card {
+        min-height: 150px; /* Minimum height for all screens */
         border: 1px solid #ddd;
         padding: 15px;
         border-radius: 8px;
@@ -29,9 +48,382 @@
         display: none;
     }
 
-    /* Optional: Responsiveness for smaller screens */
-    @media (max-width: 576px) {
-        .card-container {
-            max-height: 300px;  /* Adjust height for smaller screens */
-        }
+    /* Form Validation */
+    .error{
+      color: #f00;
     }
+
+    /*Store issues */
+    .card {
+        border-radius: 1rem;
+        box-shadow: 0 0 10px rgba(0,0,0,0.05);
+        transition: transform 0.2s;
+      }
+      .card:hover {
+        transform: translateY(-5px);
+      }
+      .badge {
+        margin: 0.15rem 0.3rem 0.15rem 0;
+        display: inline-block;
+      }
+      @media (max-width: 576px) {
+        .card-title {
+          font-size: 1.1rem;
+        }
+        .card-subtitle {
+          font-size: 0.9rem;
+        }
+      }
+
+      .table-con {
+        height: 500px; /* You can change this to any height you prefer */
+        overflow: hidden; /* Ensures no content overflows within this div */
+        position: relative;
+      }
+
+      /****** Print report ********/
+      .table-con {
+        /* border: 1px solid #800404; */
+        height: 500px; /* You can change this to any height you prefer */
+        overflow: hidden; /* Ensures no content overflows within this div */
+        position: relative;
+      }
+  
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-bottom: 30px;
+      }
+  
+      th, td {
+        border: 1px solid #000000;
+        padding: 10px;
+        text-align: left;
+        vertical-align: top;
+      }
+  
+      th {
+        background-color: #f4f4f4;
+      }
+  
+      .no-violations {
+        color: green;
+        font-style: italic;
+      }
+  
+      .reportstracking {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100vw;
+        height: 100vh;
+        background: rgb(255, 255, 255);
+        justify-content: center;
+        z-index: 1000;
+        overflow-y: auto;
+      }
+  
+      .close-btn:hover {
+        color: red;
+      }
+  
+      body {
+        margin: 0;
+        padding: 0;
+        background: #eee;
+      }
+  
+      .report-violations {
+        width: 13in;
+        height: 8.5in;
+        margin: auto;
+        background: white;
+        padding: 0.5in 1in 0in 1in;
+        box-sizing: border-box;
+        font-family: 'Georgia', serif;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+      }
+  
+      h1 {
+        text-align: center;
+        font-size: 24pt;
+        margin-bottom: 0.5em;
+      }
+  
+      .activityTable th, .activityTable td {
+        border: 1pt solid black;
+        padding: 5px;
+        vertical-align: top;
+        text-align: center;
+      }
+  
+      @media print {
+        .print-button, .close-btn, .updateBtn {
+          display: none !important;
+        }
+        .reportstracking {
+          display: none;
+          background: rgb(255, 255, 255);
+          overflow: visible;
+          page-break-before: avoid !important;
+        }
+        .report-violations {
+          width: 13in;
+          height: 8in;
+        }
+        body {
+          background: rgb(255, 255, 255);
+        }
+        table, thead, tbody, th, td, tr {
+          page-break-inside: avoid;
+          page-break-after: auto;
+        }
+        thead {
+          display: table-header-group;
+        }
+        tfoot {
+          display: table-footer-group;
+        }
+      }
+
+      /* Prevent background from scrolling when modal is open */
+      body.modal-open {
+        overflow: hidden;
+      }
+
+      /****** Print report ********/
+      /* Reports page */
+      .reportsprint {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgb(255, 255, 255);
+        justify-content: center;
+        z-index: 1000;
+        overflow-y: auto;
+      }
+
+      .close-btn:hover {
+        color: red;
+      }
+
+      body {
+        margin: 0;
+        padding: 0;
+        background: #eee;
+      }
+
+      .reportpage{
+        width: 8.5in;
+        height: 13in;
+        margin: auto;
+        background: rgb(255, 255, 255);
+        padding: 0.5in 0.5in 0in 0.5in;
+        box-sizing: border-box;
+        font-family: 'Georgia', serif;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+      }
+
+      .actionpage{
+        width: 8.5in;
+        height: 13in;
+        margin: auto;
+        background: rgb(255, 255, 255);
+        padding: 0.5in 0.5in 0in 0.5in;
+        box-sizing: border-box;
+        font-family: 'Georgia', serif;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+      }
+
+      h1 {
+        text-align: center;
+        font-size: 24pt;
+        margin-bottom: 0.5em;
+      }
+
+      .activityTable th, .activityTable td {
+        border: 1pt solid black;
+        padding: 5px;
+        vertical-align: top;
+        text-align: center;
+      }
+
+      @media print {
+        .buttonandtext {
+          display: none !important;
+        }
+
+        .card-container{
+          display: none !important;
+        }
+
+        .modalcensus{
+          display: none !important;
+        }
+
+        .list-container{
+          display: none !important;
+        }
+
+        .reportsprint {
+          display: none;
+          background: rgb(255, 255, 255);
+          overflow: visible;
+          page-break-before: avoid !important;
+          page-break-after: avoid !important;
+          padding: 0;
+          margin: 0;
+        }
+
+        .reportpage {
+          width: 100%;
+          height: 100%;
+          margin: 0;
+          page-break-before: avoid !important;
+          page-break-after: avoid !important;
+        }
+
+        body {
+          background: rgb(255, 255, 255);
+        }
+      }
+
+      @media print {
+        .buttonandtext {
+          display: none !important;
+        }
+
+        .card-container{
+          display: none;
+        }
+
+        .reportsprint {
+          display: none;
+          background: rgb(255, 255, 255);
+          overflow: visible;
+          page-break-before: avoid !important;
+          page-break-after: avoid !important;
+          padding: 0;
+          margin: 0;
+        }
+
+        .actionpage {
+          width: 100%;
+          height: 100%;
+          margin: 0;
+          page-break-before: avoid !important;
+          page-break-after: avoid !important;
+        }
+
+        body {
+          background: rgb(255, 255, 255);
+        }
+      }
+
+      /* Prevent background from scrolling when modal is open */
+      body.modal-open {
+        overflow: hidden;
+      }
+
+      
+      /* Census list */
+      .list-container {
+        margin-top: 20px;
+        max-height: 70vh;   /* Makes the list scrollable */
+        overflow-y: auto;
+        padding: 15px;
+      }
+  
+      .list-item {
+        background: #fff;
+        border-radius: 8px;
+        padding: 15px;
+        margin-bottom: 10px;
+        box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+  
+      .list-info {
+        font-size: 14px;
+      }
+  
+      .list-info span {
+        font-weight: bold;
+      }
+  
+      /*
+      .btn {
+        padding: 8px 14px;
+        border: none;
+        border-radius: 6px;
+        background: #007bff;
+        color: #fff;
+        cursor: pointer;
+      }
+  
+      .btn:hover {
+        background: #0056b3;
+      } */
+
+  
+      .modalcensus {
+        display: none;
+        position: fixed;
+        z-index: 999;
+        left: 0; top: 0;
+        width: 100%; height: 100%;
+        overflow: auto;
+        background: rgba(0,0,0,0.5);
+        padding-top: 60px;
+      }
+  
+      .modalcensus-content {
+      background: #fff;
+      margin: auto;
+      padding: 20px;
+      border-radius: 12px;
+      max-width: 500px;
+      max-height: 80vh;    /* limit height */
+      overflow-y: auto;    /* make content inside scrollable */
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      overflow-wrap: break-word;
+      }
+  
+  
+      .modalcensus-content h2 {
+        margin-top: 0;
+      }
+  
+      .close-btn {
+        font-size: 22px;
+        font-weight: bold;
+        cursor: pointer;
+        color: #333;
+      }
+
+      .modalcensus-content p {
+        margin: 6px 0;
+        font-size: 14px;
+      }
+  
+      @media (max-width: 600px) {
+        .list-item {
+          flex-direction: column;
+          align-items: flex-start;
+        }
+
+        /*
+        .btn {
+          margin-top: 10px;
+        } */
+      }

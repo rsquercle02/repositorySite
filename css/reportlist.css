@@ -1,3 +1,24 @@
+/* Loading indicator */
+#loading-indicator {
+    margin-top: 20%;
+    margin-left: 50%;
+    margin-bottom: 20%;
+    transform: translate(-50%, -50%);
+    font-size: 3rem;
+    color: #333;
+    text-align: center;
+}
+
+#loading-indicator p {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    color: #555; /* Optional: adjust text color */
+}
+
+.tablehtml {
+    display: none;
+}
+
 .report-section {
     margin-top: 30px;
     display: none; /* Initially hide the report section */
@@ -11,4 +32,89 @@
 /* Form Validation */
 .error{
     color: #f00;
+}
+
+/****** Print report ********/
+/* Reports page */
+.reports {
+  display: none;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgb(255, 255, 255);
+  justify-content: center;
+  z-index: 1000;
+  overflow-y: auto;
+}
+
+.close-btn:hover {
+  color: red;
+}
+
+@page {
+  size: 8.5in 11in;
+  margin: 1in;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background: #eee;
+}
+
+.report-table, .report-streets, .report-summary {
+  width: 8.5in;
+  height: 13in;
+  margin: auto;
+  background: rgb(255, 255, 255);
+  padding: 0.5in 0.5in 0in 0.5in;
+  box-sizing: border-box;
+  font-family: 'Georgia', serif;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+  overflow: hidden;
+}
+
+h1 {
+  text-align: center;
+  font-size: 24pt;
+  margin-bottom: 0.5em;
+}
+
+.activityTable th, .activityTable td {
+  border: 1pt solid black;
+  padding: 5px;
+  vertical-align: top;
+  text-align: center;
+}
+
+@media print {
+  .buttonandtext {
+    display: none !important;
+  }
+
+  .reports {
+    display: none;
+    background: rgb(255, 255, 255);
+    overflow: visible;
+    page-break-before: avoid !important;
+    padding: 0;
+    margin: 0;
+  }
+
+  .report-table, .report-streets, .report-summary {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+  }
+
+  body {
+    background: rgb(255, 255, 255);
+  }
+}
+
+/* Prevent background from scrolling when modal is open */
+body.modal-open {
+  overflow: hidden;
 }

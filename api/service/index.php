@@ -16,7 +16,7 @@ $app->addRoutingMiddleware();
 $app->setBasePath('/api/service');
 $app->add(new Tuupola\Middleware\CorsMiddleware([
     "origin" => ["*"],  // ✅ allow all origins
-    "methods" => ["GET", "POST"],
+    "methods" => ["GET", "POST", "PUT"],
     "headers.allow" => ["Content-Type", "Authorization"],
     "headers.expose" => ["Authorization"],
     "credentials" => true, // ✅ allows cookies to be sent
@@ -65,36 +65,6 @@ function rateLimitMiddleware($serviceKey, $limit, $timeFrame) {
     };
 }
 
-// Verification Service Group with Rate Limiting
-$app->group('/verification', function (RouteCollectorProxy $group) {
-    
-    require __DIR__ . '/../../services/src/verification.php';
-})->add(rateLimitMiddleware('verification-service', 55, 60)); // 55 requests per 60 seconds
-
-// Schedule Service Group with Rate Limiting
-$app->group('/schedule', function (RouteCollectorProxy $group) {
-
-    require __DIR__ . '/../../services/src/schedule.php';
-})->add(rateLimitMiddleware('inspection-service', 55, 60)); // 55 requests per 60 seconds
-
-// Approval Service Group with Rate Limiting
-$app->group('/approval', function (RouteCollectorProxy $group) {
-
-    require __DIR__ . '/../../services/src/approval.php';
-})->add(rateLimitMiddleware('approval-service', 55, 60)); // 55 requests per 60 seconds
-
-// Inspection Service Group with Rate Limiting
-$app->group('/inspection', function (RouteCollectorProxy $group) {
-
-    require __DIR__ . '/../../services/src/inspection.php';
-})->add(rateLimitMiddleware('inspection-service', 55, 60)); // 55 requests per 60 seconds
-
-// Registration Service Group with Rate Limiting
-$app->group('/registration', function (RouteCollectorProxy $group) {
-
-    require __DIR__ . '/../../services/src/registration.php';
-})->add(rateLimitMiddleware('registration-service', 55, 60)); // 55 requests per 60 seconds
-
 // User Management Service Group with Rate Limiting
 $app->group('/usermanagement', function (RouteCollectorProxy $group) {
 
@@ -113,17 +83,11 @@ $app->group('/concerns', function (RouteCollectorProxy $group) {
     require __DIR__ . '/../../services/src/concerns.php';
 })->add(rateLimitMiddleware('concerns-service', 55, 60)); // 55 requests per 60 seconds
 
-// Concerns List Service Group with Rate Limiting
-$app->group('/concernslist', function (RouteCollectorProxy $group) {
-
-    require __DIR__ . '/../../services/src/concernslist.php';
-})->add(rateLimitMiddleware('concernslist-service', 55, 60)); // 55 requests per 60 seconds
-
-// Report List Service Group with Rate Limiting
-$app->group('/reportlist', function (RouteCollectorProxy $group) {
+// Reports Service Group with Rate Limiting
+$app->group('/reports', function (RouteCollectorProxy $group) {
     
-    require __DIR__ . '/../../services/src/reportlist.php';
-})->add(rateLimitMiddleware('report-service', 55, 60)); // 55 requests per 60 seconds
+    require __DIR__ . '/../../services/src/reports.php';
+})->add(rateLimitMiddleware('reports-service', 55, 60)); // 55 requests per 60 seconds
 
 // Integration Service Group with Rate Limiting
 $app->group('/integration', function (RouteCollectorProxy $group) {
@@ -131,26 +95,30 @@ $app->group('/integration', function (RouteCollectorProxy $group) {
     require __DIR__ . '/../../services/src/integration.php';
 })->add(rateLimitMiddleware('integration-service', 55, 60)); // 55 requests per 60 seconds
 
-$app->get('/sessiontest', function (Request $request, Response $response) {
-    // Setting the session variable somewhere (e.g., after login)
-    //$_SESSION["id"] = '115';
-    // Check if the session value exists
-    if (isset($_SESSION['id'])) {
-        $id = $_SESSION['id'];  // Get session value
-        $username = $_SESSION['username'];  // Get session value
-        $profile = $_SESSION['profile'];  // Get session value
-        $barangayRole = $_SESSION['barangayRole'];  // Get session value
-        $status = $_SESSION['status'];  // Get session value
-        $picture = $_SESSION['picture'];  // Get session value
-    } else {
-        $data = "Session 'id' not found.";  // If not found
-    }
+// AI Service Group with Rate Limiting
+$app->group('/ai', function (RouteCollectorProxy $group) {
     
-    // Combine both results into a single associative array
-    $responseData = $id . $username . $profile . $barangayRole . $status . $picture;
-    //$data = $_SESSION["id"];
+    require __DIR__ . '/../../services/src/ai.php';
+})->add(rateLimitMiddleware('ai-service', 55, 60)); // 55 requests per 60 seconds
+
+$app->get('/sessiontest', function (Request $request, Response $response) {
+    
+    //$_SESSION['id'] = '15';
+    //$_SESSION['username'] = 'jonard';
+    if (isset($_SESSION['id'])) {
+        $responseData = [
+            'id' => $_SESSION['id'],
+            'username' => $_SESSION['username']
+        ];
+    } else {
+        $responseData = [
+            'message' => "Session 'id' not found."
+        ];
+    }
+
     $response->getBody()->write(json_encode($responseData));
     return $response->withHeader('Content-Type', 'application/json');
 });
+
 
 $app->run();

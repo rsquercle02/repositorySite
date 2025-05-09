@@ -1,3 +1,24 @@
+/* Loading indicator */
+#loading-indicator {
+    margin-top: 20%;
+    margin-left: 50%;
+    margin-bottom: 20%;
+    transform: translate(-50%, -50%);
+    font-size: 3rem;
+    color: #333;
+    text-align: center;
+}
+
+#loading-indicator p {
+    margin-top: 1rem;
+    font-size: 1.2rem;
+    color: #555; /* Optional: adjust text color */
+}
+
+.tablehtml {
+    display: none;
+}
+
 .report-section {
     margin-top: 30px;
     display: none; /* Initially hide the report section */

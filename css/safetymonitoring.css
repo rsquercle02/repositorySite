@@ -140,7 +140,7 @@ margin-bottom: 30px;
 /* Reports page */
 .reports {
     display: none;
-    position: absolute;
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
@@ -192,12 +192,13 @@ margin-bottom: 30px;
   }
 
   @media print {
-    .print-button, .close-button, .updateBtn, .reportfor {
+    .buttonandtext {
       display: none !important;
     }
 
     .reports {
       display: none;
+      position: absolute;
       background: rgb(255, 255, 255);
       overflow: visible;
       page-break-before: avoid !important;
