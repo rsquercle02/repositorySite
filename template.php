@@ -12,12 +12,12 @@ if (!isset($_SESSION['id'])) {
 }
 
 if (isset($_SESSION['status']) && $_SESSION['status'] == "Inactive") {
-  header("Location: inactive.html");
+  header("Location: pages/inactive.html");
   exit();
 }
 
 if (!isset($_SESSION['profile']) || !in_array($_SESSION['profile'], ['Super Administrator', 'Administrator', 'User'])) {
-  header("Location: unauthorizeduser.html");
+  header("Location: pages/unauthorizeduser.html");
   exit();
 }
 
@@ -142,7 +142,7 @@ if (!isset($_SESSION['profile']) || !in_array($_SESSION['profile'], ['Super Admi
 </span>
 </span>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item" href="#"><i class="fe fe-user"></i>&nbsp;&nbsp;&nbsp;Profile</a>
+              <a class="dropdown-item" href="profile"><i class="fe fe-user"></i>&nbsp;&nbsp;&nbsp;Profile</a>
               <a class="dropdown-log-out" href="logout"><i class="fe fe-log-out"></i>&nbsp;&nbsp;&nbsp;Log Out</a>
             </div>    
           </li>
@@ -231,7 +231,7 @@ if (!isset($_SESSION['profile']) || !in_array($_SESSION['profile'], ['Super Admi
           <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
               <a class="nav-link" href="concernslist">
-              <i class="fa-solid fa-clipboard-list"></i>
+              <i class="fa-solid fa-comments"></i>
                 <span class="ml-3 item-text">Concerns List</span>
               </a>
             </li>
@@ -239,12 +239,12 @@ if (!isset($_SESSION['profile']) || !in_array($_SESSION['profile'], ['Super Admi
           ';
           }
           
-          if (isset($_SESSION['profile']) && ($_SESSION['profile'] == 'Super Administrator' || $_SESSION['profile'] == 'Administrator' || $_SESSION['profile'] == 'User')) {
+          if (isset($_SESSION['profile']) && ($_SESSION['profile'] == 'Super Administrator' || $_SESSION['profile'] == 'Administrator')) {
             echo'
             <ul class="navbar-nav flex-fill w-100 mb-2">
               <li class="nav-item w-100">
                 <a class="nav-link" href="reportlist">
-                <i class="fa-solid fa-clipboard-list"></i>
+                <i class="fa-solid fa-table-list"></i>
                   <span class="ml-3 item-text">Report list</span>
                 </a>
               </li>
@@ -337,15 +337,15 @@ if (!isset($_SESSION['profile']) || !in_array($_SESSION['profile'], ['Super Admi
         
         if(isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] == "ok"){
             echo '<div class="scrollcontent">';
-            $superadminRoutes = ['admindashboard', 'safetymonitoring', 'reportlist', 'tracking', 'aiinsights', 'usermanagement'];
-            $adminRoutes = ['admindashboard', 'safetymonitoring', 'concernslist', 'reportlist', 'tracking', 'aiinsights', 'usermanagement'];
+            $superadminRoutes = ['admindashboard', 'safetymonitoring', 'concernslist', 'reportlist', 'tracking', 'aiinsights', 'profile', 'usermanagement'];
+            $adminRoutes = ['admindashboard', 'safetymonitoring', 'concernslist', 'reportlist', 'tracking', 'aiinsights', 'profile', 'usermanagement'];
             $userRoutes = ['dashboard', 'reportlist', 'ratingandfeedback', 'inspectionreport', 'categorylocator', 'usermanagement'];
             if (isset($_GET["route"])) {
                 $route = basename($_GET["route"]);
                 if ($_SESSION['profile'] == 'Super Administrator' && $_SESSION['barangayRole'] == 'Captain' && in_array($route, $superadminRoutes)) {
-                  include "superadmin_pages/" . $route . ".html";
+                  include "pages/superadmin_pages/" . $route . ".html";
                 } else if ($_SESSION['profile'] == 'Administrator' && $_SESSION['barangayRole'] == 'Secretary' && in_array($route, $adminRoutes)) {
-                include "admin_pages/" . $route . ".html";
+                include "pages/admin_pages/" . $route . ".html";
                 } else if ($_SESSION['profile'] == 'User' && $_SESSION['barangayRole'] == 'Kagawad 1' && in_array($route, $userRoutes)) {       
                 include "user_pages/k1/" . $route . ".html";
                 } else if ($_SESSION['profile'] == 'User' && $_SESSION['barangayRole'] == 'Kagawad 2' && in_array($route, $userRoutes)) {  
@@ -360,9 +360,9 @@ if (!isset($_SESSION['profile']) || !in_array($_SESSION['profile'], ['Super Admi
             } else {
               // Include the appropriate page based on the user profile
                 if ($userProfile == 'Administrator') {
-                  include "admin_pages/admindashboard.html";
+                  include "pages/admin_pages/admindashboard.html";
               } elseif ($userProfile == 'Super Administrator') {
-                  include "superadmin_pages/admindashboard.html";  // You can change the path as needed
+                  include "pages/superadmin_pages/admindashboard.html";  // You can change the path as needed
               } else if ($_SESSION['profile'] == 'User' && $_SESSION['barangayRole'] == 'Kagawad 1') {       
                 include "user_pages/k1/dashboard.html";
               } else if ($_SESSION['profile'] == 'User' && $_SESSION['barangayRole'] == 'Kagawad 2') {  
@@ -372,7 +372,7 @@ if (!isset($_SESSION['profile']) || !in_array($_SESSION['profile'], ['Super Admi
               }
             }
             echo'<div class="page">';
-             include "footer.html";
+             include "pages/footer.html";
              echo'</div>';
              echo '</div>';
         }else{

@@ -51,7 +51,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
 
             $_SESSION["loggedIn"] = "ok";
             $_SESSION["id"] = $credentials['account_id'];
-            $_SESSION["username"] = $credentials["email"];
+            $_SESSION["fullname"] = $credentials["full_name"];
+            $_SESSION["email"] = $credentials["email"];
             $_SESSION["profile"] = $credentials['user_type'];
             $_SESSION["barangayRole"] = $credentials['barangay_role'];
             $_SESSION["status"] = $credentials["status"];

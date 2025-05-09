@@ -7,7 +7,7 @@ if (!isset($_SESSION['id'])) {
 }
 
 if (isset($_SESSION['status']) && $_SESSION['status'] == "Inactive") {
-  header("Location: inactive.html");
+  header("Location: pages/inactive.html");
   exit();
 }
 
@@ -135,7 +135,7 @@ if (!isset($_SESSION['profile']) || $_SESSION['profile'] != "Citizen") {
 </span>
 </span>
             <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdownMenuLink">
-              <a class="dropdown-item" href="#"><i class="fe fe-user"></i>&nbsp;&nbsp;&nbsp;Profile</a>
+              <a class="dropdown-item" href="portalprofile"><i class="fe fe-user"></i>&nbsp;&nbsp;&nbsp;Profile</a>
               <a class="dropdown-log-out" href="portallogout"><i class="fe fe-log-out"></i>&nbsp;&nbsp;&nbsp;Log Out</a>
             </div>    
           </li>
@@ -170,8 +170,8 @@ if (!isset($_SESSION['profile']) || $_SESSION['profile'] != "Citizen") {
           <ul class="navbar-nav active flex-fill w-100 mb-2">
             <li class="nav-item dropdown">
               <a class="nav-link" href="portaldashboard">
-              <i class="fas fa-chart-line"></i>
-                <span class="ml-3 item-text">BFMS Dashboard</span>
+              <i class="fa-solid fa-newspaper"></i>
+                <span class="ml-3 item-text">BFMS Home</span>
               </a>
             </li>
           </ul>
@@ -241,18 +241,18 @@ if (!isset($_SESSION['profile']) || $_SESSION['profile'] != "Citizen") {
         
         if(isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] == "ok"){
             echo '<div class="scrollcontent">';
-            $Routes = ['portaldashboard', 'concerns'];
+            $Routes = ['portaldashboard', 'concerns', 'portalprofile'];
             if (isset($_GET["route"])) {
                 $route = basename($_GET["route"]);
                 if (in_array($route, $Routes)) {
-                include "portal/" . $route . ".html";
+                include "pages/portal/" . $route . ".html";
                 } else {
                 include "modules/404.php";
                 }
             } else {
-                include "portal/portaldashboard.html";
+                include "pages/portal/portaldashboard.html";
             }
-             include "portal/portalfooter.html";
+             include "pages/portal/portalfooter.html";
              echo '</div>';
         }else{
         include "login.php";

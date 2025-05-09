@@ -41,5 +41,5 @@ if (isset($_SESSION["id"])) {
     </form>
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="login.js"></script>
+<script src="js/login.js"></script>
 </html>

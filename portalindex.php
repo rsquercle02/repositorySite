@@ -1,5 +1,7 @@
 <?php
-if (isset($_SESSION['id'])) {
+session_start();
+
+if (isset($_SESSION["id"])) {
     header("Location: portaltemplate.php");
     exit();
 }
@@ -39,5 +41,5 @@ if (isset($_SESSION['id'])) {
     </form>
 </body>
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-<script src="portallogin.js"></script>
+<script src="js/portallogin.js"></script>
 </html>

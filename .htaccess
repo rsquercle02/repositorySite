@@ -1,12 +1,13 @@
 RewriteEngine On
 
-RewriteRule ^(admindashboard|dashboard|safetymonitoring|concernslist|reportlist|tracking|aiinsights|usermanagement)$ template.php?route=$1 [L]
-RewriteRule ^(portaldashboard|concerns)$ portaltemplate.php?route=$1 [L]
+RewriteRule ^(admindashboard|dashboard|safetymonitoring|concernslist|reportlist|tracking|aiinsights|profile|usermanagement)$ template.php?route=$1 [L]
+RewriteRule ^(portaldashboard|concerns|portalprofile)$ portaltemplate.php?route=$1 [L]
 RewriteRule ^logout$ logout.php [L]
 RewriteRule ^login1$ index.php [L]
 RewriteRule ^portallogin$ portalindex.php [L]
 RewriteRule ^portallogout$ portallogout.php [L]
-RewriteRule ^portal/concerns$ portal/concerns.html [L]
+RewriteRule ^portal/signup$ pages/portal/signup.html [L]
+RewriteRule ^portal/concerns$ pages/portal/portalconcerns.html [L]
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteRule ^ api/service/index.php [QSA,L]
