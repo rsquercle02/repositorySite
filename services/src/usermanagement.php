@@ -22,6 +22,32 @@ $dotenv->load();
 
 /** @var App $app */
 
+$group->get('/sessiontest', function (Request $request, Response $response) {
+
+    if (isset($_SESSION['id'])) {
+        // Return the session data as an associative array
+        $responseData = [
+            'id' => $_SESSION['id'],
+            'fullname' => $_SESSION['fullname'],
+            'email' => $_SESSION['email'],
+            'profile' => $_SESSION['profile'],
+            'barangayRole' => $_SESSION['barangayRole'],
+            'status' => $_SESSION['status'],
+            'picture' => $_SESSION['picture']
+        ];
+    } else {
+        // Return a JSON message if session doesn't exist
+        $responseData = [
+            'message' => "Session not found."
+        ];
+    }
+
+    // Write JSON-encoded response
+    $response->getBody()->write(json_encode($responseData));
+
+    return $response->withHeader('Content-Type', 'application/json');
+});
+
 $group->get('/fetch', function (Request $request, Response $response) use ($db) {
     $query = "SELECT ai.account_id, 
        CONCAT(pi.first_name, ' ', pi.middle_name, ' ', pi.last_name) AS full_name, 
@@ -97,7 +123,7 @@ $group->post('/createUser', function (Request $request, Response $response) use 
         $name = preg_replace("/[^a-zA-Z0-9-_]/", "_", $name);
 
         // Define the upload directory (relative path)
-        $uploadDir = '../../users/' . $name . '/';
+        $uploadDir = '../../uploads/users/' . $name . '/';
 
         // Ensure the directory for the user exists or create it
         if (!is_dir($uploadDir)) {
@@ -114,7 +140,7 @@ $group->post('/createUser', function (Request $request, Response $response) use 
         );
 
         // Function to handle file upload and return the file path 
-        function handleFileUpload($file, $uploadDir, $label, $allowedFileTypes, $username)
+        function createhandleFileUpload($file, $uploadDir, $label, $allowedFileTypes, $username)
         {
             if ($file) {
                 // Get file details
@@ -144,7 +170,7 @@ $group->post('/createUser', function (Request $request, Response $response) use 
                     }
                 }
 
-                // Generate a new filename using the username and a random number
+                // Generate a new filename using the email and a random number
                 $randomNumber = mt_rand(1000, 9999); // Generate a random number between 1000 and 9999
                 $newFileName = $username . "_" . $randomNumber . "." . pathinfo($fileName, PATHINFO_EXTENSION); // Use the extension of the original file
 
@@ -226,7 +252,7 @@ $group->post('/createUser', function (Request $request, Response $response) use 
 
         // Upload files and collect their paths
         $filePaths = [];
-        $filePaths['file1'] = handleFileUpload($picture, $uploadDir, 'profilepicture', $allowedFileTypes, $input['firstname']);
+        $filePaths['file1'] = createhandleFileUpload($picture, $uploadDir, 'profilepicture', $allowedFileTypes, $input['firstname']);
 
         // Start the transaction
         $db->beginTransaction();
@@ -250,8 +276,7 @@ $group->post('/createUser', function (Request $request, Response $response) use 
         $stmt->bindValue(':password', $hashedPassword);
         $stmt->bindValue(':user_type', $input['usertype']);
         $stmt->bindValue(':barangay_role', $input['brole']);
-        $status = "Inactive";
-        $stmt->bindValue(':status', $status);
+        $stmt->bindValue(':status', $input['status']);
         $picture = $filePaths['file1'];
         $stmt->bindValue(':picture', $picture);
         $stmt->execute();
@@ -330,7 +355,7 @@ $group->put('/updateEmail/{id}', function (Request $request, Response $response,
         $stmt = $db->prepare($query);
         
         // Bind the parameters to the query
-        $stmt->bindParam(':email', $input['editUsername']);
+        $stmt->bindParam(':email', $input['editEmail']);
         $stmt->bindParam(':id', $args['id'], PDO::PARAM_INT);
         
         // Execute the query
@@ -370,6 +395,45 @@ $group->put('/updateUsertype/{id}', function (Request $request, Response $respon
         
         // Bind the parameters to the query
         $stmt->bindParam(':user_type', $input['editProfile']);
+        $stmt->bindParam(':account_id', $args['id'], PDO::PARAM_INT);
+        
+        // Execute the query
+        $stmt->execute();
+        
+        // Optionally, you can return a success message or result after execution
+        $response->getBody()->write(json_encode(['message' => 'User updated successfully.']));
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
+    } catch (PDOException $e) {
+        // If there's a database error (PDOException), handle it here
+        $response->getBody()->write(json_encode(['error' => 'Database error: ' . $e->getMessage()]));
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(500);  // Internal Server Error
+    } catch (Exception $e) {
+        // Catch any other general exceptions
+        $response->getBody()->write(json_encode(['error' => 'An error occurred: ' . $e->getMessage()]));
+        return $response->withHeader('Content-Type', 'application/json')->withStatus(500);  // Internal Server Error
+    }
+    
+});
+
+// Handle the preflight (OPTIONS) request
+$group->options('/updateRole/{id}', function ($request, $response, $args) {
+    return $response->withHeader('Content-Type', 'application/json')
+                    ->withHeader('Access-Control-Allow-Origin', '*')
+                    ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+                    ->withHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+});
+
+$group->put('/updateRole/{id}', function (Request $request, Response $response, $args) use ($db) {
+    try {
+        // Get the parsed input from the request body
+        $input = $request->getParsedBody();
+        
+        // Prepare the SQL query for updating the fullname
+        $query = "UPDATE accountinformation SET barangay_role = :barangay_role WHERE account_id = :account_id";
+        $stmt = $db->prepare($query);
+        
+        // Bind the parameters to the query
+        $stmt->bindParam(':barangay_role', $input['editRole']);
         $stmt->bindParam(':account_id', $args['id'], PDO::PARAM_INT);
         
         // Execute the query
@@ -445,12 +509,12 @@ $group->put('/updatePassword/{id}', function (Request $request, Response $respon
         $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
 
         // Prepare the SQL query for updating the fullname
-        $query = "UPDATE userstable SET password = :password WHERE id = :id";
+        $query = "UPDATE accountinformation SET password = :password WHERE account_id = :account_id";
         $stmt = $db->prepare($query);
         
         // Bind the parameters to the query
         $stmt->bindParam(':password', $hashedPassword);
-        $stmt->bindParam(':id', $args['id'], PDO::PARAM_INT);
+        $stmt->bindParam(':account_id', $args['id'], PDO::PARAM_INT);
         
         // Execute the query
         $stmt->execute();
@@ -633,7 +697,7 @@ $group->post('/login', function (Request $request, Response $response) use ($db)
                 return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
             } else {
                 // Invalid password
-                echo json_encode(["error" => "Invalid username or password."]);
+                echo json_encode(["error" => "Invalid email or password."]);
                 return $response->withHeader('Content-Type', 'application/json')->withStatus(401);
             }
         }
