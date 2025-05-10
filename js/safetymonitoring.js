@@ -689,16 +689,47 @@ let clearingIndex = 1;
   .then(response => response.json())
   .then(data => {
     if (data.success) {
-      alert('Form submitted successfully!');
-      form.reset();
-      window.scrollTo({ top: 0, behavior: 'smooth' });
+      Swal.fire({
+        title: "Create User!",
+        text: "The user is created.",
+        icon: "success",
+        confirmButtonColor: "#0f0"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            form.reset();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            fetchTable();
+        }
+    });
     } else {
-      alert('There was a problem: ' + (data.message || 'Unknown error'));
+      Swal.fire({
+        title: "Create cancelled!",
+        text: 'There was a problem: ' + (data.message || 'Unknown error'),
+        icon: "success",
+        confirmButtonColor: "#0f0"
+    }).then((result) => {
+        if (result.isConfirmed) {
+            form.reset();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            fetchTable();
+        }
+    });
     }
   })
   .catch(error => {
-    console.error('Submission error:', error);
-    alert('Error submitting form. Please try again.');
+      // Check for specific error message
+      Swal.fire({
+          title: "Create Cancelled!",
+          text: `Error: ${error}`,
+          icon: "error",
+          confirmButtonColor: "#0f0"
+      }).then((result) => {
+          if (result.isConfirmed) {
+            form.reset();
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            fetchTable();
+          }
+      });
   });
 });
 

@@ -293,7 +293,7 @@ if (!isset($_SESSION['profile']) || $_SESSION['profile'] != "Citizen") {
   <script src="js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
   <!-- <script src='js/jquery.dataTables.min.js'></script> -->
   <!-- <script src='js/dataTables.bootstrap4.min.js'></script> -->
-  <!-- <script src='js/session-timeout.js'></script> -->
+  <script src='js/sessiontimeoutportal.js'></script>
   <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 
   </body>
