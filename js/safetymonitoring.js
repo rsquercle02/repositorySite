@@ -698,6 +698,7 @@ let clearingIndex = 1;
         if (result.isConfirmed) {
             form.reset();
             window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('closereportBtn').click();
             fetchTable();
         }
     });
@@ -711,6 +712,7 @@ let clearingIndex = 1;
         if (result.isConfirmed) {
             form.reset();
             window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('closereportBtn').click();
             fetchTable();
         }
     });
@@ -727,6 +729,7 @@ let clearingIndex = 1;
           if (result.isConfirmed) {
             form.reset();
             window.scrollTo({ top: 0, behavior: 'smooth' });
+            document.getElementById('closereportBtn').click();
             fetchTable();
           }
       });
