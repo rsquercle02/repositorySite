@@ -181,8 +181,6 @@ if (!isset($_SESSION['profile']) || $_SESSION['profile'] != "Citizen") {
           </p>
 
           <ul class="navbar-nav flex-fill w-100 mb-2">
-
-          <ul class="navbar-nav flex-fill w-100 mb-2">
             <li class="nav-item w-100">
               <a class="nav-link" href="concerns">
               <i class="fa-solid fa-comments"></i>
@@ -190,7 +188,18 @@ if (!isset($_SESSION['profile']) || $_SESSION['profile'] != "Citizen") {
 
               </a>
             </li>
-          </ul>';
+          </ul>
+
+          <ul class="navbar-nav flex-fill w-100 mb-2">
+            <li class="nav-item w-100">
+              <a class="nav-link" href="concernslst">
+                <i class="fa-solid fa-table-list"></i>
+                <span class="ml-3 item-text">Concerns List</span>
+
+              </a>
+            </li>
+          </ul>
+
         </nav>
       </aside>
 
@@ -241,7 +250,7 @@ if (!isset($_SESSION['profile']) || $_SESSION['profile'] != "Citizen") {
         
         if(isset($_SESSION["loggedIn"]) && $_SESSION["loggedIn"] == "ok"){
             echo '<div class="scrollcontent">';
-            $Routes = ['portaldashboard', 'concerns', 'portalprofile'];
+            $Routes = ['portaldashboard', 'concerns', 'concernslst', 'portalprofile'];
             if (isset($_GET["route"])) {
                 $route = basename($_GET["route"]);
                 if (in_array($route, $Routes)) {

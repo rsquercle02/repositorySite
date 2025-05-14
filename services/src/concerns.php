@@ -173,9 +173,14 @@ $group->post('/postconcerns', function (Request $request, Response $response) us
         // Get the last inserted user ID (for linking to the order)
         $concernId = $db->lastInsertId();
 
-        $query = "INSERT INTO concernedcitizen (concern_id, firstname, middlename, lastname, resident_type, anonymity_status) VALUES (:concern_id, :firstname, :middlename, :lastname, :resident_type, :anonymity_status)";
+        $query = "INSERT INTO concernedcitizen (concern_id, account_id, firstname, middlename, lastname, resident_type, anonymity_status) VALUES (:concern_id, :account_id, :firstname, :middlename, :lastname, :resident_type, :anonymity_status)";
         $stmt = $db->prepare($query);
+        // Check if the session variable 'id' is set and not empty
+        if (isset($_SESSION['id']) && !empty($_SESSION['id'])) {
+            $accountId = $_SESSION['id'];
+        }
         $stmt->bindValue(':concern_id', $concernId);
+        $stmt->bindValue(':account_id', $accountId);
         $stmt->bindValue(':firstname', $input['firstname']);
         $stmt->bindValue(':middlename', $input['middlename']);
         $stmt->bindValue(':lastname', $input['lastname']);
@@ -240,8 +245,46 @@ $group->get('/fetchConcerns', function (Request $request, Response $response) us
         c.concern_id = cst.concern_id
     WHERE
         cst.concern_status = 'No action.'
-    ORDER BY c.create_at ASC";
+    ORDER BY c.create_at DESC";
     $stmt = $db->prepare($query);
+    $stmt->execute();
+    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $response->getBody()->write(json_encode($data));
+    return $response->withHeader('Content-Type', 'application/json');
+});
+
+$group->get('/concernsReport', function (Request $request, Response $response) use ($db) {
+    $query = "SELECT DISTINCT
+    c.concern_id,
+    cc.resident_type,
+    cc.anonymity_status,
+    s.store_name,
+    s.store_address,
+    cst.concern_status,
+    c.create_at
+    FROM
+        concerns c
+    JOIN
+        stores s
+    ON
+    	c.store_id = s.store_id
+    JOIN
+        concernedcitizen cc
+    ON
+    	cc.concern_id = c.concern_id
+    JOIN
+        cstatus cst
+    ON
+        c.concern_id = cst.concern_id
+    WHERE
+        cc.account_id = :account_id
+    ORDER BY c.create_at DESC";
+    $stmt = $db->prepare($query);
+    // Check if the session variable 'id' is set and not empty
+    if (isset($_SESSION['id']) && !empty($_SESSION['id'])) {
+        $accountId = $_SESSION['id'];
+    }
+    $stmt->bindValue(':account_id', $accountId);
     $stmt->execute();
     $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
     $response->getBody()->write(json_encode($data));
@@ -374,8 +417,49 @@ $group->get('/searchBusiness/{searchTerm}', function (Request $request, Response
     return $response->withHeader('Content-Type', 'application/json');
 });
 
+$group->get('/searchConcerns/{searchTerm}', function (Request $request, Response $response, $args) use ($db) {
+    $query = "SELECT DISTINCT
+    c.concern_id,
+    cc.resident_type,
+    cc.anonymity_status,
+    s.store_name,
+    s.store_address,
+    cst.concern_status,
+    c.create_at
+    FROM
+        concerns c
+    JOIN
+        stores s
+    ON
+    	c.store_id = s.store_id
+    JOIN
+        concernedcitizen cc
+    ON
+    	cc.concern_id = c.concern_id
+    JOIN
+        cstatus cst
+    ON
+        c.concern_id = cst.concern_id
+    WHERE
+        cc.account_id = :account_id AND s.store_name LIKE :searchTerm
+    ORDER BY c.create_at ASC";
+
+    $stmt = $db->prepare($query);
+    $searchTerm = $args['searchTerm'];
+    $stmt->bindValue(':searchTerm', '%' . $searchTerm . '%', PDO::PARAM_STR);
+    // Check if the session variable 'id' is set and not empty
+    if (isset($_SESSION['id']) && !empty($_SESSION['id'])) {
+        $accountId = $_SESSION['id'];
+    }
+    $stmt->bindValue(':account_id', $accountId);
+    $stmt->execute();
+    $data = $stmt->fetchAll(PDO::FETCH_ASSOC);
+    $response->getBody()->write(json_encode($data));
+    return $response->withHeader('Content-Type', 'application/json');
+});
+
 $group->get('/fetchDetails/{id}', function (Request $request, Response $response, $args) use ($db) {
-    $query = "SELECT
+    $query = "SELECT DISTINCT
     c.concern_id,
     cc.anonymity_status,
     CONCAT(cc.firstname, ' ', cc.middlename, ' ', cc.lastname) AS fullname,
@@ -407,6 +491,49 @@ $group->get('/fetchDetails/{id}', function (Request $request, Response $response
         c.concern_id = cst.concern_id
     WHERE
         cst.concern_status = 'No action.' AND c.concern_id = :id
+    ORDER BY c.create_at ASC";
+
+    $stmt = $db->prepare($query);
+    $stmt->bindParam(':id', $args['id'], PDO::PARAM_INT);
+    $stmt->execute();
+    $data = $stmt->fetch(PDO::FETCH_ASSOC);
+    $response->getBody()->write(json_encode($data));
+    return $response->withHeader('Content-Type', 'application/json');
+});
+
+$group->get('/concernDetails/{id}', function (Request $request, Response $response, $args) use ($db) {
+    $query = "SELECT DISTINCT
+    c.concern_id,
+    cc.anonymity_status,
+    CONCAT(cc.firstname, ' ', cc.middlename, ' ', cc.lastname) AS fullname,
+    s.store_id,
+    s.store_name,
+    s.store_address,
+    s.record_status,
+    c.concern_details,
+    cu.file1,
+    cst.concern_status,
+    c.create_at
+    FROM
+        stores s
+    JOIN
+        concerns c
+    ON
+    	s.store_id = c.store_id
+    JOIN
+        concernedcitizen cc
+    ON
+    	cc.concern_id = c.concern_id
+    JOIN
+        concernsuploads cu
+    ON
+    	c.concern_id = cu.concern_id
+    JOIN
+        cstatus cst
+    ON
+        c.concern_id = cst.concern_id
+    WHERE
+        c.concern_id = :id
     ORDER BY c.create_at ASC";
 
     $stmt = $db->prepare($query);

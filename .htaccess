@@ -1,7 +1,7 @@
 RewriteEngine On
 
 RewriteRule ^(admindashboard|dashboard|safetymonitoring|concernslist|reportlist|tracking|aiinsights|profile|usermanagement)$ template.php?route=$1 [L]
-RewriteRule ^(portaldashboard|concerns|portalprofile)$ portaltemplate.php?route=$1 [L]
+RewriteRule ^(portaldashboard|concerns|concernslst|portalprofile)$ portaltemplate.php?route=$1 [L]
 RewriteRule ^logout$ logout.php [L]
 RewriteRule ^login1$ index.php [L]
 RewriteRule ^portallogin$ portalindex.php [L]

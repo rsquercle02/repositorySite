@@ -35,7 +35,8 @@ $group->get('/allReports', function (Request $request, Response $response) use (
             JOIN concerns c ON r.concern_id = c.concern_id
             JOIN stores s ON c.store_id = s.store_id 
             JOIN rstatus rs ON r.report_id = rs.report_id
-            WHERE rs.report_status = 'Report created.' AND s.store_name LIKE :searchTerm";
+            WHERE rs.report_status = 'Report created.' AND s.store_name LIKE :searchTerm
+            ORDER BY r.create_at DESC";
         $stmt = $db->prepare($query);
         $stmt->bindValue(':searchTerm', '%' . $search . '%', PDO::PARAM_STR);
         $stmt->execute();
@@ -45,7 +46,8 @@ $group->get('/allReports', function (Request $request, Response $response) use (
         JOIN concerns c ON r.concern_id = c.concern_id
         JOIN stores s ON c.store_id = s.store_id 
         JOIN rstatus rs ON r.report_id = rs.report_id
-        WHERE rs.report_status = 'Report created.'";
+        WHERE rs.report_status = 'Report created.'
+        ORDER BY r.create_at DESC";
         $stmt = $db->prepare($query);
         $stmt->execute();
     }
@@ -68,7 +70,8 @@ $group->get('/lowriskReports', function (Request $request, Response $response) u
             JOIN concerns c ON r.concern_id = c.concern_id
             JOIN stores s ON c.store_id = s.store_id 
             JOIN rstatus rs ON r.report_id = rs.report_id
-            WHERE r.report_category = 'Low risk.' AND rs.report_status = 'Report created.' AND s.store_name LIKE :searchTerm";
+            WHERE r.report_category = 'Low risk.' AND rs.report_status = 'Report created.' AND s.store_name LIKE :searchTerm
+            ORDER BY r.create_at DESC";
         $stmt = $db->prepare($query);
         $stmt->bindValue(':searchTerm', '%' . $search . '%', PDO::PARAM_STR);
         $stmt->execute();
@@ -78,7 +81,8 @@ $group->get('/lowriskReports', function (Request $request, Response $response) u
         JOIN concerns c ON r.concern_id = c.concern_id
         JOIN stores s ON c.store_id = s.store_id 
         JOIN rstatus rs ON r.report_id = rs.report_id
-        WHERE r.report_category = 'Low risk.' AND rs.report_status = 'Report created.'";
+        WHERE r.report_category = 'Low risk.' AND rs.report_status = 'Report created.'
+        ORDER BY r.create_at DESC";
         $stmt = $db->prepare($query);
         $stmt->execute();
     }
@@ -101,7 +105,8 @@ $group->get('/mediumriskReports', function (Request $request, Response $response
             JOIN concerns c ON r.concern_id = c.concern_id
             JOIN stores s ON c.store_id = s.store_id 
             JOIN rstatus rs ON r.report_id = rs.report_id
-            WHERE r.report_category = 'Medium risk.' AND rs.report_status = 'Report created.' AND s.store_name LIKE :searchTerm";
+            WHERE r.report_category = 'Medium risk.' AND rs.report_status = 'Report created.' AND s.store_name LIKE :searchTerm
+            ORDER BY r.create_at DESC";
         $stmt = $db->prepare($query);
         $stmt->bindValue(':searchTerm', '%' . $search . '%', PDO::PARAM_STR);
         $stmt->execute();
@@ -111,7 +116,8 @@ $group->get('/mediumriskReports', function (Request $request, Response $response
         JOIN concerns c ON r.concern_id = c.concern_id
         JOIN stores s ON c.store_id = s.store_id 
         JOIN rstatus rs ON r.report_id = rs.report_id
-        WHERE r.report_category = 'Medium risk.' AND rs. report_status = 'Report created.'";
+        WHERE r.report_category = 'Medium risk.' AND rs. report_status = 'Report created.'
+        ORDER BY r.create_at DESC";
         $stmt = $db->prepare($query);
         $stmt->execute();
     }
@@ -134,7 +140,8 @@ $group->get('/highriskReports', function (Request $request, Response $response) 
             JOIN concerns c ON r.concern_id = c.concern_id
             JOIN stores s ON c.store_id = s.store_id 
             JOIN rstatus rs ON r.report_id = rs.report_id
-            WHERE r.report_category = 'High risk.' AND rs.report_status = 'Report created.' AND s.store_name LIKE :searchTerm";
+            WHERE r.report_category = 'High risk.' AND rs.report_status = 'Report created.' AND s.store_name LIKE :searchTerm
+            ORDER BY r.create_at DESC";
         $stmt = $db->prepare($query);
         $stmt->bindValue(':searchTerm', '%' . $search . '%', PDO::PARAM_STR);
         $stmt->execute();
@@ -144,7 +151,8 @@ $group->get('/highriskReports', function (Request $request, Response $response) 
         JOIN concerns c ON r.concern_id = c.concern_id
         JOIN stores s ON c.store_id = s.store_id 
         JOIN rstatus rs ON r.report_id = rs.report_id
-        WHERE r.report_category = 'High risk.' AND rs.report_status = 'Report created.'";
+        WHERE r.report_category = 'High risk.' AND rs.report_status = 'Report created.'
+        ORDER BY r.create_at DESC";
         $stmt = $db->prepare($query);
         $stmt->execute();
     }
@@ -168,7 +176,8 @@ $group->get('/resolvedReports', function (Request $request, Response $response) 
         JOIN stores s ON c.store_id = s.store_id 
         JOIN rstatus rs ON r.report_id = rs.report_id
         JOIN actionreports ar ON r.report_id = ar.report_id
-        WHERE rs.report_status ='Report resolved.' AND s.store_name LIKE :searchTerm";
+        WHERE rs.report_status ='Report resolved.' AND s.store_name LIKE :searchTerm
+        ORDER BY r.create_at DESC";
     $stmt = $db->prepare($query);
     $stmt->bindValue(':searchTerm', '%' . $search . '%', PDO::PARAM_STR);
     $stmt->execute();
@@ -179,7 +188,8 @@ $group->get('/resolvedReports', function (Request $request, Response $response) 
         JOIN stores s ON c.store_id = s.store_id 
         JOIN rstatus rs ON r.report_id = rs.report_id
         JOIN actionreports ar ON r.report_id = ar.report_id
-        WHERE rs.report_status ='Report resolved.'";
+        WHERE rs.report_status ='Report resolved.'
+        ORDER BY r.create_at DESC";
         $stmt = $db->prepare($query);
         $stmt->execute();
     }

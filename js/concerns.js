@@ -315,6 +315,7 @@ document.getElementById("submitButton").addEventListener("click", function(event
         const detailsUrl = `http://localhost:8001/api/service/concerns/postconcerns`;
             fetch(detailsUrl, {
                 method: 'POST',
+                credentials: 'include',
                 body: formData
             })
             .then(response => {

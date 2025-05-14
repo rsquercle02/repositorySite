@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Report List</title>
-    <link rel="stylesheet" href="css/areportlist.css">
+    <link rel="stylesheet" href="css/reportlist.css">
 </head>
 <body>
     <h2 class="m-3">Report List</h2>
@@ -96,7 +96,15 @@
 
                     <div class="form-group mt-3">
                       <label for="kstaffSelect">Staff:</label>
-                      <input type="text" class="form-control" id="kstaffSelect" name="kstaffSelect">
+                      <select class="form-control" id="kstaffSelect">
+                        <option value="" selected>Select Staff</option>
+                        <option value="Committee on Ecological Waste Management.">Committee on Ecological Waste Management.</option>
+                        <option value="Committee on Health and Sanitation.">Committee on Health and Sanitation.</option>
+                        <option value="Committee on Infrastructure and Public Works.">Committee on Infrastructure and Public Works.</option>
+                        <option value="Committee on Livelihood and Economic Development">Committee on Livelihood and Economic Development.</option>
+                        <option value="Committee on Peace and Order.">Committee on Peace and Order.</option>
+                        <option value="Committee on Transportations.">Committee on Transportations.</option>
+                      </select>
                       <div id="kstaffSelectErr" class="form-text error mb-3"></div>
                     </div>
 
@@ -264,5 +272,6 @@
   </div>
 
 </body>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script src="js/reportlist.js"></script>
 </html>

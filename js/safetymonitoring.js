@@ -62,6 +62,9 @@ function fetchTable(currentcategory, searchinput){
     fetch(detailsUrl)
         .then(response => response.json())
         .then(data => {
+            if((data) && (searchinput === '') && (currentcategory == 'pending' || currentcategory == 'sent')){
+              insights(data);
+            }
             const tableBody = document.querySelector("#table tbody");
             tableBody.innerHTML = ''; //This will remove all the previous rows
             data.forEach(item => {
@@ -690,8 +693,8 @@ let clearingIndex = 1;
   .then(data => {
     if (data.success) {
       Swal.fire({
-        title: "Create User!",
-        text: "The user is created.",
+        title: "Report created!",
+        text: "The report is created.",
         icon: "success",
         confirmButtonColor: "#0f0"
     }).then((result) => {
@@ -773,6 +776,134 @@ window.onclick = function(event) {
   }
 }
 
+/*************** Report reminder *************/
 
+    // AI summary and suggestions for inspection data
+    function insights(reportList){
+      // Get the current date in the format YYYY-MM-DD
+      const currentDate = new Date().toISOString().split('T')[0]; // Format: "YYYY-MM-DD"
+      let promptData = null;
+
+      if(currentcategory == 'pending'){
+      // Create the promptData with the current date and the passed reportList
+      promptData = {
+          prompt: "Can you create a simple reminder in sentence type about the safety monitoring list? Can you say to mark list as sent or to check the sent list if there are reports created for this month based on date and list?",
+          report_list:Array.isArray(reportList) && reportList.length > 0 ? reportList : ["No reports"],  // Use the passed reportList here
+          date_today: currentDate  // Use the current date
+      }
+    } else {
+      // Create the promptData with the current date and the passed reportList
+      promptData = {
+        prompt: "Can you create a simple reminder in sentence type about the safety monitoring list? Can you say to check if there are reports to be made for this month based on date and list?",
+        report_list:Array.isArray(reportList) && reportList.length > 0 ? reportList : ["No reports"],  // Use the passed reportList here
+        date_today: currentDate  // Use the current date
+      }
+    }
+  
+      fetch('http://localhost:8001/api/service/ai/generatereminders', {
+          method: 'POST',  // HTTP method
+          headers: {
+              'Content-Type': 'application/json'  // Set content type to JSON
+          },
+          body: JSON.stringify(promptData)  // Convert the prompt data to JSON format
+      })
+      .then(response => response.json())  // Parse the response as JSON
+      .then(data => {
+          // Instead of appending the result to the output div, show it in a SweetAlert
+          showInSwal(data, currentDate);  // Pass current date to showInSwal
+      }) // Handle the response
+      .catch(error => {
+          console.error('Error:', error);
+      })  // Handle errors
+      .finally(() => {
+          // Hide loading
+          //document.getElementById('loading-indicator').style.display = 'none';
+      });
+  }
+  
+  // Function to show the result inside SweetAlert
+  function showInSwal(data, currentDate) {
+      let content = '';  // Initialize content variable to hold the rendered HTML
+  
+      // Render the content using findAndRenderText
+      findAndRenderText(data, (renderedText) => {
+          content = renderedText;
+  
+          // Show the content inside a SweetAlert2 modal
+          Swal.fire({
+              position: "top-end",
+              title: 'AI Insights',  // Popup title
+              html: `  
+                  <p>${content}</p>
+                  <p><strong>Date Generated:</strong> ${currentDate}</p>  <!-- Add the current date in the Swal -->
+              `,
+              width: '80%',  // Default width (80% of the screen width)
+              padding: '20px',
+              showCloseButton: true,
+              showConfirmButton: false,
+              customClass: {
+                  popup: 'swal-popup'  // Custom class for the popup to style it
+              },
+              didOpen: () => {
+                  // Add custom styles dynamically on open (optional for responsiveness)
+                  const popup = Swal.getPopup();
+                  popup.style.maxWidth = '500px'; // Max width to prevent too large popups on big screens
+                  popup.style.width = '80%'; // Ensure it stays responsive
+                  popup.style.borderRadius = '10px'; // Rounded corners for a cleaner look
+              }
+          });
+  
+          // Add custom CSS for responsiveness
+          const style = document.createElement('style');
+          style.innerHTML = `
+              .swal-popup {
+                  max-width: 500px;  /* Limits the max width for larger screens */
+                  width: 80%;  /* Default to 80% width */
+                  border-radius: 10px;  /* For a smoother rectangular look */
+              }
+              @media (max-width: 768px) {
+                  .swal-popup {
+                      width: 90% !important; /* 90% width on mobile devices */
+                  }
+              }
+              @media (max-width: 480px) {
+                  .swal-popup {
+                      width: 95% !important; /* Even wider for small screens */
+                  }
+              }
+          `;
+          document.head.appendChild(style);
+  
+              });
+          }
+  
+          // Function to find and render text recursively
+          function findAndRenderText(obj, callback) {
+              let result = '';  // Initialize an empty string for the result
+  
+              if (typeof obj === 'object' && obj !== null) {
+                  for (let key in obj) {
+                      if (key === "text" && typeof obj[key] === "string") {
+                          const cleaned = obj[key]
+                              .replace(/\\n/g, '\n')
+                              .replace(/\\"/g, '"')
+                              .replace(/\\\\/g, '\\');
+  
+                          // Use marked.js to render the markdown into HTML
+                          const html = marked.parse(cleaned);
+                          result += html;  // Append the rendered HTML to the result string
+                      } else {
+                          result += findAndRenderText(obj[key], callback);  // Recurse for nested objects
+                      }
+                  }
+              }
+  
+              // If a callback is provided, pass the result
+              if (callback) {
+                  callback(result);
+              }
+  
+              return result;  // Return the final rendered text
+          }
 
 fetchTable(currentcategory, searchinput);

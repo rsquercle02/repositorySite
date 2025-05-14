@@ -90,6 +90,8 @@ body {
   text-decoration: none;
 }
 
-.respmsg{
+.respmsg {
   color: #ffffff;
+  font-size: 0.9em;
+  text-align: center;
 }

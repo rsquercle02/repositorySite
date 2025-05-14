@@ -15,45 +15,64 @@
 
     <!-- Stats Cards -->
     <div class="stats-container">
-        <div class="stat-card" style="background-color: #ff6666;">
-            <h2>Total market</h2>
-            <span id="storeTotal">0</span>
-            <i class="fa-solid fa-store"></i>
-        </div>
-        <div class="stat-card" style="background-color: #66b3ff;">
+        <a href="tracking" style="text-decoration: none; color: inherit;">
+            <div class="stat-card" style="background-color: #ff6666;">
+                <h2>Reported stores</h2>
+                <span id="storeTotal">0</span>
+                <i class="fa-solid fa-store"></i>
+            </div>
+        </a>
+        <a href="safetymonitoring" style="text-decoration: none; color: inherit;">
+        <div class="stat-card" style="background-color: #66ff66;">
             <h2>Safety monitoring</h2>
             <span id="clrngopsTotal">0</span>
             <i class="fas fa-clipboard-list"></i>
         </div>
-        <div class="stat-card" style="background-color: #ffcc66;">
+        </a>
+        <a href="reportlist" style="text-decoration: none; color: inherit;">
+        <div class="stat-card" style="background-color: #66b3ff;">
             <h2>Resolved reports</h2> 
             <span id="reportResolved">0</span>
             <i class="fas fa-check-circle"></i>
         </div>
-        <div class="stat-card" style="background-color: #ffff66;">
-            <h2>Report created</h2>
+        </a>
+        <a href="reportlist" style="text-decoration: none; color: inherit;">
+        <div class="stat-card" style="background-color: #ff6666;">
+            <h2>Ongoing reports</h2>
             <span id="reportCreated">0</span>
             <i class="fa-solid fa-file"></i>
         </div>
+        </a>
+        <a href="concernslist" style="text-decoration: none; color: inherit;">
+        <div class="stat-card" style="background-color: #ffff66;">
+            <h2>Total Concerns</h2>
+            <span id="reportCreated">0</span>
+            <i class="fa-solid fa-file"></i>
+        </div>
+        </a>
     </div>
 
     <!-- Charts -->
     <div class="charts-container">
         <div class="chart-card">
+            <a href="reportlist" style="text-decoration: none; width: 100%; color: inherit;">
             <h3>Report category</h3>
             <canvas id="categoryChart"></canvas>
+            </a>
         </div>
         <div class="chart-card">
-            <h3>Report status</h3>
+            <h3><a href="tracking" style="text-decoration: none; color: inherit;">Report status</a></h3>
             <canvas id="doughnutChart"></canvas>
         </div>
     </div>
 
     <div class="charts-container">
+        <a href="tracking" style="text-decoration: none; width: 100%; color: inherit;">
         <div class="chart-card">
             <h3>Violations</h3>
             <canvas id="barChart"></canvas>
         </div>
+        </a>
     </div>
 
 <!-- JavaScript -->

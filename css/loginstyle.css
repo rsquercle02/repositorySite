@@ -1,4 +1,5 @@
 @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap");
+
 * {
   margin: 0;
   padding: 0;
@@ -10,20 +11,21 @@ body {
   background-image: url('../assets/images/imahe3.jpg');
   background-position: center;
   background-size: cover;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  background-repeat: no-repeat;
   min-height: 100vh;
   width: 100%;
-  overflow: hidden;
+}
+
+main {
+  flex: 1;
 }
 
 .login {
   width: 300px;
-  padding: 20px; /* Add padding for spacing inside the border */
-  border: 2px solid #ffffff; /* White border */
-  border-radius: 15px; /* Optional: rounded corners */
-  background-color: rgba(0, 0, 0, 0.5); /* Optional: a slight background for readability */
+  padding: 20px;
+  border: 2px solid #ffffff;
+  border-radius: 15px;
+  background-color: rgba(0, 0, 0, 0.5);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -33,25 +35,26 @@ body {
 
 .login h2 {
   font-size: 2em;
-  color: #ffffff; /* Change text color to white for visibility */
+  color: #ffffff;
 }
 
 .login .inputBx {
-  position: relative;
   width: 100%;
 }
 
 .login .inputBx input {
-  position: relative;
   width: 100%;
   padding: 12px 20px;
   background: transparent;
-  border: 2px solid #ffffff; /* White border for inputs */
+  border: 2px solid #ffffff;
   border-radius: 15px;
   font-size: 1.2em;
-  color: #ffffff; /* White text color */
-  box-shadow: none;
+  color: #ffffff;
   outline: none;
+}
+
+.login .inputBx input::placeholder {
+  color: rgba(255, 255, 255, 0.75);
 }
 
 .loginbtn {
@@ -61,35 +64,12 @@ body {
   border: none;
   border-radius: 25px;
   cursor: pointer;
-  color: #ffffff; /* White text color */
-}
-
-.signupbtn {
-  width: 100%;
-  background: linear-gradient(45deg, #ff357a, #fff172);
-  border: none;
-  cursor: pointer;
-  color: #ffffff; /* White text color */
-}
-
-.login .inputBx input::placeholder {
-  color: rgba(255, 255, 255, 0.75);
-}
-
-.login .links {
-  position: relative;
-  width: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 20px;
-}
-
-.login .links a {
   color: #ffffff;
-  text-decoration: none;
+  font-weight: bold;
 }
 
-.respmsg{
+.respmsg {
   color: #ffffff;
+  font-size: 0.9em;
+  text-align: center;
 }
