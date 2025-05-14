@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Concern List</title>
+    <link rel="stylesheet" href="css/concernslist.css"
+</head>
+<body>
+    <h2 class="m-3">Concern List</h2>
+
+    <div class="m-3 row">
+    <div class="w-25">
+    <input type="text" class="form-control" id="searchTerm" placeholder="Search users">
+    </div>
+    </div>
+
+    <div id="loading-indicator" style="display:none;">
+      <i class="fa-solid fa-spinner fa-spin"></i>
+      <p>Loading, please wait...</p>
+    </div>
+
+    <div id="cardContainer" class="row cardhtml"></div>
+
+    <div class="modal fade" id="previewModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-scrollable">
+          <div class="modal-content">
+              <div class="modal-header">
+                  <h1 class="modal-title fs-5" id="exampleModalLabel">View Concern</h1>
+                  <button type="button" id="closePreviewBtn" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+              </div>
+              <div class="modal-body">
+
+                <div class="container">
+                  <h1>Concern Details</h1>
+                  
+                  <!-- Concern Information Section -->
+                      <p><strong>Concern Id:</strong> <span id="concernId"></span></p>
+                      <p><strong>Concerned Citizen:</strong> <span id="concernedCitizen"></span></p>
+                      <p hidden><strong>Store Id:</strong> <span id="storeId"></span></p>
+                      <p><strong>Store Name:</strong> <span id="storeName"></span></p>
+                      <p><strong>Store Address:</strong> <span id="storeAddress"></span></p>
+                      <p><strong>Store Record:</strong> <span id="storeRecord"></span></p>
+                      <p><strong>Date Created:</strong> <span id="createAt"></span></p>
+                      <!-- Concern Status Section -->
+                      <p><strong>Status:</strong> <span id="concernStatus"></span></p>
+                      <p hidden><strong>Status reason:</strong> <span id="cStatusReason"></span></p>
+                      <p><strong>Concern Details:</strong> <span id="concernDetails"></span></p>
+                      <p><strong>Pictures:</strong></p>
+                      <div class="mb-2" id="file1"></div>
+
+                  </div>
+                  <div class="modal-footer">
+                  </div>
+                  </div>
+          </div>
+      </div>
+  </div>
+
+</body>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="js/concernslst.js"></script>
+</html>
