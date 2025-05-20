@@ -159,6 +159,7 @@ window.addEventListener('resize', updateChartForScreenSize);
     document.getElementById('reportResolved').innerText = data[2].report_resolved;
     document.getElementById('reportCreated').innerText = data[3].report_created;
     document.getElementById('clrngopsTotal').innerText = data[5].clrngops_total;
+    document.getElementById('totalConcerns').innerText = data[7].total_concerns;
 
     // Report categories
     const reportcategories = [

@@ -335,8 +335,13 @@ $group->get('/InfoTally', function (Request $request, Response $response) use ($
     $stmt->execute();
     $reportcategory = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
+    $query = "SELECT DISTINCT COUNT(concern_id) AS total_concerns FROM concerns";
+    $stmt = $db->prepare($query);
+    $stmt->execute();
+    $totalConcerns = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
     // Combine both results into a single associative array
-    $responseData = array_merge($violationcounts_wrapped, $storedata, $resolvedreport, $reportcreated, $reporttally, $clrngopstally, $reportcategory);
+    $responseData = array_merge($violationcounts_wrapped, $storedata, $resolvedreport, $reportcreated, $reporttally, $clrngopstally, $reportcategory, $totalConcerns);
 
 
     $response->getBody()->write(json_encode($responseData));
