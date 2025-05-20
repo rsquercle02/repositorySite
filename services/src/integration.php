@@ -335,7 +335,11 @@ $group->get('/InfoTally', function (Request $request, Response $response) use ($
     $stmt->execute();
     $reportcategory = $stmt->fetchAll(PDO::FETCH_ASSOC);
 
-    $query = "SELECT DISTINCT COUNT(concern_id) AS total_concerns FROM concerns";
+    $query = "SELECT DISTINCT COUNT(c.concern_id) AS total_concerns
+        FROM concerns c
+        JOIN cstatus cs on c.concern_id = cs.concern_id
+        WHERE cs.concern_status = 'No action.'
+        ";
     $stmt = $db->prepare($query);
     $stmt->execute();
     $totalConcerns = $stmt->fetchAll(PDO::FETCH_ASSOC);
